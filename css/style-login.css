@@ -1,0 +1,203 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Roboto', sans-serif;
+}
+
+body {
+    height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-image: url('../IMG/fondo-degradado-azul-claro-invierno_53876-120755.avif'); 
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    color: rgb(87, 100, 125);
+    backdrop-filter: blur(10px); 
+}
+
+
+.container-form {
+    width: 90%;
+    height: 90vh;
+    display: flex;
+    justify-content: space-around;
+    transition:  all .5s ease-out;
+}
+
+.welcome-back {
+    display: flex;
+    align-items: center;
+    text-align: center;
+}
+
+.img-usuario-logo {
+    width: 100px; 
+}
+
+.message {
+    padding: 1rem;
+}
+
+@keyframes zoom-forward {
+    from {
+        transform: scale(1);
+    }
+    to {
+        transform: scale(1.1);
+    }
+}
+
+@keyframes zoom-backward {
+    from {
+        transform: scale(1.1);
+    }
+    to {    
+        transform: scale(1);
+    }
+}
+.message img {
+    transition: transform 3s ease;
+}
+
+.message img:hover {
+    transform: rotateY(360deg); 
+}
+
+.primera_linea {
+    font-size: 1.7rem;
+    padding: 1rem 0;
+    position: relative;
+    display: inline-block;
+    animation: zoom-forward 3s infinite alternate; 
+}
+
+.segunda_linea {
+    font-size: 1.7rem;
+    padding: 1rem 0;
+    position: relative;
+    display: inline-block;
+    animation: zoom-backward 3s infinite alternate; 
+}
+
+
+@keyframes zoom {
+    0% {
+        transform: scale(1); 
+    }
+    50% {
+        transform: scale(1.1); 
+    }
+    100% {
+        transform: scale(1); 
+    }
+}
+
+
+.texto-log-in{
+    padding: 2.5rem 0;
+    font-size: 1.5rem;
+    color: #fff;
+}
+
+.formulario-log-in {
+    width: 400px;
+    padding: 1rem;
+    margin: 2rem;
+    background-color: rgb(87, 100, 125);
+    text-align: center;
+    border: 2px solid white; 
+    border-radius: 0.5rem; 
+}
+
+
+.formulario-log-in input {
+    width: calc(100% - 4px); 
+    display: block;
+    margin-bottom: 2rem;
+    background-color: transparent;
+    border: none;
+    border-bottom: 2px solid white; 
+    text-align: center;
+    outline: none;
+    padding: .2rem 0;
+    font-size: .9rem;
+    color: white;
+}
+
+.formulario-log-in input[name="boton-login"] {
+    width: 60%;
+    margin: auto;
+    border: none;
+    padding: .7rem;
+    border-radius: 0.25rem;
+    background-color: #ffc107;
+    font-weight: 600;
+    margin-top: 3rem;
+    font-size: 1rem;
+    cursor: pointer;
+    color: #212529;
+    transition: background-color 0.3s, transform 0.3s, box-shadow 0.3s; 
+}
+
+.formulario-log-in input[name="boton-login"]:hover,
+.formulario-log-in input[name="boton-login"]:focus,
+.formulario-log-in input[name="boton-login"]:active {
+    background-color: #ffb400;
+    transform: scale(1.05);
+    box-shadow: 0 0 10px #ffb400; 
+}
+
+
+/* Estilo por defecto del texto del marcador de posición */
+.formulario-log-in input[type="text"]::placeholder,
+.formulario-log-in input[type="password"]::placeholder {
+    color: white;
+}
+
+/* Estilo del campo de entrada cuando está enfocado */
+.formulario-log-in input[type="text"]:focus,
+.formulario-log-in input[type="password"]:focus {
+    box-shadow: 0 0 10px #ffb400; /* Efecto de iluminación */
+}
+
+/* Diseño del Ojito que se muestra en el campo de contraseña */
+.input-wrapper {
+    position: relative;
+}
+
+.eye-icon {
+    position: absolute;
+    right: 6px; 
+    top: 47%;
+    transform: translateY(-50%);
+    cursor: pointer;
+    color: white; 
+}
+
+/* Mensaje de validación del login */
+@keyframes shake {
+    0% { transform: translateX(0); }
+    10%, 90% { transform: translateX(-10px); }
+    20%, 80% { transform: translateX(10px); }
+    30%, 50%, 70% { transform: translateX(-10px); }
+    40%, 60% { transform: translateX(10px); }
+    100% { transform: translateX(0); }
+  }
+  
+  .mensaje-error {
+      color: #FFFFFF; 
+      padding: 10px; 
+      margin-top: 10px; 
+      border-radius: 5px; 
+  }
+  
+  .mensaje-error-visible {
+      background-color: rgb(248, 142, 152);
+      animation: shake 0.3s ease-in-out; 
+  }
+  
+
+
