@@ -26,9 +26,7 @@
       <!-- Tweaks for older IEs-->
       <link rel="stylesheet" href="https://netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css">
       <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fancybox/2.1.5/jquery.fancybox.min.css" media="screen">
-      <!--[if lt IE 9]>
-      <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
-      <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script><![endif]-->
+
       <link href="https://fonts.googleapis.com/css?family=Montserrat:300,400,700" rel="stylesheet" type="text/css">
       <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Muli:300,400" rel="stylesheet" type="text/css">
       
@@ -36,6 +34,10 @@
       <link href="http://www.colorname.xyz/style.css" rel="stylesheet" type="text/css"> 
           
       <link rel="stylesheet" href="https://netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css">
+
+      <!--   Librería para gráficos    -->
+      <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
    </head>
 
 
@@ -73,11 +75,7 @@
                                  <a class="nav-link" href="index.html">Inicio</a>
 
                               </li>
-
-                           
-
                               <li class="nav-item d_none">
-
                                  <a class="nav-link" href="#"><i class="fa fa-search" aria-hidden="true"></i></a>
 
                               </li>
@@ -94,45 +92,9 @@
   <br>
   <br>
   <br>
-        <!-- table -->
-        <?php
-   
-        include 'conexion.php';
-    
-        // Consulta a la base de datos
-        $sql = "SELECT Id, colorname FROM colores";
-        $result = $conexion->query($sql);
-    ?>
-    
-    <div class="container-fluid inner">
-        <table class="tableizer-table">
-            <tr class="tableizer-firstrow">
-                <th>Id</th>
-                <th>Colorname</th>
-            </tr>
-            <?php
-            // Imprimir datos en la tabla
-            if ($result->num_rows > 0) {
-                while($row = $result->fetch_assoc()) {
-                    echo "<tr>";
-                    echo "<td>" . $row["Id"] . "</td>";
-                    echo "<td>" . $row["colorname"] . "</td>";
-                    echo "</tr>";
-                }
-            } else {
-                echo "<tr><td colspan='2'>No hay resultados</td></tr>";
-            }
-            ?>
-        </table>
-    </div>
-    
-    <?php
-        // Cerrar conexión
-        $conexion->close();
-    ?>
 
-      <!-- Javascript files-->
-      <script src="js/jquery.min.js"></script>
+          <!-- Javascript files-->
+  <script src="js/jquery.min.js"></script>
       <script src="js/popper.min.js"></script>
       <script src="js/bootstrap.bundle.min.js"></script>
       <script src="js/jquery-3.0.0.min.js"></script>
@@ -142,3 +104,89 @@
    </body>
 </html>
 
+
+
+<div class="col-md-8">
+    <div class="row">
+        <!-- Contenedor para el gráfico -->
+      
+        <!-- Contenedor para la tabla -->
+        
+ <?php
+
+ $inc = include("./config/conexion.php");
+
+$sql = "
+    SELECT 'Presente' AS Tipo, COUNT(*) AS Total FROM votos WHERE presente = 0
+    UNION ALL
+    SELECT 'Representado' AS Tipo, COUNT(*) AS Total FROM votos WHERE representado = 0
+    UNION ALL
+    SELECT 'Voto' AS Tipo, COUNT(*) AS Total FROM votos WHERE voto = 1
+";
+
+$result = $conn->query($sql);
+
+// Paso 3: Mostrar los resultados en una tabla HTML
+if ($result->num_rows > 0) {
+
+   echo "<table class='tableizer-table' border='1'>";
+   echo "<tr class='tableizer-firstrow'><th>Tipo</th><th>Total</th></tr>";
+    while($row = $result->fetch_assoc()) {
+        echo "<tr><td>" . $row["Tipo"]. "</td><td>" . $row["Total"]. "</td></tr>";
+    }
+    echo "</table>";
+    echo "</div>";
+} else {
+    echo "0 resultados";
+}
+
+// Cerrar la conexión
+$conn->close();
+?>
+         <div class="col-md-8 ">
+            <div style="width: 100%; height: 400px;">
+                <canvas id="myChart"></canvas>
+            </div>
+        </div>
+    </div>
+</div>
+<?php
+
+// Datos para el gráfico
+$labels = ["Presente", "Representado"];
+$data = [49,56]; // Aquí deberías obtener los datos de tu base de datos o de otra fuente
+
+// Genera el código JavaScript para inicializar el gráfico con los datos
+echo "<script>";
+echo "var ctx = document.getElementById('myChart').getContext('2d');";
+echo "var myChart = new Chart(ctx, {";
+echo "    type: 'bar',";
+echo "    data: {";
+echo "        labels: " . json_encode($labels) . ",";
+echo "        datasets: [{";
+echo "            label: 'Cantidad',";
+echo "            data: " . json_encode($data) . ",";
+echo "            backgroundColor: [";
+echo "                'rgba(255, 99, 132, 0.6)',";
+echo "                'rgba(54, 162, 235, 0.6)',";
+echo "                'rgba(255, 206, 86, 0.6)'";
+echo "            ],";
+echo "            borderColor: [";
+echo "                'rgba(255, 99, 132, 1)',";
+echo "                'rgba(54, 162, 235, 1)',";
+echo "                'rgba(255, 206, 86, 1)'";
+echo "            ],";
+echo "            borderWidth: 1";
+echo "        }]";
+echo "    },";
+echo "    options: {";
+echo "        scales: {";
+echo "            y: {";
+echo "                beginAtZero: true";
+echo "            }";
+echo "        }";
+echo "    }";
+echo "});";
+echo "</script>";
+?>
+      
