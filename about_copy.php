@@ -92,25 +92,28 @@
   <br>
   <br>
   <br>
+<main class="container">
+
+   <div class="row mt-5">
+      <div class="grafico-container">
+      <canvas id="grafico" width="400" height="400"></canvas>
+</main>
+   </div>
+   </div>
 
           <!-- Javascript files-->
-  <script src="js/jquery.min.js"></script>
+      <script src="js/jquery.min.js"></script>
       <script src="js/popper.min.js"></script>
       <script src="js/bootstrap.bundle.min.js"></script>
       <script src="js/jquery-3.0.0.min.js"></script>
       <!-- sidebar -->
       <script src="js/jquery.mCustomScrollbar.concat.min.js"></script>
       <script src="js/custom.js"></script>
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/helpers.min.js"></script>
+      <script src="./js/about_copy.js"></script>
    </body>
 </html>
-
-
-
-<div class="col-md-8">
-    <div class="row">
-        <!-- Contenedor para el gráfico -->
-      
-        <!-- Contenedor para la tabla -->
         
  <?php
 
@@ -143,50 +146,3 @@ if ($result->num_rows > 0) {
 // Cerrar la conexión
 $conn->close();
 ?>
-         <div class="col-md-8 ">
-            <div style="width: 100%; height: 400px;">
-                <canvas id="myChart"></canvas>
-            </div>
-        </div>
-    </div>
-</div>
-<?php
-
-// Datos para el gráfico
-$labels = ["Presente", "Representado"];
-$data = [49,56]; // Aquí deberías obtener los datos de tu base de datos o de otra fuente
-
-// Genera el código JavaScript para inicializar el gráfico con los datos
-echo "<script>";
-echo "var ctx = document.getElementById('myChart').getContext('2d');";
-echo "var myChart = new Chart(ctx, {";
-echo "    type: 'bar',";
-echo "    data: {";
-echo "        labels: " . json_encode($labels) . ",";
-echo "        datasets: [{";
-echo "            label: 'Cantidad',";
-echo "            data: " . json_encode($data) . ",";
-echo "            backgroundColor: [";
-echo "                'rgba(255, 99, 132, 0.6)',";
-echo "                'rgba(54, 162, 235, 0.6)',";
-echo "                'rgba(255, 206, 86, 0.6)'";
-echo "            ],";
-echo "            borderColor: [";
-echo "                'rgba(255, 99, 132, 1)',";
-echo "                'rgba(54, 162, 235, 1)',";
-echo "                'rgba(255, 206, 86, 1)'";
-echo "            ],";
-echo "            borderWidth: 1";
-echo "        }]";
-echo "    },";
-echo "    options: {";
-echo "        scales: {";
-echo "            y: {";
-echo "                beginAtZero: true";
-echo "            }";
-echo "        }";
-echo "    }";
-echo "});";
-echo "</script>";
-?>
-      

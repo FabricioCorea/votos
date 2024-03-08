@@ -1328,6 +1328,13 @@ ul{
    
    
    }*/
+
+   .grafico-container {
+     width: 300px; /* Ancho deseado */
+     height: 300px; /* Alto deseado */
+     float: right; /* Alineación a la derecha */
+     margin-top: 20px; /* Espacio superior */
+ }
    
 
 
