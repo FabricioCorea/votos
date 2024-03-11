@@ -16,7 +16,7 @@
       <!-- bootstrap css -->
       <link rel="stylesheet" href="css/bootstrap.min.css">
       <!-- style css -->
-      <link rel="stylesheet" href="css/style.css">
+      <link rel="stylesheet" href="./css/style.css">
       <!-- Responsive-->
       <link rel="stylesheet" href="css/responsive.css">
       <!-- fevicon -->
@@ -75,10 +75,10 @@
                                  <a class="nav-link" href="index.html">Inicio</a>
 
                               </li>
-                              <li class="nav-item d_none">
+                              <!--<li class="nav-item d_none">
                                  <a class="nav-link" href="#"><i class="fa fa-search" aria-hidden="true"></i></a>
 
-                              </li>
+                              </li>-->
                            </ul>
                         </div>
                      </nav>
@@ -92,12 +92,14 @@
   <br>
   <br>
   <br>
-<main class="container">
+
+  
+<!-- <main class="container">
 
    <div class="row mt-5">
       <div class="grafico-container">
       <canvas id="grafico" width="400" height="400"></canvas>
-</main>
+</main> -->
    </div>
    </div>
 
@@ -112,9 +114,19 @@
       <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
       <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/helpers.min.js"></script>
       <script src="./js/about_copy.js"></script>
-   </body>
-</html>
-        
+   
+
+       
+<style>
+
+.tablegra {
+   background: #02246a; /* Color de fondo de la primera fila */
+     padding: 1px;
+     color: #ffffff   
+   }
+
+</style>
+
  <?php
 
  $inc = include("./config/conexion.php");
@@ -127,23 +139,122 @@ $sql = "
     SELECT 'Voto' AS Tipo, COUNT(*) AS Total FROM votos WHERE voto = 1
 ";
 
+// $result = $conn->query($sql);
+
+// // Paso 3: Mostrar los resultados en una tabla HTML
+// if ($result->num_rows > 0) {
+
+//    echo "<table class='table tableizer-table  ' border='2'>";
+//    echo "<tr class='rosado    '><th>Tipo</th><th>Total</th></tr>";
+//     while($row = $result->fetch_assoc()) {
+//         echo "<tr><td>" . $row["Tipo"]. "</td><td>" . $row["Total"]. "</td></tr>";
+//     }
+//     echo "</table>";
+//     echo "</div>";
+// } else {
+//     echo "0 resultados";
+// }
+
 $result = $conn->query($sql);
 
 // Paso 3: Mostrar los resultados en una tabla HTML
 if ($result->num_rows > 0) {
+   echo "</br>";
+   echo "</br>";
+   echo "</br>";
+   echo "</br>";
+   echo "<div class='container-sm mt-5'>";
+   echo "<div class='row'>"; // Agregar una fila
+   
+   // Columna para la tabla
+   echo "<div class='col-md-6'>"; // Tamaño medio
+   echo "<div class='table-responsive'>";
+   echo "<table class='table table-light  table-bordered' style='width: 70%;'>"; // Ancho del 100%
+   echo "<thead class='tablegra'><tr><th>Tipo</th><th>Total</th></tr></thead>";
+   echo "<tbody>";
 
-   echo "<table class='tableizer-table' border='1'>";
-   echo "<tr class='tableizer-firstrow'><th>Tipo</th><th>Total</th></tr>";
-    while($row = $result->fetch_assoc()) {
-        echo "<tr><td>" . $row["Tipo"]. "</td><td>" . $row["Total"]. "</td></tr>";
-    }
-    echo "</table>";
-    echo "</div>";
+   while($row = $result->fetch_assoc()) {
+       echo "<tr><td>" . $row["Tipo"]. "</td><td>" . $row["Total"]. "</td></tr>";
+   }
+   
+   echo "</tbody></table>";
+   echo "</div>"; // Cerrar la tabla
+   echo "</div>"; // Cerrar la columna para la tabla
+   
+   // Columna para el canvas
+   echo "<div class='col-md-6 offset-md-0'>"; // Tamaño medio, desplazamiento 0
+   echo "<div class='col-md-8 offset-md-2'>"; // Desplazamiento a la derecha y tamaño de columna más pequeño
+   echo "<canvas id='grafico' width='400' height='400'></canvas>"; // Agregar el canvas
+   echo "</div>"; // Cerrar la columna para el canvas
+   
+   echo "</div>"; // Cerrar la columna para el canvas
+   echo "</div>"; // Cerrar la fila
+   echo "</div>"; // Cerrar el contenedor
+   
+   // Agregar aquí el contenido de la fila de Bootstrap si es necesario
+
 } else {
     echo "0 resultados";
 }
 
-// Cerrar la conexión
+
 // Cerrar la conexión
 $conn->close();
 ?>
+
+
+
+
+<?php
+// Paso 1: Conectar a la base de datos
+$conexion = mysqli_connect("localhost", "root", "", "voto");
+
+// Paso 2: Consultar los datos
+$sql = "
+    SELECT 'Presente' AS Tipo, COUNT(*) AS Total FROM votos WHERE presente = 0
+    UNION ALL
+    SELECT 'Representado' AS Tipo, COUNT(*) AS Total FROM votos WHERE representado = 0
+";
+$resultado = mysqli_query($conexion, $sql);
+
+// Paso 3: Procesar los datos
+$categorias = array();
+$cantidades = array();
+while ($fila = mysqli_fetch_assoc($resultado)) {
+    $categorias[] = $fila['Tipo'];
+    $cantidades[] = $fila['Total'];
+}
+
+// Paso 4: Generar el gráfico
+?>
+
+<script>
+        var ctx = document.getElementById('grafico').getContext('2d');
+        var grafico = new Chart(ctx, {
+            type: 'pie', // Cambio a tipo de gráfico de pastel
+            data: {
+                labels: <?php echo json_encode($categorias); ?>,
+                datasets: [{
+                    label: 'Cantidad',
+                    data: <?php echo json_encode($cantidades); ?>,
+                    backgroundColor: [
+                        'rgba(2,36,106)', 
+                        'rgba(233,158,0)'
+                    ],
+                    borderColor: [
+                        'rgba(57, 157, 204)',
+                        'rgba(253,247,232)'
+                    ],
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                responsive: false,
+                maintainAspectRatio: false
+            }
+        });
+    </script>
+
+
+</body>
+</html>

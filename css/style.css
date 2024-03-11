@@ -1228,8 +1228,8 @@ ul.link_menu li a:hover {
      margin: 100px auto;
    }
 
-  .tableizer-firstrow th {
-     background-color: #202e42; /* Color de fondo de la primera fila */
+  .tableizer-firstrowth {
+     background-color: #d32ad3; /* Color de fondo de la primera fila */
      padding: 1px;
      color: #ffffff   
    }
