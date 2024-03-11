@@ -120,7 +120,7 @@
 <style>
 
 .tablegra {
-   background: #02246a; /* Color de fondo de la primera fila */
+   background: #34495E; /* Color de fondo de la primera fila */
      padding: 1px;
      color: #ffffff   
    }
@@ -167,9 +167,9 @@ if ($result->num_rows > 0) {
    echo "<div class='row'>"; // Agregar una fila
    
    // Columna para la tabla
-   echo "<div class='col-md-6'>"; // Tamaño medio
+   echo "<div class='col-md-5 offset-md-1'>"; // Tamaño medio, desplazamiento 1 columna hacia la izquierda
    echo "<div class='table-responsive'>";
-   echo "<table class='table table-light  table-bordered' style='width: 70%;'>"; // Ancho del 100%
+   echo "<table class='table table-light  table-bordered' style='width: 85%;'>"; // Ancho del 100%
    echo "<thead class='tablegra'><tr><th>Tipo</th><th>Total</th></tr></thead>";
    echo "<tbody>";
 
@@ -182,7 +182,7 @@ if ($result->num_rows > 0) {
    echo "</div>"; // Cerrar la columna para la tabla
    
    // Columna para el canvas
-   echo "<div class='col-md-6 offset-md-0'>"; // Tamaño medio, desplazamiento 0
+   echo "<div class='col-md-6'>"; // Tamaño medio
    echo "<div class='col-md-8 offset-md-2'>"; // Desplazamiento a la derecha y tamaño de columna más pequeño
    echo "<canvas id='grafico' width='400' height='400'></canvas>"; // Agregar el canvas
    echo "</div>"; // Cerrar la columna para el canvas
@@ -196,6 +196,7 @@ if ($result->num_rows > 0) {
 } else {
     echo "0 resultados";
 }
+
 
 
 // Cerrar la conexión
@@ -238,11 +239,11 @@ while ($fila = mysqli_fetch_assoc($resultado)) {
                     label: 'Cantidad',
                     data: <?php echo json_encode($cantidades); ?>,
                     backgroundColor: [
-                        'rgba(2,36,106)', 
-                        'rgba(233,158,0)'
+                        'rgba(52, 73, 94)', 
+                        'rgba(241, 189, 20)'
                     ],
                     borderColor: [
-                        'rgba(57, 157, 204)',
+                        'rgba(178, 186, 187)',
                         'rgba(253,247,232)'
                     ],
                     borderWidth: 1
