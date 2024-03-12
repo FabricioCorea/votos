@@ -246,7 +246,7 @@ while ($fila = mysqli_fetch_assoc($resultado)) {
                         'rgba(178, 186, 187)',
                         'rgba(253,247,232)'
                     ],
-                    borderWidth: 1
+                    borderWidth: 2
                 }]
             },
             options: {
