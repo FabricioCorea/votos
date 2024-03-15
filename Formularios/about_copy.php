@@ -38,6 +38,9 @@
       <!--   Librería para gráficos    -->
       <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
+      <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" integrity="sha512-pPtNaT2zqPRGkCv3rZyfC+Xtctj/eF2gR2GXK0FIKeY5NhZ1V1v/UZA5qETBuTrVbo7uOujcGm3teHZVd/s6JQ==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+      <script src="https://kit.fontawesome.com/a5cebb58e6.js" crossorigin="anonymous"></script>
+
    </head>
 
 
@@ -68,31 +71,42 @@
                         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarsExample04" aria-controls="navbarsExample04" aria-expanded="false" aria-label="Toggle navigation">
                         <span class="navbar-toggler-icon"></span>
                         </button>
+                        
                         <div class="collapse navbar-collapse" id="navbarsExample04">
                            <ul class="navbar-nav mr-auto">
                               <li class="nav-item active">
-
                                  <a class="nav-link" href="./indexAdmin.html">Inicio</a>
-
                               </li>
-                              <!--<li class="nav-item d_none">
-                                 <a class="nav-link" href="#"><i class="fa fa-search" aria-hidden="true"></i></a>
-
-                              </li>-->
                            </ul>
                         </div>
+                
+                        
+       
                      </nav>
                   </div>
                </div>
+               <div class='col-md-5 offset-md-7'>
+           <!--Botón de Generar reportes-->
+           <div class="text-right mb-5"> 
+		      <a href="../fpdf/PruebaV.php" target="_blank" class="btn btn-success"><i class="fas fa-file-pdf"></i> PDF</a>   
+            <a href="../fpdf/PruebaH.php" target="_blank" class="btn btn-success"><i class="fas fa-file-pdf"></i> EXCEL</a>       
+            </div>
+         </div>
             </div>
          </div>
       </header>
       <!-- end header inner -->
       <!-- end header -->
+
+      
   <br>
   <br>
+  <br>
+  <br>
+  <br>    
   <br>
 
+ 
   
 <!-- <main class="container">
 
@@ -130,83 +144,75 @@
 
 </style>
 
- <?php
+<?php
 
- $inc = include("../config/conexion.php");
+$inc = include("../config/conexion.php");
 
 $sql = "
-    SELECT 'Presente' AS Tipo, COUNT(*) AS Total FROM votos WHERE presente = 0
-    UNION ALL
-    SELECT 'Representado' AS Tipo, COUNT(*) AS Total FROM votos WHERE representado = 0
-    UNION ALL
-    SELECT 'Voto' AS Tipo, COUNT(*) AS Total FROM votos WHERE voto = 1
+SELECT 'Representante' AS Tipo, COUNT(*) AS Total FROM votos WHERE presente = 0
+UNION ALL
+SELECT 'Representado' AS Tipo, COUNT(*) AS Total FROM votos WHERE representado = 0
+UNION ALL
+SELECT 'Voto' AS Tipo, COUNT(*) AS Total FROM votos WHERE voto = 1
 ";
-
-// $result = $conn->query($sql);
-
-// // Paso 3: Mostrar los resultados en una tabla HTML
-// if ($result->num_rows > 0) {
-
-//    echo "<table class='table tableizer-table  ' border='2'>";
-//    echo "<tr class='rosado    '><th>Tipo</th><th>Total</th></tr>";
-//     while($row = $result->fetch_assoc()) {
-//         echo "<tr><td>" . $row["Tipo"]. "</td><td>" . $row["Total"]. "</td></tr>";
-//     }
-//     echo "</table>";
-//     echo "</div>";
-// } else {
-//     echo "0 resultados";
-// }
 
 $result = $conn->query($sql);
 
 // Paso 3: Mostrar los resultados en una tabla HTML
 if ($result->num_rows > 0) {
-   echo "</br>";
-   echo "</br>";
-   echo "</br>";
-   echo "</br>";
-   echo "<div class='container-sm mt-5'>";
-   echo "<div class='row'>"; // Agregar una fila
-   
-   // Columna para la tabla
-   echo "<div class='col-md-5 offset-md-1'>"; // Tamaño medio, desplazamiento 1 columna hacia la izquierda
-   echo "<div class='table-responsive'>";
-   echo "<table class='table table-light  table-bordered' style='width: 85%;'>"; // Ancho del 100%
-   echo "<thead class='tablegra'><tr><th>Tipo</th><th>Total</th></tr></thead>";
-   echo "<tbody>";
+    echo "</br>";
+    echo "</br>";
+    echo "</br>";
+    echo "</br>";
+    echo "<div class='container-sm mt-5'>";
+    echo "<div class='row'>"; // Agregar una fila
 
-   while($row = $result->fetch_assoc()) {
-       echo "<tr><td>" . $row["Tipo"]. "</td><td>" . $row["Total"]. "</td></tr>";
-   }
-   
-   echo "</tbody></table>";
-   echo "</div>"; // Cerrar la tabla
-   echo "</div>"; // Cerrar la columna para la tabla
-   
-   // Columna para el canvas
-   echo "<div class='col-md-6'>"; // Tamaño medio
-   echo "<div class='col-md-8 offset-md-2'>"; // Desplazamiento a la derecha y tamaño de columna más pequeño
-   echo "<canvas id='grafico' width='400' height='400'></canvas>"; // Agregar el canvas
-   echo "</div>"; // Cerrar la columna para el canvas
-   
-   echo "</div>"; // Cerrar la columna para el canvas
-   echo "</div>"; // Cerrar la fila
-   echo "</div>"; // Cerrar el contenedor
-   
-   // Agregar aquí el contenido de la fila de Bootstrap si es necesario
+    // Columna para la tabla
+    echo "<div class='col-md-5 offset-md-1'>"; // Tamaño medio, desplazamiento 1 columna hacia la izquierda
+    echo "<div class='table-responsive'>";
+    echo "<table class='table table-light table-bordered' style='width: 85%; border: 1.5px solid black;'>"; // Ancho del 100% y borde negro
+    echo "<thead class='tablegra'><tr><th>Tipo</th><th>Total</th></tr></thead>";
+    echo "<tbody>";
+
+    while ($row = $result->fetch_assoc()) {
+        // Agregar estilo CSS para la fila de "Voto"
+        $fila_estilo = ($row["Tipo"] === "Voto") ? "style='background-color: #BABBBD;'" : "";
+
+        echo "<tr $fila_estilo>";
+        echo "<td>" . $row["Tipo"] . "</td>";
+        echo "<td>" . $row["Total"] . "</td>";
+        echo "</tr>";
+    }
+
+    echo "</tbody></table>";
+    echo "</div>"; // Cerrar la tabla
+
+    /// Columna para el botón
+    echo "<div class='col-md-6 offset-md-1 mt-3 text-right'>"; // Tamaño medio, desplazamiento 1 columna hacia la izquierda, margen superior y centrado
+    echo "<button onclick='document.location.reload();' type='button' class='btn btn-primary boton'> Actualizar <i class='fas fa-sync-alt'></i></button>";
+    echo "</div>"; // Cerrar columna para el botón
+
+    echo "</div>"; // Cerrar la columna para la tabla
+
+    // Columna para el canvas
+    echo "<div class='col-md-6'>"; // Tamaño medio
+    echo "<div class='col-md-8 offset-md-2'>"; // Desplazamiento a la derecha y tamaño de columna más pequeño
+    echo "<canvas id='grafico' width='400' height='400'></canvas>"; // Agregar el canvas
+    echo "</div>"; // Cerrar la columna para el canvas
+
+    echo "</div>"; // Cerrar la columna para el canvas
+    echo "</div>"; // Cerrar la fila
+    echo "</div>"; // Cerrar el contenedor
 
 } else {
     echo "0 resultados";
 }
 
-
-
 // Cerrar la conexión
 $conn->close();
 ?>
 
-<button onclick="document.location.reload();" type="button" class="btn btn-primary boton">Actualizar</button>
+
 
 <?php
 // Paso 1: Conectar a la base de datos
@@ -214,7 +220,7 @@ $conexion = mysqli_connect("localhost", "root", "", "voto");
 
 // Paso 2: Consultar los datos
 $sql = "
-    SELECT 'Presente' AS Tipo, COUNT(*) AS Total FROM votos WHERE presente = 0
+    SELECT 'Representante' AS Tipo, COUNT(*) AS Total FROM votos WHERE presente = 0
     UNION ALL
     SELECT 'Representado' AS Tipo, COUNT(*) AS Total FROM votos WHERE representado = 0
 ";
@@ -259,5 +265,12 @@ while ($fila = mysqli_fetch_assoc($resultado)) {
     </script>
 
 
+	
+
+
+
+
 </body>
 </html>
+
+

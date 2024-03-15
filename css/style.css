@@ -302,6 +302,13 @@ button {
      position: absolute;
      z-index: 999;
 } 
+.header_lista {
+     width: 100%;
+     padding: -50px 30px;
+     background: transparent;
+     position: absolute;
+     z-index: 999;
+} 
 
 
 .logo a {
