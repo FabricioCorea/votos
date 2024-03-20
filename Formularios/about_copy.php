@@ -239,14 +239,20 @@ $resultado = mysqli_query($conexion, $sql);
 // Paso 3: Procesar los datos
 $categorias = array();
 $cantidades = array();
+$total = 0;
+while ($fila = mysqli_fetch_assoc($resultado)) {
+    $total += $fila['Total'];
+}
+
+mysqli_data_seek($resultado, 0); // Resetea el cursor para recorrer los resultados nuevamente
+
 while ($fila = mysqli_fetch_assoc($resultado)) {
     $categorias[] = $fila['Tipo'];
-    $cantidades[] = $fila['Total'];
+    $cantidades[] = ($fila['Total'] / $total) * 100; // Calcula el porcentaje y lo agrega al array
 }
 
 // Paso 4: Generar el gráfico
 ?>
-
 
 
 <script>
@@ -279,7 +285,7 @@ var grafico = new Chart(ctx, {
                     label: function(context) {
                         var label = context.label || '';
                         var value = context.formattedValue || '';
-                        return value + ' votos'; // Mostrar solo el valor y agregar 'votos'
+                        return value + '%'; // Mostrar solo el valor y agregar '%'
                     }
                 }
             }
@@ -287,6 +293,7 @@ var grafico = new Chart(ctx, {
     }
 });
 </script>
+
 
 
 
