@@ -1,16 +1,16 @@
 <?php
-$conexion = new mysqli("localhost", "root", "", "voto");
+require_once '../config/conexion.php'; 
 
 $selectOptions = ""; // Declarar la variable para almacenar las opciones
 
 $query = "SELECT * FROM votos ORDER BY id";
 
 if (isset($_POST['id_empresa'])) {
-    $idEmpresa = $conexion->real_escape_string($_POST['id_empresa']);
+    $idEmpresa = $conn->real_escape_string($_POST['id_empresa']);
     $query = "SELECT * FROM votos WHERE id = '" . $idEmpresa . "'";
 }
 
-$buscarEmpresas = $conexion->query($query);
+$buscarEmpresas = $conn->query($query);
 
 if ($buscarEmpresas->num_rows > 0) {
     while ($filaEmpresa = $buscarEmpresas->fetch_assoc()) {
@@ -27,7 +27,7 @@ if (isset($_POST['id_empresa']) && isset($_POST['subject'])) {
 
     // Consulta para verificar si ya existe un voto para la empresa
     $query = "SELECT * FROM votos WHERE id = '$id' AND voto > 0";
-    $result = $conexion->query($query);
+    $result = $conn->query($query);
 
     if ($result->num_rows > 0) {
         // Agregar el ID al mensaje si el voto ya ha sido registrado anteriormente
@@ -35,7 +35,7 @@ if (isset($_POST['id_empresa']) && isset($_POST['subject'])) {
     } else {
         // Consulta para actualizar la base de datos con el nuevo voto
         $query2 = "SELECT * FROM votos WHERE id = '$id'";
-        $result2 = $conexion->query($query2);
+        $result2 = $conn->query($query2);
     
         if ($result2->num_rows > 0) {
             $row_cnt2 = $result2->num_rows;
@@ -49,10 +49,10 @@ if (isset($_POST['id_empresa']) && isset($_POST['subject'])) {
     
             $meter = "UPDATE votos SET voto = 1, $campoActualizar = '$presente' WHERE id = '$id'";
             
-            if ($conexion->query($meter) && $row_cnt2 > 0) {
+            if ($conn->query($meter) && $row_cnt2 > 0) {
                 echo json_encode(array("status" => "success", "message" => 'El voto para la empresa con ID ' . $id . ' se ha registrado correctamente.'));
             } else {
-                echo json_encode(array("status" => "error", "message" => "Hubo un error al registrar el voto para la empresa con ID $id: " . $conexion->error));
+                echo json_encode(array("status" => "error", "message" => "Hubo un error al registrar el voto para la empresa con ID $id: " . $conn->error));
             }
         }
     }
@@ -62,5 +62,5 @@ if (isset($_POST['id_empresa']) && isset($_POST['subject'])) {
 }
 
 // Cerrar la conexión a la base de datos
-$conexion->close();
+$conn->close();
 ?>

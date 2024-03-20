@@ -42,7 +42,7 @@
             <div id="mensaje-error" class="mensaje-error"></div>
         </form>
     </div>
-    <script src="../JS/script-login.js"></script>
+    <script src="../JS/login.js"></script>
 </body>
 
 </html>

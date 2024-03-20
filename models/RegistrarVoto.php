@@ -1,7 +1,7 @@
 <?php
-    class Voto extends Conectar{
+    class RegistrarVoto extends Conectar{
 
-        public function get_votos() {
+        public function get_empresas() {
             $conexion = parent::Conexion();
             parent::set_names();
             $sql = "SELECT * FROM votos";
@@ -9,7 +9,7 @@
             $sql->execute();
             return $resultado = $sql->fetchAll(PDO::FETCH_ASSOC);
         }
-        public function get_voto($id) {
+        public function get_empresa($id) {
             $conexion = parent::Conexion();
             parent::set_names();
             

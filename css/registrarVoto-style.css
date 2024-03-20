@@ -1,0 +1,18 @@
+#resultado_empresa {
+    visibility: hidden;
+    width: 300px;
+    max-height: 200px;
+    overflow-y: auto;
+}
+#resultado_empresa li {
+    cursor: pointer;
+    padding: 5px;
+ }
+
+ #resultado_empresa li.selected {
+    background-color: 	rgb(87, 100, 125);
+    color: white;
+ }
+ #clear_search {
+    width: 30px; 
+}
