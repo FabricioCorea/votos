@@ -48,6 +48,7 @@ while ($fila = mysqli_fetch_assoc($resultado)) {
 <div class="text-right mb-7"> 
 						<a href="fpdf/PruebaV.php" target="_blank" class="btn btn-success"><i class="fas fa-file-pdf"></i>Generar reportes</a>     
 					</div>	
+<<<<<<< Updated upstream
     <canvas id="grafico" width="400" height="400"></canvas>
     <script>
         var ctx = document.getElementById('grafico').getContext('2d');
@@ -74,6 +75,50 @@ while ($fila = mysqli_fetch_assoc($resultado)) {
                 maintainAspectRatio: false
             }
         });
+=======
+                    <div style="position: relative; width: 400px; height: 400px;">
+    <canvas id="grafico"></canvas>
+    <div id="etiquetas" style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);"></div>
+</div>
+    <script>
+       var ctx = document.getElementById('grafico').getContext('2d');
+var grafico = new Chart(ctx, {
+    type: 'pie',
+    data: {
+        labels: <?php echo json_encode($categorias); ?>,
+        datasets: [{
+            label: 'Cantidad',
+            data: <?php echo json_encode($cantidades); ?>,
+            backgroundColor: [
+                'rgba(52, 73, 94)', 
+                'rgba(241, 189, 20)'
+            ],
+            borderColor: [
+                'rgba(178, 186, 187)',
+                'rgba(253,247,232)'
+            ],
+            borderWidth: 2
+        }]
+    },
+    options: {
+        responsive: false,
+        maintainAspectRatio: false,
+    }
+});
+
+// Obtener los datos del gráfico
+var datos = grafico.data.datasets[0].data;
+var etiquetas = grafico.data.labels;
+
+// Agregar etiquetas permanentes
+var etiquetasContainer = document.getElementById('etiquetas');
+for (var i = 0; i < datos.length; i++) {
+    var etiqueta = document.createElement('div');
+    etiqueta.textContent = etiquetas[i] + ": " + datos[i];
+    etiqueta.style.marginBottom = "5px";
+    etiquetasContainer.appendChild(etiqueta);
+}
+>>>>>>> Stashed changes
     </script>
 </body>
 </html>

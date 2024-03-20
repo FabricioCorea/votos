@@ -76,7 +76,12 @@
                            <ul class="navbar-nav mr-auto">
                               <li class="nav-item active">
                                  <a class="nav-link" href="./indexAdmin.html">Inicio</a>
+<<<<<<< Updated upstream
                               </li>
+=======
+                              
+                                </li>
+>>>>>>> Stashed changes
                            </ul>
                         </div>
                 
@@ -86,12 +91,22 @@
                   </div>
                </div>
                <div class='col-md-5 offset-md-7'>
+<<<<<<< Updated upstream
            <!--Botón de Generar reportes-->
            <div class="text-right mb-5"> 
 		      <a href="../fpdf/PruebaV.php" target="_blank" class="btn btn-success"><i class="fas fa-file-pdf"></i> PDF</a>   
             <a href="../fpdf/PruebaH.php" target="_blank" class="btn btn-success"><i class="fas fa-file-pdf"></i> EXCEL</a>       
             </div>
          </div>
+=======
+    <!--Botón de Generar reportes-->
+    <div class="text-right mb-5"> 
+        <a href="../fpdf/PruebaV.php" target="_blank" class="btn btn-light text-dark"><i class="fas fa-file-pdf"></i> PDF</a>   
+        <a href="../excel2.php" target="_blank" class="btn btn-light text-dark"><i class="fa-solid fa-file-excel"></i> EXCEL</a>       
+    </div>
+</div>
+
+>>>>>>> Stashed changes
             </div>
          </div>
       </header>
@@ -127,6 +142,10 @@
       <script src="../js/custom.js"></script>
       <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
       <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/helpers.min.js"></script>
+<<<<<<< Updated upstream
+=======
+      <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels"></script>
+>>>>>>> Stashed changes
       <script src="../js/about_copy.js"></script>
    
 
@@ -142,6 +161,11 @@
    background: #34495E; /* Color de fondo de la primera fila */
 }
 
+<<<<<<< Updated upstream
+=======
+
+
+>>>>>>> Stashed changes
 </style>
 
 <?php
@@ -153,7 +177,11 @@ SELECT 'Representante' AS Tipo, COUNT(*) AS Total FROM votos WHERE presente = 0
 UNION ALL
 SELECT 'Representado' AS Tipo, COUNT(*) AS Total FROM votos WHERE representado = 0
 UNION ALL
+<<<<<<< Updated upstream
 SELECT 'Voto' AS Tipo, COUNT(*) AS Total FROM votos WHERE voto = 1
+=======
+SELECT 'Votos' AS Tipo, COUNT(*) AS Total FROM votos WHERE voto = 1
+>>>>>>> Stashed changes
 ";
 
 $result = $conn->query($sql);
@@ -176,7 +204,11 @@ if ($result->num_rows > 0) {
 
     while ($row = $result->fetch_assoc()) {
         // Agregar estilo CSS para la fila de "Voto"
+<<<<<<< Updated upstream
         $fila_estilo = ($row["Tipo"] === "Voto") ? "style='background-color: #BABBBD;'" : "";
+=======
+        $fila_estilo = ($row["Tipo"] === "Votos") ? "style='background-color: #BABBBD;'" : "";
+>>>>>>> Stashed changes
 
         echo "<tr $fila_estilo>";
         echo "<td>" . $row["Tipo"] . "</td>";
@@ -197,7 +229,16 @@ if ($result->num_rows > 0) {
     // Columna para el canvas
     echo "<div class='col-md-6'>"; // Tamaño medio
     echo "<div class='col-md-8 offset-md-2'>"; // Desplazamiento a la derecha y tamaño de columna más pequeño
+<<<<<<< Updated upstream
     echo "<canvas id='grafico' width='400' height='400'></canvas>"; // Agregar el canvas
+=======
+    echo '
+    <div style="position: relative; width: 350px; height: 350px;">
+        <canvas id="grafico"></canvas>
+        <div id="etiquetas" style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);"></div>
+    </div>
+    ';
+>>>>>>> Stashed changes
     echo "</div>"; // Cerrar la columna para el canvas
 
     echo "</div>"; // Cerrar la columna para el canvas
@@ -237,6 +278,7 @@ while ($fila = mysqli_fetch_assoc($resultado)) {
 // Paso 4: Generar el gráfico
 ?>
 
+<<<<<<< Updated upstream
 <script>
         var ctx = document.getElementById('grafico').getContext('2d');
         var grafico = new Chart(ctx, {
@@ -266,6 +308,50 @@ while ($fila = mysqli_fetch_assoc($resultado)) {
 
 
 	
+=======
+
+
+<script>
+var ctx = document.getElementById('grafico').getContext('2d');
+var grafico = new Chart(ctx, {
+    type: 'pie',
+    data: {
+        labels: <?php echo json_encode($categorias); ?>,
+        datasets: [{
+            label: 'Cantidad',
+            data: <?php echo json_encode($cantidades); ?>,
+            backgroundColor: [
+                'rgba(52, 73, 94)', // Color azul oscuro para 'Representante'
+                'rgba(241, 189, 20)' // Color amarillo para 'Representado'
+            ],
+            borderColor: [
+                'rgba(178, 186, 187)',
+                'rgba(253,247,232)'
+            ],
+            borderWidth: 2
+        }]
+    },
+    options: {
+        responsive: true, // Habilitar la respuesta al tamaño de la pantalla
+        maintainAspectRatio: false, // No mantener la relación de aspecto
+        plugins: {
+            tooltip: {
+                enabled: true, // Habilitar las tooltips
+                callbacks: {
+                    label: function(context) {
+                        var label = context.label || '';
+                        var value = context.formattedValue || '';
+                        return value + ' votos'; // Mostrar solo el valor y agregar 'votos'
+                    }
+                }
+            }
+        }
+    }
+});
+</script>
+
+
+>>>>>>> Stashed changes
 
 
 
