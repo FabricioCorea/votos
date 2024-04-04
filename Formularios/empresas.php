@@ -184,8 +184,8 @@ table.table .avatar {
 
 
 /* Ajustar el ancho de una columna específica */
-#tablaVotos th:nth-child(1), /* Ajusta el ancho de la primera columna */
-#tablaVotos td:nth-child(1) {
+#tablaVotos th:nth-child(4), /* Ajusta el ancho de la primera columna */
+#tablaVotos td:nth-child(4) {
     width: 5px; /* Puedes ajustar el ancho según tus necesidades */
 }
 
@@ -239,9 +239,6 @@ table.table .avatar {
                         <th>ID</th>
                         <th>Empresa</th>
                         <th>Representante</th>
-                        <th>Presente</th>
-                        <th>Representado</th>
-                        <th>Voto</th>
                         <th>Acciones</th>
                     </tr>
                 </thead>
@@ -262,28 +259,17 @@ table.table .avatar {
                 </div>
                 <div class="modal-body">
                     <form id="formAgregarVoto">
-                        <div class="mb-3">
-                            <label for="empresa" class="form-label">Empresa</label>
-                            <input type="text" name="empresa" id="empresa" class="form-control valid" placeholder="Ingrese el nombre de la empresa" autocomplete="off">
-                        </div>
-                        <div class="mb-3">
-                            <label for="representante" class="form-label">Representante</label>
-                            <input type="text" name="representante" id="representante" class="form-control valid" placeholder="Ingrese el nombre del representante" autocomplete="off">
-                        </div>
-                        <div class="mb-3">
-                            <label for="presente" class="form-label">Presente</label>
-                            <input type="text" name="presente" id="presente" class="form-control valid" placeholder="Ingrese el estado de presente" autocomplete="off">
-                        </div>
-                        <div class="mb-3">
-                            <label for="representado" class="form-label">Representado</label>
-                            <input type="text" name="representado" id="representado" class="form-control valid" placeholder="Ingrese el estado de representado" autocomplete="off">
-                        </div>
-                        <div class="mb-3">
-                            <label for="voto" class="form-label">Voto</label>
-                            <input type="text" name="voto" id="voto" class="form-control valid" placeholder="Ingrese el voto" autocomplete="off">
-                        </div>
-                    </form>
+                    <div class="mb-3">
+                    <label for="empresa" class="form-label">Empresa</label>
+                    <input type="text" name="empresa" id="empresa" class="form-control valid" placeholder="Ingrese el nombre de la empresa" autocomplete="off">
                 </div>
+                <div class="mb-3">
+                <label for="representante" class="form-label">Representante</label>
+                <input type="text" name="representante" id="representante" class="form-control valid" placeholder="Ingrese el nombre del representante" autocomplete="off">
+                </div>
+        <!-- No se incluyen otros campos -->
+                    </form>
+</div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
                     <button type="button" class="btn btn-primary" onclick="AgregarVoto()">Guardar</button>

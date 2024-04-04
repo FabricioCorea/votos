@@ -1,5 +1,5 @@
 body {
-	color: #eecd62;
+	color: #202e42;
      background-repeat: no-repeat;
 	 background-size: cover;
      display: flex;
@@ -145,12 +145,12 @@ table.table .avatar {
 
 .btn-edit:hover,
 .btn-delete:hover {
-    background-color:  #a40aca;
+    background-color:  #ffc107;
 }
 
 
 .table-striped thead {
-    background: #0a970a; /* Cambia el color de fondo del encabezado */
+    background: #34495E; /* Cambia el color de fondo del encabezado */
     color: #FFFFFF; /* Cambia el color del texto del encabezado */
 }
 

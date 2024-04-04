@@ -29,25 +29,32 @@ $body = json_decode(file_get_contents("php://input"), true);
 switch ($_GET["opc"]) {
     case "GetVotos":
         $datos = $votos->get_votos();
-        echo json_encode($datos);
-        break; 
-    case "InsertVoto":
-        $empresa = $body['empresa'];
-        $representante = $body['representante'];
-        $presente = $body['presente'];
-        $representado = $body['representado'];
-        $voto = $body['voto'];
-
-        $datos = $votos->insert_voto($empresa, $representante, $presente, $representado, $voto);
-
-        if ($datos > 0) {
-            $arrResponse = array("status" => true, "msg" => 'Voto agregado con éxito');
-        } else {
-            $arrResponse = array("status" => false, "msg" => 'Error al agregar el voto');
-        }
-
-        echo json_encode($arrResponse, JSON_UNESCAPED_UNICODE);
+        // Filtrar los campos para mostrar solo id, empresa y representante
+        $datos_filtrados = array_map(function($voto) {
+            return array(
+                'id' => $voto['id'],
+                'empresa' => $voto['empresa'],
+                'representante' => $voto['representante']
+            );
+        }, $datos);
+        echo json_encode($datos_filtrados);
         break;
+        case "InsertVoto":
+            $empresa = $body['empresa'];
+            $representante = $body['representante'];
+            // No es necesario recoger los otros campos ya que no se utilizan para agregar el voto
+        
+            $datos = $votos->insert_voto($empresa, $representante); // Solo se pasan los campos necesarios
+        
+            if ($datos > 0) {
+                $arrResponse = array("status" => true, "msg" => 'Voto agregado con éxito');
+            } else {
+                $arrResponse = array("status" => false, "msg" => 'Error al agregar el voto');
+            }
+        
+            echo json_encode($arrResponse, JSON_UNESCAPED_UNICODE);
+            break;
+        
     case "DeleteVoto":
         $id_voto = $_POST['id_voto'];
         

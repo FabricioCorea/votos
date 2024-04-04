@@ -55,9 +55,7 @@ function CargarVotos() {
                     voto.id,
                     voto.empresa,
                     voto.representante,
-                    voto.presente,
-                    voto.representado,
-                    voto.voto,
+                    // No se incluyen otros campos
                     // Botones de acciones (editar y eliminar)
                     '<button class="btn btn-icon btn-edit" data-toggle="tooltip" title="Editar"><i class="material-icons">edit</i></button>' +
                     '<button class="btn btn-icon btn-delete" data-toggle="tooltip" title="Eliminar" onclick="EliminarVoto(' + voto.id + ')"><i class="material-icons">delete</i></button>'

@@ -18481,7 +18481,7 @@ $.widget( "ui.tabs", {
 				that.panels = that.panels.add( panel );
 			}
 			if ( originalAriaControls ) {
-				tab.data( "ui-tabs-aria-controls", originalAriaControls );
+				tab.data( "ui-tabs-", originalAriaControls );
 			}
 			tab.attr( {
 				"aria-controls": panelId,

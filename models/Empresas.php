@@ -10,22 +10,20 @@ class Voto extends Conectar{
         return $resultado = $sql->fetchAll(PDO::FETCH_ASSOC);
     } 
 
-    public function insert_voto($empresa, $representante, $presente, $representado, $voto) {
+    public function insert_voto($empresa, $representante) {
         $conectar = parent::conexion();
         parent::set_names();
         
-        $sql = "INSERT INTO `votos` (`empresa`, `representante`, `presente`, `representado`, `voto`) 
-                VALUES (?, ?, ?, ?, ?)";
+        $sql = "INSERT INTO `votos` (`empresa`, `representante`) VALUES (?, ?)";
         
         $sql = $conectar->prepare($sql);
         $sql->bindValue(1, $empresa);
         $sql->bindValue(2, $representante);
-        $sql->bindValue(3, $presente);
-        $sql->bindValue(4, $representado);
-        $sql->bindValue(5, $voto);
         $sql->execute();
-        return $resultado = $sql->fetchAll(PDO::FETCH_ASSOC);
-    }  
+        
+        // Retornar el número de filas afectadas por la inserción
+        return $sql->rowCount();
+    }
 
     public function delete_voto($id_voto) {
         $conectar = parent::conexion();
