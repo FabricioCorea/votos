@@ -40,9 +40,9 @@ body {
 }
 .table-wrapper {
 	background: #FFFFFF;
-	padding: 20px 25px;
+	padding: 20px 15px;
 	border-radius: 3px;
-	min-width: 1000px;
+	min-width: 1280px;
 	box-shadow: 0 1px 1px rgba(0,0,0,.05);
 }
 .table-title {        
@@ -184,8 +184,8 @@ table.table .avatar {
 
 
 /* Ajustar el ancho de una columna específica */
-#tablaVotos th:nth-child(4), /* Ajusta el ancho de la primera columna */
-#tablaVotos td:nth-child(4) {
+#tablaVotos th:nth-child(1), /* Ajusta el ancho de la primera columna */
+#tablaVotos td:nth-child(1) {
     width: 5px; /* Puedes ajustar el ancho según tus necesidades */
 }
 

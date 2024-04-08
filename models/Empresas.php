@@ -4,7 +4,7 @@ class Voto extends Conectar{
     public function get_votos() {
         $conexion = parent::Conexion();
         parent::set_names();
-        $sql = "SELECT * FROM votos";
+        $sql = "SELECT * FROM votos LIMIT 50";
         $sql = $conexion->prepare($sql);
         $sql->execute();
         return $resultado = $sql->fetchAll(PDO::FETCH_ASSOC);

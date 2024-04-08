@@ -173,3 +173,6 @@ function EliminarVoto(id_voto) {
         }
     });
 }
+
+// Agregar margen inferior al buscador del DataTable
+$('input[type="search"]').css('margin-bottom', '20px');
