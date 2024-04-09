@@ -207,7 +207,6 @@ table.table .avatar {
     overflow-x: auto; /* Agrega una barra de desplazamiento horizontal si el contenido excede el ancho */
 }
 
-    
 </style>
 
 

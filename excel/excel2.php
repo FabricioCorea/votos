@@ -10,12 +10,12 @@ echo '<x:ExcelWorksheet>';
 echo '<x:Name>Sheet1</x:Name>';
 echo '<x:WorksheetOptions>';
 echo '<x:DisplayGridlines/>';
-echo '</x:WorksheetOptions>';
+echo '</x:WorksheetOsptions>';
 echo '</x:ExcelWorksheet>';
 echo '</x:ExcelWorksheets>';
 echo '</x:ExcelWorkbook>';
 echo '</xml><![endif]-->';
-include("./config/conexion.php");
+include("../config/conexion.php");
 
 // Consulta para los votos
 $sql_votos = "

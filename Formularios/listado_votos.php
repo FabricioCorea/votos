@@ -43,6 +43,19 @@
 
    </head>
 
+   <!--------------------------------------------------- Estilos --------------------------------------------------->
+   <style>
+    .tablegra {
+    background: #34495E; 
+        padding: 1px;
+        color: #ffffff   
+    }
+    .boton {
+    background: #34495E; 
+    }
+    </style>
+
+<!------------------------------------------------------------------------------------------------------------------->
 
    <!-- body -->
    <body class="main-layout inner_header about_page">
@@ -80,27 +93,20 @@
                                 </li>
                            </ul>
                         </div>
-                
-                        
-       
                      </nav>
                   </div>
                </div>
                <div class='col-md-5 offset-md-7'>
-    <!--Botón de Generar reportes-->
-    <div class="text-right mb-5"> 
-        <a href="../fpdf/PruebaV.php" target="_blank" class="btn btn-light text-dark"><i class="fas fa-file-pdf"></i> PDF</a>   
-        <a href="../excel/excel2.php" target="_blank" class="btn btn-light text-dark"><i class="fa-solid fa-file-excel"></i> EXCEL</a>       
-    </div>
-</div>
 
+                        <!--Botón de Generar reportes-->
+                        <div class="text-right mb-5"> 
+                            <a href="../fpdf/PruebaV.php" target="_blank" class="btn btn-light text-dark"><i class="fas fa-file-pdf"></i> PDF</a>   
+                            <a href="../excel/excel2.php" target="_blank" class="btn btn-light text-dark"><i class="fa-solid fa-file-excel"></i> EXCEL</a>       
+                        </div>
+                    </div>
+                </div>
             </div>
-         </div>
       </header>
-      <!-- end header inner -->
-      <!-- end header -->
-
-      
   <br>
   <br>
   <br>
@@ -108,14 +114,6 @@
   <br>    
   <br>
 
- 
-  
-<!-- <main class="container">
-
-   <div class="row mt-5">
-      <div class="grafico-container">
-      <canvas id="grafico" width="400" height="400"></canvas>
-</main> -->
    </div>
    </div>
 
@@ -131,24 +129,11 @@
       <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/helpers.min.js"></script>
       <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels"></script>
       <script src="../js/about_copy.js"></script>
-   
-
-       
-<style>
-
-.tablegra {
-   background: #34495E; /* Color de fondo de la primera fila */
-     padding: 1px;
-     color: #ffffff   
-   }
-   .boton {
-   background: #34495E; /* Color de fondo de la primera fila */
-}
+ 
+      
 
 
-
-</style>
-
+<!---------------------------------------------------------------------------------------------------------------->      
 <?php
 
 $inc = include("../config/conexion.php");
@@ -163,24 +148,23 @@ SELECT 'Votos' AS Tipo, COUNT(*) AS Total FROM votos WHERE voto = 1
 
 $result = $conn->query($sql);
 
-// Paso 3: Mostrar los resultados en una tabla HTML
+
 if ($result->num_rows > 0) {
     echo "</br>";
     echo "</br>";
     echo "</br>";
     echo "</br>";
     echo "<div class='container-sm mt-5'>";
-    echo "<div class='row'>"; // Agregar una fila
+    echo "<div class='row'>"; 
 
     // Columna para la tabla
-    echo "<div class='col-md-5 offset-md-1'>"; // Tamaño medio, desplazamiento 1 columna hacia la izquierda
+    echo "<div class='col-md-5 offset-md-1'>"; 
     echo "<div class='table-responsive'>";
-    echo "<table class='table table-light table-bordered' style='width: 85%; border: 1.5px solid black;'>"; // Ancho del 100% y borde negro
+    echo "<table class='table table-light table-bordered' style='width: 85%; border: 1.5px solid black;'>"; 
     echo "<thead class='tablegra'><tr><th>Tipo</th><th>Total</th></tr></thead>";
     echo "<tbody>";
 
     while ($row = $result->fetch_assoc()) {
-        // Agregar estilo CSS para la fila de "Voto"
         $fila_estilo = ($row["Tipo"] === "Votos") ? "style='background-color: #BABBBD;'" : "";
 
         echo "<tr $fila_estilo>";
@@ -190,45 +174,42 @@ if ($result->num_rows > 0) {
     }
 
     echo "</tbody></table>";
-    echo "</div>"; // Cerrar la tabla
+    echo "</div>"; 
 
     /// Columna para el botón
-    echo "<div class='col-md-6 offset-md-1 mt-3 text-right'>"; // Tamaño medio, desplazamiento 1 columna hacia la izquierda, margen superior y centrado
+    echo "<div class='col-md-6 offset-md-1 mt-3 text-right'>"; 
     echo "<button onclick='document.location.reload();' type='button' class='btn btn-primary boton'> Actualizar <i class='fas fa-sync-alt'></i></button>";
-    echo "</div>"; // Cerrar columna para el botón
+    echo "</div>"; 
 
-    echo "</div>"; // Cerrar la columna para la tabla
+    echo "</div>"; 
 
     // Columna para el canvas
-    echo "<div class='col-md-6'>"; // Tamaño medio
-    echo "<div class='col-md-8 offset-md-2'>"; // Desplazamiento a la derecha y tamaño de columna más pequeño
+    echo "<div class='col-md-6'>"; 
+    echo "<div class='col-md-8 offset-md-2'>"; 
     echo '
     <div style="position: relative; width: 350px; height: 350px;">
         <canvas id="grafico"></canvas>
         <div id="etiquetas" style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);"></div>
     </div>
     ';
-    echo "</div>"; // Cerrar la columna para el canvas
+    echo "</div>"; 
 
-    echo "</div>"; // Cerrar la columna para el canvas
-    echo "</div>"; // Cerrar la fila
-    echo "</div>"; // Cerrar el contenedor
+    echo "</div>"; 
+    echo "</div>"; 
+    echo "</div>"; 
 
 } else {
     echo "0 resultados";
 }
-
-// Cerrar la conexión
 $conn->close();
 ?>
 
-
-
+<!------------------------------------------------------------------------------------------------------------------>
 <?php
-// Paso 1: Conectar a la base de datos
+
 $conexion = mysqli_connect("localhost", "root", "", "voto");
 
-// Paso 2: Consultar los datos
+
 $sql = "
     SELECT 'Representante' AS Tipo, COUNT(*) AS Total FROM votos WHERE presente = 0
     UNION ALL
@@ -236,7 +217,6 @@ $sql = "
 ";
 $resultado = mysqli_query($conexion, $sql);
 
-// Paso 3: Procesar los datos
 $categorias = array();
 $cantidades = array();
 $total = 0;
@@ -244,16 +224,12 @@ while ($fila = mysqli_fetch_assoc($resultado)) {
     $total += $fila['Total'];
 }
 
-mysqli_data_seek($resultado, 0); // Resetea el cursor para recorrer los resultados nuevamente
-
+mysqli_data_seek($resultado, 0); 
 while ($fila = mysqli_fetch_assoc($resultado)) {
     $categorias[] = $fila['Tipo'];
-    $cantidades[] = ($fila['Total'] / $total) * 100; // Calcula el porcentaje y lo agrega al array
+    $cantidades[] = ($fila['Total'] / $total) * 100;
 }
-
-// Paso 4: Generar el gráfico
 ?>
-
 
 <script>
 var ctx = document.getElementById('grafico').getContext('2d');
@@ -265,8 +241,8 @@ var grafico = new Chart(ctx, {
             label: 'Cantidad',
             data: <?php echo json_encode($cantidades); ?>,
             backgroundColor: [
-                'rgba(52, 73, 94)', // Color azul oscuro para 'Representante'
-                'rgba(241, 189, 20)' // Color amarillo para 'Representado'
+                'rgba(52, 73, 94)',
+                'rgba(241, 189, 20)' 
             ],
             borderColor: [
                 'rgba(178, 186, 187)',
@@ -276,16 +252,16 @@ var grafico = new Chart(ctx, {
         }]
     },
     options: {
-        responsive: true, // Habilitar la respuesta al tamaño de la pantalla
-        maintainAspectRatio: false, // No mantener la relación de aspecto
+        responsive: true, 
+        maintainAspectRatio: false, 
         plugins: {
             tooltip: {
-                enabled: true, // Habilitar las tooltips
+                enabled: true, 
                 callbacks: {
                     label: function(context) {
                         var label = context.label || '';
                         var value = context.formattedValue || '';
-                        return value + '%'; // Mostrar solo el valor y agregar '%'
+                        return value + '%'; 
                     }
                 }
             }
@@ -293,12 +269,6 @@ var grafico = new Chart(ctx, {
     }
 });
 </script>
-
-
-
-
-
-
 
 </body>
 </html>
