@@ -37,6 +37,9 @@ if($varsesion == null || $varsesion ==''){
         }
         .pagination {
             margin-top: 10px;
+            float: right;
+            margin: 0 0 5px;
+            justify-content: right;
         }
         .pagination button {
             border: none;
@@ -48,10 +51,41 @@ if($varsesion == null || $varsesion ==''){
             line-height: 30px;
             border-radius: 2px !important;
             text-align: center;
-            padding: 0 6px;
-            hover-bg: #e9ecef;
+            padding: 0 6px;  
+            border-width: 1px;
+            border-color: #dee2e6;
+
         }
-      
+
+        .pagination li a {
+            border: none;
+            font-size: 13px;
+            min-width: 30px;
+            min-height: 30px;
+            color: #999;
+            margin: 0 2px;
+            line-height: 30px;
+            border-radius: 2px !important;
+            text-align: center;
+            padding: 0 6px;
+        }
+        .pagination li a:hover {
+            color: #666;
+        }	
+        .pagination li.active a, .pagination li.active a.page-link {
+            background: #e99e00;
+        }
+        .pagination li.active a:hover {        
+            background: #e99e00;
+        }
+        .pagination li.disabled i {
+            color: #ccc;
+        }
+        .pagination li i {
+            font-size: 16px;
+            padding-top: 6px
+        }
+
 
         body {
             color: #202e42;
@@ -150,9 +184,33 @@ if($varsesion == null || $varsesion ==''){
             appearance: none;
 }
 
+/* Ajustar el ancho de una columna específica */
+#tablaEmpresas th:nth-child(1), /* Ajusta el ancho de la primera columna */
+#tablaEmpresas td:nth-child(1) {
+    width: 40px; /* Puedes ajustar el ancho según tus necesidades */
+}
 
-    </style>
+
+/* Ajustar el ancho de una columna específica */
+#tablaEmpresas th:nth-child(3), /* Ajusta el ancho de la primera columna */
+#tablaEmpresas td:nth-child(3) {
+    width: 400px; /* Puedes ajustar el ancho según tus necesidades */
+}
+
+
+
+/* Ajustar el ancho de una columna específica */
+#tablaEmpresas th:nth-child(2), /* Ajusta el ancho de la primera columna */
+#tablaEmpresas td:nth-child(2) {
+    width: 700px; /* Puedes ajustar el ancho según tus necesidades */
+}
+
+
+</style>
 </head>
+
+
+
 <body>
 <div class="table-responsive">
         <div class="table-wrapper">
@@ -174,100 +232,48 @@ if($varsesion == null || $varsesion ==''){
                     </div>
                 </div>
             </div>
-            <select id="pageSize" onchange="changePageSize()" class="select-k select-c form-select-c">
-            <option value="10">10</option>
-            <option value="25">25</option>
-            <option value="50">50</option>
-            <option value="100">100</option>
-        </select>
+
+            <label for="pageSize" style="display: inline-block; margin-right: 5px;">Mostrar</label>
+            <select id="pageSize" onchange="changePageSize()" class="select-k select-c form-select-c" style="display: inline-block; margin-right: 5px;">
+                <option value="10">10</option>
+                <option value="25">25</option>
+                <option value="50">50</option>
+                <option value="100">100</option>
+            </select>
+            <span style="display: inline-block;">registros</span>
+
+
             <br>
-    <table id="tablaEmpresas" class="table table-striped">
-        <thead>
+            <br>
+
+
+            <table id="tablaEmpresas" class="table table-striped">
+            <thead>
             <tr>
                 <th>ID</th>
-                <th>Nombre</th>
+                <th>Empresa</th>
                 <th>Representante</th>
+                <th>Acciones</th>
             </tr>
         </thead>
         <tbody id="listaEmpresas"></tbody>
     </table>
 
     <div class="pagination">
-        <button onclick="previousPage()">Anterior</button>
-        <span id="pageNumber">1</span>
-        <button onclick="nextPage()">Siguiente</button>
-        
-    </div>
-    </div>  
-  </div>
-    <script>
-        var empresas = []; // Aquí se almacenarán todas las empresas obtenidas
+    <button onclick="previousPage()">Anterior</button>
+    <span id="pageNumber">1</span>
+    <button onclick="nextPage()">Siguiente</button>
+</div>
 
-        // Función para mostrar las empresas según la página actual y el tamaño de página
-        function showPage(pageNumber, pageSize) {
-            var startIndex = (pageNumber - 1) * pageSize;
-            var endIndex = startIndex + pageSize;
-            var currentPageData = empresas.slice(startIndex, endIndex);
+</div>  
+</div>
 
-            var listaEmpresas = document.getElementById('listaEmpresas');
-            listaEmpresas.innerHTML = ''; // Limpiar la tabla antes de agregar las filas
-
-            currentPageData.forEach(function(empresa) {
-                var row = document.createElement('tr');
-                row.innerHTML = '<td>' + empresa.id + '</td>' +
-                                '<td>' + empresa.empresa + '</td>' +
-                                '<td>' + empresa.representante + '</td>';
-                listaEmpresas.appendChild(row);
-            });
-
-            // Actualizar el número de página visible
-            document.getElementById('pageNumber').innerText = pageNumber;
-        }
-
-        // Función para cambiar al página anterior
-        function previousPage() {
-            var pageNumber = parseInt(document.getElementById('pageNumber').innerText);
-            if (pageNumber > 1) {
-                showPage(pageNumber - 1, parseInt(document.getElementById('pageSize').value));
-            }
-        }
-
-        // Función para cambiar a la página siguiente
-        function nextPage() {
-            var pageNumber = parseInt(document.getElementById('pageNumber').innerText);
-            var pageSize = parseInt(document.getElementById('pageSize').value);
-            var totalPages = Math.ceil(empresas.length / pageSize);
-            if (pageNumber < totalPages) {
-                showPage(pageNumber + 1, pageSize);
-            }
-        }
-
-        // Función para cambiar el tamaño de página
-        function changePageSize() {
-            var pageSize = parseInt(document.getElementById('pageSize').value);
-            showPage(1, pageSize);
-        }
-
-        // Obtener las empresas mediante una solicitud AJAX
-        var xhr = new XMLHttpRequest();
-        xhr.open('GET', '../controller/empresas2.php', true);
-        xhr.onload = function() {
-            if (xhr.status >= 200 && xhr.status < 300) {
-                empresas = JSON.parse(xhr.responseText);
-                showPage(1, parseInt(document.getElementById('pageSize').value)); // Mostrar la primera página al cargar
-            } else {
-                console.error('Error al obtener las empresas');
-            }
-        };
-        xhr.send();
-    </script>
-
-
- <!-- JavaScript -->
+<!-- JavaScript -->
  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
     <script src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.min.js"></script>
     <script src="https://cdn.datatables.net/1.11.5/js/dataTables.bootstrap5.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.7.3/dist/sweetalert2.all.min.js"></script>
+    <script src="../JS/empresas2.js"></script>
    
 
     <!-- Bootstrap JavaScript -->
@@ -275,3 +281,5 @@ if($varsesion == null || $varsesion ==''){
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/js/bootstrap.min.js"></script>
 </body>
 </html>
+
+
