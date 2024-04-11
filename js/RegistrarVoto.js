@@ -6,8 +6,9 @@ $(document).ready(function() {
     $('#id_empresa').on('input', function() {
         var idEmpresa = $(this).val();
         if (idEmpresa.trim() === '') {
-            // Si el campo de búsqueda está vacío, ocultar el campo de resultados y el botón de eliminación
+            // Si el campo de búsqueda está vacío, mostrar los elementos del select y el botón
             $("#resultado_empresa").empty().css("visibility", "hidden");
+            $("#subject_input, .contenedor, #registrar_voto_btn").css("visibility", "visible");
             $("#clear_search").hide();
         } else {
             // Validar que solo se ingresen números
@@ -29,6 +30,10 @@ $(document).ready(function() {
         $(this).hide();
         // Limpiar y ocultar los resultados
         $("#resultado_empresa").empty().css("visibility", "hidden");
+        // Mostrar los elementos relevantes
+        $("#subject_input").css("visibility", "visible");
+        $(".contenedor").css("visibility", "visible");
+        $("#registrar_voto_btn").css("visibility", "visible");
     });
 
     // Función para obtener los registros según el ID de empresa
@@ -44,8 +49,25 @@ $(document).ready(function() {
         .done(function(resultado) {
             if (resultado.trim() === '') {
                 $("#resultado_empresa").empty().css("visibility", "hidden"); // Si no hay resultados, ocultar el campo de resultados
+                // Mostrar los elementos relevantes
+                $("#subject_input").css("visibility", "visible");
+                $(".contenedor").css("visibility", "visible");
+                $("#registrar_voto_btn").css("visibility", "visible");
             } else {
-                $("#resultado_empresa").html(resultado).css("visibility", "visible"); // Mostrar el campo de resultados
+                if (resultado.trim() === '<li>No se encontró la empresa con el ID proporcionado.</li>' || resultado.trim() === '<li>La empresa con el ID proporcionado ya registró su voto.</li>') {
+                    // Si no se encuentra la empresa o ya registró su voto, ocultar los elementos relevantes
+                    $("#resultado_empresa").html(resultado).css("visibility", "visible");
+                    $("#subject_input").css("visibility", "hidden");
+                    $(".contenedor").css("visibility", "hidden");
+                    $("#registrar_voto_btn").css("visibility", "hidden");
+                } else {
+                    // Mostrar los resultados normales
+                    $("#resultado_empresa").html(resultado).css("visibility", "visible");
+                    // Mostrar los elementos relevantes
+                    $("#subject_input").css("visibility", "visible");
+                    $(".contenedor").css("visibility", "visible");
+                    $("#registrar_voto_btn").css("visibility", "visible");
+                }
             }
         })
         .fail(function() {
@@ -55,7 +77,7 @@ $(document).ready(function() {
 
     // Evento al hacer clic en un resultado de la lista
     $(document).on('click', '#resultado_empresa li', function() {
-        if ($(this).text() !== "No se encontró la empresa con el ID proporcionado.") {
+        if ($(this).text() !== "No se encontró la empresa con el ID proporcionado." && $(this).text() !== "La empresa con el ID proporcionado ya registró su voto.") {
             var selectedText = $(this).text(); // Obtener el texto del elemento clicado
             $('#id_empresa').val(selectedText); // Colocar el texto en el campo de búsqueda
             $("#resultado_empresa").empty().css("visibility", "hidden"); // Limpiar los resultados y ocultar el campo de resultados
@@ -64,12 +86,17 @@ $(document).ready(function() {
 
             // Cambiar color de fondo y letras
             $(this).addClass('selected');
+
+            // Mostrar los elementos relevantes
+            $("#subject_input").css("visibility", "visible");
+            $(".contenedor").css("visibility", "visible");
+            $("#registrar_voto_btn").css("visibility", "visible");
         }
     });
 
     // Evento al pasar el cursor sobre un resultado de la lista
     $(document).on('mouseenter', '#resultado_empresa li', function() {
-        if ($(this).text() !== "No se encontró la empresa con el ID proporcionado.") {
+        if ($(this).text() !== "No se encontró la empresa con el ID proporcionado." && $(this).text() !== "La empresa con el ID proporcionado ya registró su voto.") {
             $(this).addClass('selected');
         }
     });
@@ -91,10 +118,7 @@ $(document).ready(function() {
             Swal.fire({
                 icon: 'error',
                 title: '¡Error!',
-                text: 'Debe seleccionar la empresa',
-                didClose: () => {
-                    // No hacer nada después de cerrar la alerta
-                }
+                text: 'Debe seleccionar la empresa'
             });
             return; // Detener la ejecución de la función si no se cumple la validación
         }
@@ -104,10 +128,7 @@ $(document).ready(function() {
             Swal.fire({
                 icon: 'error',
                 title: '¡Error!',
-                text: 'Debe seleccionar al presente',
-                didClose: () => {
-                    // No hacer nada después de cerrar la alerta
-                }
+                text: 'Debe seleccionar al presente'
             });
             return; // Detener la ejecución de la función si no se cumple la validación
         }
@@ -115,7 +136,7 @@ $(document).ready(function() {
         // Enviar datos al controlador PHP para registrar el voto
         $.ajax({
             type: "POST",
-            url: "../controller/registrarVoto.php", // Reemplazar con la ruta correcta a tu controlador PHP
+            url: "../controller/registrarVoto.php",
             data: {
                 id_empresa: idEmpresa,
                 subject: presentacion
@@ -135,14 +156,10 @@ $(document).ready(function() {
                     Swal.fire({
                         icon: 'error',
                         title: '¡Error!',
-                        text: responseData.message,
-                        didClose: () => {
-                            location.reload(); // Recargar la página después de cerrar el Sweet Alert
-                        }
+                        text: responseData.message
                     });
                 }
             }
         });
     });
-
 });

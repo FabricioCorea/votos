@@ -8,8 +8,7 @@ $varsesion = $_SESSION['usuario'];
     }
 ?>
 <!DOCTYPE html>
-<html lang="es"> 
-
+<html lang="es">
 
 <head>
     <meta charset="UTF-8">
@@ -54,7 +53,6 @@ $varsesion = $_SESSION['usuario'];
                         <th>Usuario</th>
                         <th>Nombre</th>
                         <th>Estado</th>
-                        <th>Contraseña</th>
                         <th>Última conexión</th>
                         <th>Creado por</th>
                         <th>Fecha creación</th>
@@ -63,9 +61,6 @@ $varsesion = $_SESSION['usuario'];
                         <th>Acciones</th>
                     </tr>
                 </thead>
-                <tbody id="dataUsuarios">
-                    <!-- Aquí se insertarán las filas de la tabla mediante JavaScript -->
-                </tbody>
             </table>
 
         </div>
@@ -114,6 +109,56 @@ $varsesion = $_SESSION['usuario'];
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
                     <button type="button" class="btn btn-primary" onclick="AgregarUsuario()">Guardar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal para editar usuario -->
+    <div class="modal fade" id="editEmployeeModal" tabindex="-1" aria-labelledby="editEmployeeModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="editEmployeeModalLabel">Editar Usuario</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="formEditarUsuario">
+                        <!-- Campos de edición con valores prellenados -->
+                        <input type="hidden" id="editIdUsuario" name="editIdUsuario">
+                        <div class="mb-3">
+                            <label for="editRolSelect" class="form-label">Rol</label>
+                            <select class="form-select" id="editRolSelect" name="editRolSelect">
+                                <!-- Roles mediante Javascript -->
+                            </select>
+                        </div>
+                        <div class="mb-3">
+                            <label for="editUsuario" class="form-label">Usuario</label>
+                            <input type="text" name="editUsuario" id="editUsuario" class="form-control valid ValidUsuario" onpaste="return false;" placeholder="Ingrese el usuario" autocomplete="off">
+                        </div>
+                        <div class="mb-3">
+                            <label for="editNombre" class="form-label">Nombre</label>
+                            <input type="text" name="editNombre" id="editNombre" class="form-control valid ValidNombre" onpaste="return false;" placeholder="Ingrese el nombre del usuario" autocomplete="off">
+                        </div>
+                        <div class="mb-3">
+                            <label for="editSelecEstado" class="form-label">Estado</label>
+                            <select class="form-select" id="editSelecEstado" name="editSelecEstado">
+                                <!-- Estado del usuario mediante Javascript -->
+                            </select>
+                        </div>
+                        <div class="mb-3">
+                            <label for="EditContraseña" class="form-label">Nueva contraseña</label>
+                            <input type="password" name="EditContraseña" id="EditContraseña" class="form-control valid ValidContra" onpaste="return false;" placeholder="Ingrese la nueva contraseña">
+                        </div>
+                        <div class="mb-3">
+                            <label for="confirmEditContraseña" class="form-label">Confirmar contraseña</label>
+                            <input type="password" id="confirmEditContraseña" name="confirmEditContraseña" class="form-control valid ValidContra" onpaste="return false;" placeholder="Ingrese la contraseña">
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                    <button type="button" class="btn btn-primary" onclick="ActualizarUsuario()">Actualizar</button>
                 </div>
             </div>
         </div>

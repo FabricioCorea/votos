@@ -2,6 +2,8 @@ var urlUsuarios = '../controller/usuarios.php?opc=GetUsuarios';
 var UrlInsertarUsuario = '../controller/usuarios.php?opc=InsertUsuario';
 var UrlEliminarUsuario = '../controller/usuarios.php?opc=DeleteUsuario';
 var UrlGetRoles = '../controller/usuarios.php?opc=GetRoles';
+var UrlUsuarioAEditar = '../controller/usuarios.php?opc=GetUsuarioAEditar';
+var UrlActualizarUsuario = '../controller/usuarios.php?opc=UpdateUsuario';
 
 // Configuración de idioma personalizada
 var idioma_espanol = {
@@ -125,11 +127,11 @@ function testContraseña(txtString) {
       });
   
       ValidNombre.addEventListener("keydown", function(event) {
-        // Capturamos la tecla presionada
+        // Captura la tecla presionada
         var keyPressed = event.key;
         // Si la tecla presionada es un espacio y el cursor está en la primera posición del campo
         if (keyPressed === ' ' && this.selectionStart === 0) {
-          // Cancelamos el evento de teclado para evitar que se ingrese el espacio
+          // Cancela el evento de teclado para evitar que se ingrese el espacio
           event.preventDefault();
         }
       });
@@ -150,25 +152,20 @@ function CargarUsuarios() {
 
           // Recorrer los datos y agregar las filas a DataTables
           usuarios.forEach(function(usuario) {
-              // Crea un elemento <div> para contener la contraseña y aplicar el desplazamiento horizontal
-              var contraseñaCell = '<div class="scrollable-cell contraseña">' + usuario.contraseña + '</div>';
-              var rolCell = '<div class="scrollable-cell rol">' + usuario.rol + '</div>';
-
               // Agrega la fila a DataTables, reemplazando la celda de contraseña con la nueva celda que tiene desplazamiento horizontal
               var row = tablaUsuarios.row.add([
                   usuario.id_usuario,
-                  rolCell,
+                  usuario.rol, 
                   usuario.usuario,
                   usuario.nombre,
                   usuario.estado,
-                  contraseñaCell, // Utiliza la celda con desplazamiento horizontal en lugar de usuario.contraseña directamente
                   usuario.fecha_ultima_conexion,
                   usuario.creado_por,
                   usuario.fecha_creacion,
                   usuario.modificado_por,
                   usuario.fecha_modificacion,
                   // Botones de acciones (editar y eliminar)
-                  '<button class="btn btn-icon btn-edit" data-toggle="tooltip" title="Editar"><i class="material-icons">edit</i></button>' +
+                  '<button class="btn btn-icon btn-edit" data-toggle="tooltip" data-bs-toggle="modal" data-bs-target="#editEmployeeModal" onclick="CargarUsuario(\'' + usuario.id_usuario + '\')" title="Editar"><i class="material-icons">edit</i></button>' +
                   '<button class="btn btn-icon btn-delete" data-toggle="tooltip" title="Eliminar" onclick="EliminarUsuario(' + usuario.id_usuario + ')"><i class="material-icons">delete</i></button>'
               ]).draw(false);
 
@@ -184,9 +181,9 @@ function CargarUsuarios() {
   });
 }
 
-
+//Función para agregar usuario
 function AgregarUsuario() {
-  var rolSelect = document.getElementById("rolSelect").value;
+    var rolSelect = document.getElementById("rolSelect").value;
     var usuario = document.getElementById("usuario").value;
     var nombre = document.getElementById("nombre").value;
     var selecEstado = document.getElementById("selecEstado").value;
@@ -197,7 +194,7 @@ function AgregarUsuario() {
     let contraseñaValid = document.querySelector("#contraseña");
     let usuarioValid = document.querySelector("#usuario");
     let nombreValid = document.querySelector("#nombre");
-    // Validación de campos vacíos
+    // Validación general de campos vacíos
     if (
         usuario == "" ||
         nombre == "" ||
@@ -264,7 +261,7 @@ function AgregarUsuario() {
           if (response.status) {
               Swal.fire({
                   icon: 'success',
-                  title: 'Éxito',
+                  title: 'Listo',
                   text: response.msg
               }).then((result) => {
                   if (result.isConfirmed) {
@@ -290,6 +287,146 @@ function AgregarUsuario() {
   });
 }
 
+//Función que trae los datos del usuario que se eligió editar
+function CargarUsuario(idUsuario) {
+  var datosUsuario = {
+      idUsuario: idUsuario,
+  };
+  var datosUsuarioJson = JSON.stringify(datosUsuario);
+
+  $.ajax({
+      url: UrlUsuarioAEditar,
+      type: "POST",
+      data: datosUsuarioJson,
+      datatype: "JSON",
+      contentType: "application/json",
+      success: function (response) {
+          var usuario = response;
+
+          console.log(usuario.nombre);
+          // Llenar los campos del formulario de edición con los datos del usuario
+          $('#editIdUsuario').val(usuario.id_usuario);
+          $('#editUsuario').val(usuario.usuario);
+          $('#editNombre').val(usuario.nombre);
+          $('#editSelecEstado').val(usuario.estado);
+
+          // Seleccionar la opción correcta en el select de roles
+          $('#editRolSelect option').filter(function() {
+              return $(this).val() == usuario.id_rol; // Comparar el valor del option con el id_rol del usuario
+          }).prop('selected', true);
+      },
+  });
+}
+
+//función para actualizar usuario
+function ActualizarUsuario() {
+  var idUsuario = document.getElementById("editIdUsuario").value;
+  var rolSelect = document.getElementById("editRolSelect").value;
+  var usuario = document.getElementById("editUsuario").value;
+  var nombre = document.getElementById("editNombre").value;
+  var selecEstado = document.getElementById("editSelecEstado").value;
+  var contraseña = document.getElementById("EditContraseña").value;
+  var confirmContraseña = document.getElementById("confirmEditContraseña").value;
+
+  // Validaciones de campos específicos
+  let contraseñaValid = document.querySelector("#EditContraseña");
+  let usuarioValid = document.querySelector("#editUsuario");
+  let nombreValid = document.querySelector("#editNombre");
+  
+  // Validación general de campos vacíos
+  if (
+      usuario == "" ||
+      nombre == ""
+  ) {
+      Swal.fire("Advertencia", "Debe llenar todos los campos", "warning");
+      return false;
+  }
+
+  if (contraseñaValid.classList.contains("is-invalid")) {
+      Swal.fire(
+          "Advertencia",
+          "La contraseña debe contener al menos 8 caracteres, una letra mayúscula, una letra minúscula y un número",
+          "warning"
+      );
+      return false;
+  }
+
+  if (usuarioValid.classList.contains("is-invalid")) {
+      Swal.fire(
+          "Advertencia",
+          "El usuario no puede contener caracteres especiales y debe tener máximo 11 caracteres",
+          "warning"
+      );
+      return false;
+  }
+  
+  if (nombreValid.classList.contains("is-invalid")) {
+      Swal.fire(
+          "Advertencia",
+          "El nombre debe ser alfabético, con máximo un espacio y sin números ni caracteres especiales",
+          "warning"
+      );
+      return false;
+  }
+
+  // Validar contraseñas
+  if (contraseña !== confirmContraseña) {
+      Swal.fire({
+          icon: 'warning',
+          title: 'Advertencia',
+          text: 'Las contraseñas no coinciden'
+      });
+      return;
+  }
+
+  // Crear objeto con los datos del usuario a actualizar
+  var userData = {
+      idUsuario: idUsuario,
+      rolSelect: rolSelect,
+      usuario: usuario,
+      nombre: nombre,
+      estadoSelect: selecEstado,
+      contraseña: contraseña,
+      confirmContraseña: confirmContraseña
+  };
+
+  // Enviar solicitud POST al controlador para actualizar el usuario
+  $.ajax({
+      type: "POST",
+      url: UrlActualizarUsuario, // URL para actualizar el usuario
+      data: JSON.stringify(userData),
+      dataType: "json",
+      success: function(response) {
+          if (response.status) {
+              Swal.fire({
+                  icon: 'success',
+                  title: 'Listo',
+                  text: response.msg
+              }).then((result) => {
+                  if (result.isConfirmed) {
+                      location.reload(); // Recargar la página después de actualizar el usuario
+                  }
+              });
+          } else {
+              Swal.fire({
+                  icon: 'error',
+                  title: 'Error',
+                  text: response.msg
+              });
+          }
+      },
+      error: function(xhr, status, error) {
+          Swal.fire({
+              icon: 'error',
+              title: 'Error',
+              text: 'Ocurrió un error al procesar la solicitud'
+          });
+          console.error(xhr.responseText);
+      }
+  });
+}
+
+//Función para eliminar usuario
 function EliminarUsuario(id_usuario) {
   Swal.fire({
       title: '¿Está seguro?',
@@ -312,7 +449,7 @@ function EliminarUsuario(id_usuario) {
                   if (response.status) {
                       Swal.fire({
                           icon: 'success',
-                          title: 'Éxito',
+                          title: 'Listo',
                           text: response.msg
                       }).then((result) => {
                           if (result.isConfirmed) {
@@ -349,10 +486,11 @@ function CargarRoles(){
             var MisItems = response;
             var opciones='';
             console.log(MisItems)
-            for(i=0; i<MisItems.length; i++){ //Muestra Id y nombre
+            for(i=0; i<MisItems.length; i++){ //Muestra el nombre del rol
                 opciones += '<option value="' + MisItems[i].id_rol + '">' +  MisItems[i].rol + '</option>';
             }
             $("#rolSelect").html(opciones);
+            $("#editRolSelect").html(opciones);
         }
     });
 }
@@ -369,25 +507,8 @@ function CargarEstados() {
 
     // Agrega las opciones al elemento select
     $("#selecEstado").html(opciones);
+    $("#editSelecEstado").html(opciones);
 }
-
-// Evento click para botón agregar usuario
-$('#btnAgregarUsuario').click(function() {
-    // Aquí puedes agregar tu lógica para mostrar un formulario de registro
-    // o redireccionar a una página de registro de usuario.
-    console.log('Agregar usuario');
-});
-
-// Evento click para botones editar y eliminar
-$('#tablaUsuarios tbody').on('click', '.btn-editar', function() {
-    // Aquí puedes agregar tu lógica para editar un usuario
-    var data = tablaUsuarios.row($(this).parents('tr')).data();
-    console.log('Editar usuario', data[0]); // Ejemplo: obtener el ID del usuario
-}).on('click', '.btn-eliminar', function() {
-    // Aquí puedes agregar tu lógica para eliminar un usuario
-    var data = tablaUsuarios.row($(this).parents('tr')).data();
-    console.log('Eliminar usuario', data[0]); // Ejemplo: obtener el ID del usuario
-});
 
 // Agregar margen inferior al buscador del DataTable
 $('input[type="search"]').css('margin-bottom', '20px');

@@ -66,6 +66,35 @@
             return $resultado = $sql->fetchAll(PDO::FETCH_ASSOC);
         }   
 
+        //Trer el usuario seleccionado para editar
+        public function get_usuario_editar($id_usuario) {
+            $conectar = parent::Conexion();
+            parent::set_names();
+            $sql = "SELECT * FROM `tbl_usuarios` WHERE id_usuario=?";
+            $sql = $conectar->prepare($sql);
+            $sql->bindValue(1, $id_usuario);
+            $sql->execute();
+            return $resultado = $sql->fetch(PDO::FETCH_ASSOC);
+        }        
+
+        //Actualizar usuario
+        public function update_usuario($rol, $usuario, $nombre, $estado, $contrasena, $modificadoPor, $id_usuario){
+            $conectar = parent::conexion();
+            parent::set_names();
+            $sql = "UPDATE `tbl_usuarios` SET `id_rol` = ?, `usuario` = ?, `nombre` = ?, `estado` = ?, `contraseña` = ?, `modificado_por` = ?, `fecha_modificacion` = CURRENT_TIMESTAMP()  WHERE `tbl_usuarios`.`id_usuario` = ?;";
+            $sql = $conectar->prepare($sql);
+            $sql->bindValue(1, $rol);
+            $sql->bindValue(2, $usuario);
+            $sql->bindValue(3, $nombre);
+            $sql->bindValue(4, $estado);
+            $sql->bindValue(5, $contrasena);
+            $sql->bindValue(6, $modificadoPor);
+            $sql->bindValue(7, $id_usuario);
+            $sql->execute();
+
+            return $resultado = $sql->fetchALL(PDO::FETCH_ASSOC);
+        }
+
         // Verificar que el usuario a eliminar existe
         public function verificar_usuario_por_id($id_usuario) {
             $conectar = parent::conexion();
