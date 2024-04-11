@@ -154,27 +154,11 @@ table.table .avatar {
     color: #FFFFFF; /* Cambia el color del texto del encabezado */
 }
 
-
 /* Ajustar el ancho de una columna específica */
 #tablaUsuarios th:nth-child(1), /* Ajusta el ancho de la primera columna */
 #tablaUsuarios td:nth-child(1) {
-    width: 5px; /* Puedes ajustar el ancho según tus necesidades */
+    width: 5px; /* Ajusta el ancho según las necesidades */
 }
 
-/*Poder desplazar el contenido de la celda después de superar cierto espacio. Se modifica en css y en la función que trae los datos en javascript*/
-#tablaUsuarios td:nth-child(6) .contraseña {
-    white-space: nowrap; 
-	max-width: 45px;
-	overflow-x: auto;
-}
 
-#tablaUsuarios td:nth-child(2) .rol {
-	white-space: nowrap; 
-	max-width: 28px;
-	overflow-x: auto;
-}
 
-.scrollable-cell {
-    max-width: 45px; /* Establece el ancho máximo para la celda */
-    overflow-x: auto; /* Agrega una barra de desplazamiento horizontal si el contenido excede el ancho */
-}

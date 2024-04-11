@@ -18,6 +18,7 @@ session_start();
         if(isset($_SESSION['usuario'])) {
             // El usuario está en sesión
             $creadoPor  = $_SESSION['usuario'];
+            $modificadoPor= $_SESSION['usuario'];
         } 
 
         $usuarios = new Usuario();
@@ -30,35 +31,49 @@ session_start();
                 echo json_encode($datos);
             break; 
             case "InsertUsuario":
-                $rol=$body['rolSelect'];
-                $usuario=$body['usuario'];
-                $nombre=$body['nombre'];
-                $estado=$body['estadoSelect'];
-                $contrasena=$body['contraseña'];
-                $confirmcontrasena=$body['confirmContraseña'];
-                
-                // Función para encriptar contraseña
-                function encriptar($password) {
-                    $encriptada = hash('sha256', $password);
-                    return $encriptada;
-                }
-                //Variable que almacena la contraseña encriptada
-                $contrasenaEncriptada = encriptar($contrasena);
-                $selectUsuario=$usuarios->verificar_usuario($usuario);
-
-               if (count($selectUsuario)>0) {
+                $rol = $body['rolSelect'];
+                $usuario = $body['usuario'];
+                $nombre = $body['nombre'];
+                $estado = $body['estadoSelect'];
+                $contrasena = password_hash($body['contraseña'], PASSWORD_DEFAULT);
+                $confirmcontrasena = $body['confirmContraseña'];
+            
+                $selectUsuario = $usuarios->verificar_usuario($usuario);
+            
+                if (count($selectUsuario) > 0) {
                     $arrResponse = array("status" => false, "msg" => 'El usuario ya existe. Ingrese un usuario distinto');
-                }else{
-               
-                    $datos=$usuarios->insert_usuario($rol,$usuario,$nombre,$estado,$contrasenaEncriptada, $creadoPor['usuario']);
-
-                    if ($datos>0) {
-                        
+                } else {
+                    $datos = $usuarios->insert_usuario($rol, $usuario, $nombre, $estado, $contrasena, $creadoPor['usuario']);
+            
+                    if ($datos > 0) {
                         $arrResponse = array("status" => true, "msg" => 'Usuario agregado con éxito');
                     }
                 }
                 echo json_encode($arrResponse, JSON_UNESCAPED_UNICODE);
-            break;
+            break;            
+            case "GetUsuarioAEditar":
+                $datos=$usuarios->get_usuario_editar($body["idUsuario"]);
+                echo json_encode($datos);
+            break; 
+            case "UpdateUsuario":
+                $id_usuario = $body['idUsuario'];
+                $rol = $body['rolSelect'];
+                $usuario = $body['usuario'];
+                $nombre = $body['nombre'];
+                $estado = $body['estadoSelect'];
+                $contrasena = password_hash($body['contraseña'], PASSWORD_DEFAULT);
+            
+                // Llamada a la función para actualizar el usuario
+                $datos = $usuarios->update_usuario($rol, $usuario, $nombre, $estado, $contrasena, $modificadoPor['usuario'], $id_usuario);
+            
+                if ($datos > 0) {
+                    $arrResponse = array("status" => true, "msg" => 'Usuario actualizado con éxito');
+                } else {
+                    $arrResponse = array("status" => false, "msg" => 'Error al actualizar el usuario');
+                }
+            
+                echo json_encode($arrResponse, JSON_UNESCAPED_UNICODE);
+            break;            
             case "DeleteUsuario":
                 $id_usuario = $_POST['id_usuario'];
             

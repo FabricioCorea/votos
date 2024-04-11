@@ -246,6 +246,12 @@ button {
      width: 280px;
 }
 
+/* CSS para el efecto de fondo azul y letras blancas */
+.selected {
+     background-color: rgb(25, 49, 80) !important;
+     color: white !important;
+ }
+ 
 
 /*-- header area --*/
 
@@ -355,7 +361,7 @@ button {
 }
 
 .text-bg h1 {
-     color: #213355;
+     color: rgb(81, 101, 128);
      font-size: 40px;
      line-height: 73px;
      padding-bottom: 40px;

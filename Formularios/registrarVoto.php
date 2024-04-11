@@ -1,29 +1,38 @@
+<?php
+session_start(); // Iniciar la sesión
+
+$varsesion = $_SESSION['usuario'];
+    if($varsesion == null || $varsesion ==''){
+        header("location: ../Formularios/login.php");
+        die();
+    }
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <!-- basic -->
+    <!-- Basic -->
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <!-- mobile metas -->
+    <!-- Mobile metas -->
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="viewport" content="initial-scale=1, maximum-scale=1">
-    <!-- site metas -->
+    <!-- Site metas -->
     <title>Registro</title>
     <meta name="keywords" content="">
     <meta name="description" content="">
     <meta name="author" content="">
-    <!-- bootstrap css -->
+    <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="../css/bootstrap.min.css">
-    <!-- style css -->
+    <!-- Style CSS -->
     <link rel="stylesheet" href="../css/style.css">
-    <!-- Responsive-->
+    <!-- Responsive CSS -->
     <link rel="stylesheet" href="../css/responsive.css">
-    <!-- fevicon -->
+    <!-- Favicon -->
     <link rel="icon" href="images/fevicon.png" type="image/gif" />
     <!-- Scrollbar Custom CSS -->
     <link rel="stylesheet" href="../css/jquery.mCustomScrollbar.min.css">
     <link rel="stylesheet" href="../css/registrarVoto-style.css">
-    <!-- Tweaks for older IEs-->
+    <!-- Tweaks for older IEs -->
     <link rel="stylesheet" href="https://netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fancybox/2.1.5/jquery.fancybox.min.css" media="screen">
 </head>
@@ -36,7 +45,7 @@
                         <div class="full">
                             <div class="center-desk">
                                 <div class="logo">
-                                    <a href="index.html"><img src="../images/logo-transparente.webp" alt="#" /></a>
+                                    <a href="<?php echo ($_SESSION['usuario']['id_rol'] == '1') ? 'indexAdmin.html' : 'indexUsuario.html'; ?>"><img src="../images/logo-transparente.webp" alt="#" /></a>
                                 </div>
                             </div>
                         </div>
@@ -47,9 +56,20 @@
                                 <span class="navbar-toggler-icon"></span>
                             </button>
                             <div class="collapse navbar-collapse" id="navbarsExample04">
-                                <ul class="navbar-nav mr-auto">
+                                <ul class="navbar-nav ml-auto">
                                     <li class="nav-item active">
-                                        <a class="nav-link" href="../index.html">Inicio</a>
+                                        <a class="nav-link" href="<?php echo ($_SESSION['usuario']['id_rol'] == '1') ? 'indexAdmin.html' : 'indexUsuario.html'; ?>">Inicio</a>
+                                    </li>
+                                    <li class="nav-item active">
+                                        <a class="nav-link" href="listado_votos.php">Ver votos</a>
+                                    </li>
+                                    <li class="nav-item active">
+                                        <a class="nav-link" href="#">
+                                            <?php echo $_SESSION['usuario']['nombre']; ?> <!-- Mostrar nombre de usuario -->
+                                        </a>
+                                    </li>
+                                    <li class="nav-item active">
+                                        <a class="nav-link" href="../Formularios/logout.php">Cerrar sesión</a> <!-- Enlazar a la página de cierre de sesión -->
                                     </li>
                                 </ul>
                             </div>
