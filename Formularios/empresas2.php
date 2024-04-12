@@ -223,7 +223,7 @@ if($varsesion == null || $varsesion ==''){
                         <div class="agregar-container" style="float: right;">
                             <div class="AgregarVoto">
                                 <div class="input-group">
-                                    <button class="btn btn-success" style="background-color: #26a042; color: white; margin-left: 15px;" data-bs-toggle="modal" data-bs-target="#addVotoModal">
+                                    <button class="btn btn-success" style="background-color: #26a042; color: white; margin-left: 15px;" data-bs-toggle="modal" data-bs-target="#addEmpresaModal">
                                         <i class="material-icons" style="color: white;">&#xE147;</i> <span>Agregar</span>
                                     </button>
                                 </div>
@@ -267,6 +267,37 @@ if($varsesion == null || $varsesion ==''){
 
 </div>  
 </div>
+
+   <!-- Modal para agregar usuario -->
+   <div class="modal fade" id="addEmpresaModal" tabindex="-1" aria-labelledby="addEmpresaModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="addEmpresaModalLabel">Agregar Empresa</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="formAgregarEmpresa">
+                        <div class="mb-3">
+                            <label for="empresaModal" class="form-label">Empresa</label>
+                            <input type="text" name="empresa" id="empresaModal" class="form-control valid ValidEmpresa" onpaste="return false;" placeholder="Ingrese el nombre de la empresa" autocomplete="off">
+                        </div>
+                        <div class="mb-3">
+                            <label for="representanteModal" class="form-label">Representante</label>
+                            <input type="text" name="representante" id="representanteModal" class="form-control valid ValidRepresentante" onpaste="return false;" placeholder="Ingrese el nombre del Representante" autocomplete="off">
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                    <button type="button" class="btn btn-primary" onclick="AgregarEmpresa()">Guardar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
 
 <!-- JavaScript -->
  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>

@@ -68,3 +68,38 @@ var empresas = []; // Aquí se almacenarán todas las empresas obtenidas
             }
         };
         xhr.send();
+
+        // Función para agregar una nueva empresa
+// Función para agregar una nueva empresa
+function AgregarEmpresa() {
+    var empresa = document.getElementById('empresaModal').value.trim();
+    var representante = document.getElementById('representanteModal').value.trim();
+
+    // Verificar que se hayan ingresado los datos
+    if (empresa === '' || representante === '') {
+        alert('Por favor ingrese el nombre de la empresa y el representante.');
+        return;
+    }
+
+    // Crear un objeto FormData para enviar los datos al controlador
+    var formData = new FormData();
+    formData.append('empresa', empresa);
+    formData.append('representante', representante);
+
+    // Realizar una solicitud AJAX para agregar la nueva empresa
+    var xhr = new XMLHttpRequest();
+    xhr.open('POST', '../controller/empresas2.php', true);
+    xhr.onload = function() {
+        if (xhr.status >= 200 && xhr.status < 300) {
+            var response = JSON.parse(xhr.responseText);
+            alert(response.mensaje);
+            // Recargar la página solo si se agregó la empresa correctamente
+            if (response.mensaje === 'Empresa agregada correctamente') {
+                location.reload();
+            }
+        } else {
+            console.error('Error al agregar la empresa');
+        }
+    };
+    xhr.send(formData);
+}
