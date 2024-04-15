@@ -16,7 +16,6 @@ class Empresas2 extends Conectar {
         }
     }
 
-
     // Método para agregar una nueva empresa
     public function agregarEmpresa($empresa, $representante) {
         try {
@@ -34,37 +33,50 @@ class Empresas2 extends Conectar {
         }
     }
 
-
-
-    public function delete_usuario($id_usuario) {
-        $conectar = parent::conexion();
-        parent::set_names();
-        
-        $sql = "DELETE FROM `tbl_usuarios` WHERE `id_usuario` = ?";
-        
-        $stmt = $conectar->prepare($sql);
-        $stmt->execute([$id_usuario]);
-        
-        // Verificar si se eliminó correctamente el usuario
-        if ($stmt->rowCount() > 0) {
-            return true; // Usuario eliminado con éxito
-        } else {
-            return false; // No se pudo eliminar el usuario
+    
+    // Método para eliminar una empresa
+    public function eliminarEmpresa($idEmpresa) {
+        try {
+            $conexion = $this->conexion();
+            $query = "DELETE FROM votos WHERE id = :idEmpresa";
+            $stmt = $conexion->prepare($query);
+            $stmt->bindParam(':idEmpresa', $idEmpresa);
+            $exito = $stmt->execute();
+            return $exito;
+        } catch (PDOException $e) {
+            // Manejar errores de la base de datos
+            error_log("Error al eliminar empresa: " . $e->getMessage());
+            return false;
         }
     }
 
-    // Verificar que el usuario a eliminar existe
-    public function verificar_usuario_por_id($id_usuario) {
-        $conectar = parent::conexion();
-        parent::set_names();
-        
-        $sql = "SELECT * FROM `tbl_usuarios` WHERE `id_usuario` = ?";
-        
-        $stmt = $conectar->prepare($sql);
-        $stmt->execute([$id_usuario]);
-        
-        return $stmt->fetch(PDO::FETCH_ASSOC);
+
+
+
+    
+// Método para actualizar una empresa
+// Método para actualizar una empresa
+public function actualizarEmpresa($idEmpresa, $empresa, $representante) {
+    try {
+        $conexion = $this->conexion();
+        $query = "UPDATE votos SET empresa = :nombreEmpresa, representante = :representante WHERE id = :idEmpresa";
+        $stmt = $conexion->prepare($query);
+        $stmt->bindParam(':idEmpresa', $idEmpresa);
+        $stmt->bindParam(':nombreEmpresa', $empresa);
+        $stmt->bindParam(':representante', $representante);
+        $exito = $stmt->execute();
+        return $exito;
+    } catch (PDOException $e) {
+        // Manejar errores de la base de datos
+        error_log("Error al actualizar empresa: " . $e->getMessage());
+        return false;
     }
+}
+
+
 
 }
+
+
+
 ?>

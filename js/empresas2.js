@@ -16,10 +16,10 @@ var empresas = []; // Aquí se almacenarán todas las empresas obtenidas
                     '<td>' + empresa.empresa + '</td>' +
                     '<td>' + empresa.representante + '</td>' +
                     '<td>' +
-                        '<button class="btn btn-icon btn-edit" data-toggle="tooltip" title="Editar" onclick="openEditModal(' + empresa.id + ')">' +
+                        '<button class="btn btn-icon btn-edit" data-toggle="tooltip" title="Editar" onclick="editarEmpresa(' + empresa.id + ')">' +
                             '<i class="material-icons">edit</i>' +
                         '</button>' +
-                        '<button class="btn btn-icon btn-delete" data-toggle="tooltip" title="Eliminar" onclick="deleteEmpresa(' + empresa.id + ')">' +
+                        '<button class="btn btn-icon btn-delete" data-toggle="tooltip" title="Eliminar" onclick="eliminarEmpresa(' + empresa.id + ')">' +
                             '<i class="material-icons">delete</i>' +
                         '</button>' +
                     '</td>';
@@ -69,37 +69,118 @@ var empresas = []; // Aquí se almacenarán todas las empresas obtenidas
         };
         xhr.send();
 
-        // Función para agregar una nueva empresa
+
+
+
+
 // Función para agregar una nueva empresa
 function AgregarEmpresa() {
+    // Recoger los datos del formulario
     var empresa = document.getElementById('empresaModal').value.trim();
     var representante = document.getElementById('representanteModal').value.trim();
 
     // Verificar que se hayan ingresado los datos
     if (empresa === '' || representante === '') {
-        alert('Por favor ingrese el nombre de la empresa y el representante.');
+        alert('Por favor, ingrese el nombre de la empresa y el representante.');
         return;
     }
 
-    // Crear un objeto FormData para enviar los datos al controlador
-    var formData = new FormData();
-    formData.append('empresa', empresa);
-    formData.append('representante', representante);
-
-    // Realizar una solicitud AJAX para agregar la nueva empresa
-    var xhr = new XMLHttpRequest();
-    xhr.open('POST', '../controller/empresas2.php', true);
-    xhr.onload = function() {
-        if (xhr.status >= 200 && xhr.status < 300) {
-            var response = JSON.parse(xhr.responseText);
-            alert(response.mensaje);
-            // Recargar la página solo si se agregó la empresa correctamente
-            if (response.mensaje === 'Empresa agregada correctamente') {
-                location.reload();
-            }
-        } else {
-            console.error('Error al agregar la empresa');
-        }
+    // Crear un objeto para los datos que se enviarán
+    var data = {
+        empresa: empresa,
+        representante: representante
     };
-    xhr.send(formData);
+
+    // Realizar una solicitud POST al servidor
+    fetch('../controller/empresas2.php', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(data)
+    })
+    .then(response => response.json())
+    .then(response => {
+        if (response.mensaje === 'Empresa agregada correctamente') {
+            alert(response.mensaje);
+            // Cerrar el modal
+            document.getElementById('formAgregarEmpresa').reset();
+            $('#addEmpresaModal').modal('hide');
+            // Recargar la página
+            location.reload();
+        } else {
+            alert('Error: ' + response.mensaje);
+        }
+    })
+    .catch(error => {
+        console.error('Error en la solicitud:', error);
+    });
+}
+
+
+
+// Función para eliminar una empresa
+function eliminarEmpresa(idEmpresa) {
+    if (confirm('¿Está seguro de que desea eliminar esta empresa?')) {
+        // Realizar una solicitud DELETE al servidor
+        fetch('../controller/empresas2.php', {
+            method: 'DELETE',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ id: idEmpresa })
+        })
+        .then(response => response.json())
+        .then(response => {
+            if (response.mensaje === 'Empresa eliminada correctamente') {
+                alert(response.mensaje);
+                // Recargar la página
+                location.reload();
+            } else {
+                alert('Error: ' + response.mensaje);
+            }
+        })
+        .catch(error => {
+            console.error('Error en la solicitud:', error);
+        });
+    }
+}
+
+
+// Función para editar una empresa
+function editarEmpresa(idEmpresa) {
+    var empresa = prompt('Ingrese el nuevo nombre de la empresa:');
+    var representante = prompt('Ingrese el nuevo representante de la empresa:');
+
+    // Verificar si se ingresaron los datos
+    if (empresa !== null && representante !== null) {
+        // Crear un objeto con los datos de la empresa a actualizar
+        var data = {
+            id: idEmpresa,
+            empresa: empresa,
+            representante: representante
+        };
+
+        // Realizar una solicitud PUT al servidor
+        fetch('../controller/empresas2.php', {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(data)
+        })
+        .then(response => response.json())
+        .then(response => {
+            if (response.mensaje === 'Empresa actualizada correctamente') {
+                alert(response.mensaje);
+                // Recargar la página
+                location.reload();
+            } else {
+                alert('Error: ' + response.mensaje);
+            }
+        })
+        .catch(error => {
+            console.error('Error en la solicitud:', error);
+        });
+    }
 }

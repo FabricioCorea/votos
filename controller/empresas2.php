@@ -14,46 +14,86 @@ if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
 header('Access-Control-Allow-Origin: *');
 header('Content-Type: application/json');
 
-require_once '../config/conexionPDO.php'; 
-require_once '../models/Empresas2.php'; 
+require_once '../config/conexionPDO.php';
+require_once '../models/Empresas2.php';
 
-if (isset($_SESSION['usuario'])) {
-    // El usuario está en sesión
-    $creadoPor = $_SESSION['usuario'];
-}
+$empresas = new Empresas2();
 
 // Obtener las empresas
 if ($_SERVER['REQUEST_METHOD'] === 'GET') {
-    $empresas = new Empresas2();
     $resultado = $empresas->obtenerEmpresas();
 
     if ($resultado) {
-        // Envía la respuesta como JSON
         echo json_encode($resultado);
     } else {
-        // Manejar el caso en el que no se puedan obtener las empresas
-        echo json_encode(array('mensaje' => 'No se pudieron obtener las empresas'));
-    }
-
-    // Agregar una nueva empresa
-if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    // Verificar si los datos del formulario fueron enviados
-    if(isset($_POST['empresa']) && isset($_POST['representante'])) {
-        $empresa = $_POST['empresa'];
-        $representante = $_POST['representante'];
-
-        $nuevaEmpresa = new Empresas2();
-        $exito = $nuevaEmpresa->agregarEmpresa($empresa, $representante);
-
-        if ($exito) {
-            echo json_encode(array('mensaje' => 'Empresa agregada correctamente'));
-        } else {
-            echo json_encode(array('mensaje' => 'Error al agregar la empresa'));
-        }
-    } else {
-        echo json_encode(array('mensaje' => 'Faltan datos para agregar la empresa'));
-    }
-
+        echo json_encode(['mensaje' => 'No se pudieron obtener las empresas']);
     }
 }
+
+// Agregar una nueva empresa
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    // Verifica si los datos del formulario fueron enviados
+    $data = json_decode(file_get_contents('php://input'), true);
+    if (isset($data['empresa']) && isset($data['representante'])) {
+        $empresa = $data['empresa'];
+        $representante = $data['representante'];
+
+        $exito = $empresas->agregarEmpresa($empresa, $representante);
+
+        if ($exito) {
+            echo json_encode(['mensaje' => 'Empresa agregada correctamente']);
+        } else {
+            echo json_encode(['mensaje' => 'Error al agregar la empresa']);
+        }
+    } else {
+        echo json_encode(['mensaje' => 'Faltan datos para agregar la empresa']);
+    }
+}
+
+
+// Eliminar una empresa
+
+// Eliminar una empresa
+if ($_SERVER['REQUEST_METHOD'] === 'DELETE') {
+    // Verifica si se proporcionó el ID de la empresa a eliminar
+    $data = json_decode(file_get_contents('php://input'), true);
+    if (isset($data['id'])) {
+        $idEmpresa = $data['id'];
+
+        $exito = $empresas->eliminarEmpresa($idEmpresa);
+
+        if ($exito) {
+            echo json_encode(['mensaje' => 'Empresa eliminada correctamente']);
+        } else {
+            echo json_encode(['mensaje' => 'Error al eliminar la empresa']);
+        }
+    } else {
+        echo json_encode(['mensaje' => 'Falta el ID de la empresa a eliminar']);
+    }
+}
+
+// Actualizar una empresa
+if ($_SERVER['REQUEST_METHOD'] === 'PUT') {
+    // Verifica si se proporcionaron los datos de la empresa a actualizar
+    $data = json_decode(file_get_contents('php://input'), true);
+    if (isset($data['id']) && isset($data['empresa']) && isset($data['representante'])) {
+        $idEmpresa = $data['id'];
+        $empresa = $data['empresa'];
+        $representante = $data['representante'];
+
+        $exito = $empresas->actualizarEmpresa($idEmpresa, $empresa, $representante);
+
+        if ($exito) {
+            echo json_encode(['mensaje' => 'Empresa actualizada correctamente']);
+        } else {
+            echo json_encode(['mensaje' => 'Error al actualizar la empresa']);
+        }
+    } else {
+        echo json_encode(['mensaje' => 'Faltan datos para actualizar la empresa']);
+    }
+}
+
+
+
+
 ?>
