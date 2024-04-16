@@ -50,9 +50,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
 }
 
-
 // Eliminar una empresa
-
 // Eliminar una empresa
 if ($_SERVER['REQUEST_METHOD'] === 'DELETE') {
     // Verifica si se proporcionó el ID de la empresa a eliminar
@@ -92,8 +90,5 @@ if ($_SERVER['REQUEST_METHOD'] === 'PUT') {
         echo json_encode(['mensaje' => 'Faltan datos para actualizar la empresa']);
     }
 }
-
-
-
 
 ?>
