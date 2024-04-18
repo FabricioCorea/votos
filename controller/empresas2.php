@@ -51,7 +51,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 }
 
 // Eliminar una empresa
-// Eliminar una empresa
 if ($_SERVER['REQUEST_METHOD'] === 'DELETE') {
     // Verifica si se proporcionó el ID de la empresa a eliminar
     $data = json_decode(file_get_contents('php://input'), true);

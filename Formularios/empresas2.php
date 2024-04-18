@@ -279,7 +279,38 @@ if($varsesion == null || $varsesion ==''){
     </div>
 
 
-    
+<!-- Modal para editar empresa -->
+<div class="modal fade" id="editEmpresaModal" tabindex="-1" aria-labelledby="editEmpresaModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="editEmpresaModalLabel">Editar Empresa</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form id="formEditarEmpresa">
+                    <input type="hidden" id="editEmpresaId">
+                    <div class="mb-3">
+                        <label for="editEmpresaNombre" class="form-label">Nombre de la Empresa</label>
+                        <input type="text" name="empresa" id="editEmpresaNombre" class="form-control" placeholder="Ingrese el nuevo nombre de la empresa" autocomplete="off" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="editEmpresaRepresentante" class="form-label">Representante</label>
+                        <input type="text" name="representante" id="editEmpresaRepresentante" class="form-control" placeholder="Ingrese el nuevo representante de la empresa" autocomplete="off" required>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                <button type="button" class="btn btn-primary" onclick="editarEmpresa()">Guardar</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
 
     <!-- JavaScript -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
