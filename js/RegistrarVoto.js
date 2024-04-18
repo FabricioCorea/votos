@@ -128,7 +128,7 @@ $(document).ready(function() {
             Swal.fire({
                 icon: 'error',
                 title: '¡Error!',
-                text: 'Debe seleccionar al presente'
+                text: 'Debe seleccionar la condición del votante'
             });
             return; // Detener la ejecución de la función si no se cumple la validación
         }

@@ -52,28 +52,36 @@ function testContraseña(txtString) {
   return stringText.test(txtString);
 }
 
-  function fntValidContra() {
+function fntValidContra() {
     let ValidContra = document.querySelectorAll(".ValidContra");
     ValidContra.forEach(function (ValidContra) {
-      ValidContra.addEventListener("keydown", function (event) {
-        // Bloquear el ingreso del espacio
-        if (event.key === " ") {
-          event.preventDefault();
-        }
-      });
+        ValidContra.addEventListener("keydown", function (event) {
+            // Bloquear el ingreso del espacio
+            if (event.key === " ") {
+                event.preventDefault();
+            }
+        });
 
-      ValidContra.addEventListener("keyup", function () {
-        let inputValue = this.value;
-        if (!testContraseña(inputValue)) {
-          this.classList.add("is-invalid");
-          this.setAttribute("title", "La contraseña debe contener al menos 8 caracteres, una letra mayúscula, una letra minúscula y un número");
-        } else {
-          this.classList.remove("is-invalid");
-          this.removeAttribute("title");
-        }
-      });
+        ValidContra.addEventListener("keyup", function () {
+            let inputValue = this.value;
+            // Verificar si el campo está vacío después de borrar el texto ingresado
+            if (inputValue === '') {
+                this.classList.remove("is-invalid");
+                this.removeAttribute("title");
+                return; // Salir de la función si el campo está vacío
+            }
+
+            // Realizar las validaciones solo si el campo no está vacío
+            if (!testContraseña(inputValue)) {
+                this.classList.add("is-invalid");
+                this.setAttribute("title", "La contraseña debe contener al menos 8 caracteres, una letra mayúscula, una letra minúscula y un número");
+            } else {
+                this.classList.remove("is-invalid");
+                this.removeAttribute("title");
+            }
+        });
     });
-  }
+}
 
   function testUsuario(txtString) {
     // Expresión regular que verifica si el usuario contiene solo letras y números y no excede los 11 caracteres
@@ -425,6 +433,26 @@ function ActualizarUsuario() {
       }
   });
 }
+// Función para mostrar/ocultar campos de nueva contraseña
+document.getElementById("btnNuevaContrasena").addEventListener("click", function() {
+    var nuevaContrasena = document.getElementById("nuevaContrasena");
+    var confirmarContrasena = document.getElementById("confirmarContrasena");
+    if (nuevaContrasena.style.display === "none") {
+        nuevaContrasena.style.display = "block";
+        confirmarContrasena.style.display = "block";
+    } else {
+        nuevaContrasena.style.display = "none";
+        confirmarContrasena.style.display = "none";
+    }
+});
+// Función para ocultar campos de nueva contraseña al cerrar el modal
+document.getElementById("editEmployeeModal").addEventListener("hidden.bs.modal", function () {
+    var nuevaContrasena = document.getElementById("nuevaContrasena");
+    var confirmarContrasena = document.getElementById("confirmarContrasena");
+    nuevaContrasena.style.display = "none";
+    confirmarContrasena.style.display = "none";
+});
+
 
 //Función para eliminar usuario
 function EliminarUsuario(id_usuario) {

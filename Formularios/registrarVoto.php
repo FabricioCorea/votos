@@ -31,106 +31,90 @@ $varsesion = $_SESSION['usuario'];
     <link rel="icon" href="images/fevicon.png" type="image/gif" />
     <!-- Scrollbar Custom CSS -->
     <link rel="stylesheet" href="../css/jquery.mCustomScrollbar.min.css">
+    <link rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css'><link rel="stylesheet" href="./style.css">
+
     <link rel="stylesheet" href="../css/registrarVoto-style.css">
+    <link rel="stylesheet" href="../css/header.css">
+
     <!-- Tweaks for older IEs -->
     <link rel="stylesheet" href="https://netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fancybox/2.1.5/jquery.fancybox.min.css" media="screen">
 </head>
-<body class="main-layout">
-    <header>
-        <div class="header">
-            <div class="container">
-                <div class="row">
-                    <div class="col-xl-3 col-lg-3 col-md-3 col-sm-3 col logo_section">
-                        <div class="full">
-                            <div class="center-desk">
-                                <div class="logo">
-                                    <a href="<?php echo ($_SESSION['usuario']['id_rol'] == '1') ? 'indexAdmin.html' : 'indexUsuario.html'; ?>"><img src="../images/logo-transparente.webp" alt="#" /></a>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-xl-9 col-lg-9 col-md-9 col-sm-9">
-                        <nav class="navigation navbar navbar-expand-md navbar-dark ">
-                            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarsExample04" aria-controls="navbarsExample04" aria-expanded="false" aria-label="Toggle navigation">
-                                <span class="navbar-toggler-icon"></span>
-                            </button>
-                            <div class="collapse navbar-collapse" id="navbarsExample04">
-                                <ul class="navbar-nav ml-auto">
-                                    <li class="nav-item active">
-                                        <a class="nav-link" href="<?php echo ($_SESSION['usuario']['id_rol'] == '1') ? 'indexAdmin.html' : 'indexUsuario.html'; ?>">Inicio</a>
-                                    </li>
-                                    <li class="nav-item active">
-                                        <a class="nav-link" href="listado_votos.php">Ver votos</a>
-                                    </li>
-                                    <li class="nav-item active">
-                                        <a class="nav-link" href="#">
-                                            <?php echo $_SESSION['usuario']['nombre']; ?> <!-- Mostrar nombre de usuario -->
-                                        </a>
-                                    </li>
-                                    <li class="nav-item active">
-                                        <a class="nav-link" href="../Formularios/logout.php">Cerrar sesión</a> <!-- Enlazar a la página de cierre de sesión -->
-                                    </li>
-                                </ul>
-                            </div>
-                        </nav>
-                    </div>
-                </div>
+<body>
+    <!-- partial:index.partial.html -->
+    <nav class="nav1">
+        <div class="wrapper">
+            <div class="logoIMG">
+                    <a href="<?php echo ($_SESSION['usuario']['id_rol'] == '1') ? 'indexAdmin.html' : 'indexUsuario.html'; ?>">
+                        <img class="small-image" src="../images/logo-transparente.webp" alt="#" />
+                    </a>
             </div>
+
+            <input type="radio" name="slider" id="menu-btn">
+            <input type="radio" name="slider" id="close-btn">
+            <ul class="nav-links1">
+                <label for="close-btn" class="btn close-btn"><i class="fas fa-times"></i></label>
+                <li><a href="<?php echo ($_SESSION['usuario']['id_rol'] == '1') ? 'indexAdmin.html' : 'indexUsuario.html'; ?>">INICIO</a></li>
+                <li><a href="listado_votos.php">VER VOTOS</a></li>
+                <li>
+                        <a href="#" class="desktop-item">
+                            <span class="icon-right"> 
+                            <i class="fas fa-user"></i> 
+                            </span>
+                            <?php echo $_SESSION['usuario']['usuario']; ?>
+                        </a>
+                </li>
+                <li><a href="logout.php"> <i title="Cerrar Sesión" class="fas fa-sign-out-alt"></i></a><span class="sr-only">Cerrar Sesión&gt;</span></a></li>
+            </ul>
         </div>
-    </header>
-    <section class="banner_main">
-        <div id="banner1" class="carousel slide" data-ride="carousel">
-            <div class="carousel-inner">
-                <div class="carousel-item active">
-                    <div class="container">
-                        <div class="carousel-caption">
-                            <div class="row d_flex">
-                                <div class="col-md-6">
-                                    <div class="text-bg">
-                                        <h1>Asamblea General</h1>
+    </nav>
+
+    <br><br><br><br><br><br>
+    <div id="banner1" class="carousel slide" data-ride="carousel">
+        <div class="carousel-inner">
+            <div class="carousel-item active">
+                <div class="container">
+                    <div class="carousel-caption">
+                        <div class="row d_flex">
+                            <div class="col-md-6">
+                                <div class="text-bg">
+                                    <h1>Asamblea General</h1>
                                         <div class="input-group">
                                             <input class="form-control border-light" style="padding: 10px 10px;" type="text" id="id_empresa" placeholder="Ingrese el ID de la empresa y selecciónela" autocomplete="off">
                                             <button type="button" id="clear_search" style="display: none;">X</button>
                                         </div>
-                                        <div class="input-group">
-                                            <div class="form-control border-light" style="padding: 3px 3px; height: 60px; overflow-y: auto;" id="resultado_empresa">
-                                                <ul id="lista_resultados" class="lista-resultados"></ul>
-                                            </div>
+                                    <div class="input-group">
+                                        <div class="form-control border-light" style="padding: 3px 3px; height: 60px; overflow-y: auto;" id="resultado_empresa">
+                                            <ul id="lista_resultados" class="lista-resultados"></ul>
                                         </div>
-                                        <br>
-                                        <div class="subject">
-                                            <select class="form-control border-light" style="padding: 3px 3px; height: 50px; overflow-y: auto;" placeholder="Subject line" name="subject" id="subject_input" required>
-                                                <option value="" disabled hidden selected>Presente:</option>
-                                                <option value="REPRESENTANTE">REPRESENTANTE</option>
-                                                <option value="REPRESENTADO">REPRESENTADO</option>
-                                            </select>
-                                        </div>
-                                        <div class="contenedor"></div>
-                                            <br> 
-                                            <a href="#" id="registrar_voto_btn" name="registrar_voto">Registrar voto</a>
-                                        </div>
-                                </div>
-                                <div class="col-md-6">
-                                    <div class="text_img">
-                                        <figure>
-                                            <img src="../images/4005929_14930-removebg-preview.png" alt="#">
-                                        </figure>
                                     </div>
+                                    <br>
+                                    <div class="subject">
+                                        <select class="form-control border-light" style="padding: 3px 3px; height: 50px; overflow-y: auto;" placeholder="Subject line" name="subject" id="subject_input" required>
+                                            <option value="" disabled hidden selected>Seleccione condición del votante:</option>
+                                            <option value="REPRESENTANTE">REPRESENTANTE</option>
+                                            <option value="REPRESENTADO">REPRESENTADO</option>
+                                        </select>
+                                    </div>
+                                    <div class="contenedor"></div>
+                                        <br> 
+                                        <a href="#" id="registrar_voto_btn" name="registrar_voto">Registrar voto</a>
+                                    </div>
+                                </div>
+                            <div class="col-md-6">
+                                <div class="text_img">
+                                    <figure>
+                                        <img src="../images/4005929_14930-removebg-preview.png" alt="#">
+                                    </figure>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
-                <a class="carousel-control-prev" href="#banner1" role="button" data-slide="prev">
-                    <i class="fa fa-chevron-left" aria-hidden="true"></i>
-                </a>
-                <a class="carousel-control-next" href="#banner1" role="button" data-slide="next">
-                    <i class="fa fa-chevron-right" aria-hidden="true"></i>
-                </a>
             </div>
         </div>
-    </section>
+    </div>
+   
     <script src="../js/jquery.min.js"></script>
     <script src="../js/popper.min.js"></script>
     <script src="../js/bootstrap.bundle.min.js"></script>
@@ -142,5 +126,6 @@ $varsesion = $_SESSION['usuario'];
     <script src="../JS/RegistrarVoto.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.7.3/dist/sweetalert2.all.min.js"></script>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11.7.3/dist/sweetalert2.min.css">
+  
 </body>
 </html>

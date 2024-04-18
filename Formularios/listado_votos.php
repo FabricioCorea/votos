@@ -1,3 +1,12 @@
+<?php
+session_start(); // Iniciar la sesión
+
+$varsesion = $_SESSION['usuario'];
+    if($varsesion == null || $varsesion ==''){
+        header("location: ../Formularios/login.php");
+        die();
+    }
+?>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -17,6 +26,7 @@
       <link rel="stylesheet" href="../css/bootstrap.min.css">
       <!-- style css -->
       <link rel="stylesheet" href="../css/style.css">
+      <link rel="stylesheet" href="../css/header.css">
       <!-- Responsive-->
       <link rel="stylesheet" href="../css/responsive.css">
       <!-- fevicon -->
@@ -53,67 +63,52 @@
     .boton {
     background: #34495E; 
     }
+    .text-right.mb-5 {
+    position: relative; 
+    left: -100px; 
+    top: 140px; 
+    }
     </style>
 
 <!------------------------------------------------------------------------------------------------------------------->
 
    <!-- body -->
    <body class="main-layout inner_header about_page">
-      <!-- loader  -->
-      <div class="loader_bg">
-         <div class="loader"><img src="../images/loading.gif" alt="#" /></div>
-      </div>
-      <!-- end loader -->
-      <!-- header -->
-      <header>
-         <!-- header inner -->
-         <div class="header_listado">
-            <div class="container">
-               <div class="row">
-                  <div class="col-xl-3 col-lg-3 col-md-3 col-sm-3 col logo_section">
-                     <div class="full">
-                        <div class="center-desk">
-                           <div class="logo">
-                              <a href="./indexAdmin.html"><img src="../images/logo-transparente.webp" alt="#" /></a>
-                           </div>
-                        </div>
-                     </div>
-                  </div>
-                  <div class="col-xl-9 col-lg-9 col-md-9 col-sm-9">
-                     <nav class="navigation navbar navbar-expand-md navbar-dark ">
-                        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarsExample04" aria-controls="navbarsExample04" aria-expanded="false" aria-label="Toggle navigation">
-                        <span class="navbar-toggler-icon"></span>
-                        </button>
-                        
-                        <div class="collapse navbar-collapse" id="navbarsExample04">
-                           <ul class="navbar-nav mr-auto">
-                              <li class="nav-item active">
-                                 <a class="nav-link" href="./indexAdmin.html">Inicio</a>
-                              
-                                </li>
-                           </ul>
-                        </div>
-                     </nav>
-                  </div>
-               </div>
-               <div class='col-md-5 offset-md-7'>
+    
+      <nav class="nav1">
+  <div class="wrapper">
+  <div class="logoIMG">
+    <a href="<?php echo ($_SESSION['usuario']['id_rol'] == '1') ? 'indexAdmin.html' : 'indexUsuario.html'; ?>">
+        <img class="small-image" src="../images/logo-transparente.webp" alt="#" />
+    </a>
+</div>
 
-                        <!--Botón de Generar reportes-->
-                        <div class="text-right mb-5"> 
-                            <a href="../fpdf/PruebaV.php" target="_blank" class="btn btn-light text-dark"><i class="fas fa-file-pdf"></i> PDF</a>   
-                            <a href="../excel/excel2.php" target="_blank" class="btn btn-light text-dark"><i class="fa-solid fa-file-excel"></i> EXCEL</a>       
-                        </div>
-                    </div>
-                </div>
-            </div>
-      </header>
-  <br>
-  <br>
-  <br>
-  <br>
-  <br>    
-  <br>
+    <input type="radio" name="slider" id="menu-btn">
+    <input type="radio" name="slider" id="close-btn">
+    <ul class="nav-links1">
+      <label for="close-btn" class="btn close-btn"><i class="fas fa-times"></i></label>
+      <li><a href="<?php echo ($_SESSION['usuario']['id_rol'] == '1') ? 'indexAdmin.html' : 'indexUsuario.html'; ?>">INICIO</a></li>
+      <li><a href="registrarVoto.php">REGISTRAR VOTO</a></li>
+      <li>
+            <a href="#" class="desktop-item">
+                <span class="icon-right"> 
+                <i class="fas fa-user"></i> 
+                </span>
+                <?php echo $_SESSION['usuario']['usuario']; ?>
+            </a>
+        </li>
+        <li><a href="logout.php"> <i title="Cerrar Sesión" class="fas fa-sign-out-alt"></i></a><span class="sr-only">Cerrar Sesión&gt;</span></a></li>
+  </div>
+</nav>
 
+<div class="text-right mb-5"> 
+    <a href="../fpdf/PruebaV.php" target="_blank" class="btn btn-light text-dark"><i class="fas fa-file-pdf"></i> PDF</a>   
+    <a href="../excel/excel2.php" target="_blank" class="btn btn-light text-dark"><i class="fa-solid fa-file-excel"></i> EXCEL</a>       
+</div>
+
+  <br>
+  <br>
+  <br>  
    </div>
    </div>
 

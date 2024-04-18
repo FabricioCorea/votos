@@ -21,9 +21,42 @@ $varsesion = $_SESSION['usuario'];
     <link href="https://cdn.jsdelivr.net/npm/sweetalert2@11.7.3/dist/sweetalert2.min.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <link rel="stylesheet" href="../CSS/style-usuarios.css">
+    <link rel="stylesheet" href="../CSS/header.css">
+     <!-- Scrollbar Custom CSS -->
+     <link rel="stylesheet" href="../css/jquery.mCustomScrollbar.min.css">
+    <link rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css'><link rel="stylesheet" href="./style.css">
+     <!-- Tweaks for older IEs -->
+     <link rel="stylesheet" href="https://netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fancybox/2.1.5/jquery.fancybox.min.css" media="screen">
 </head>
 
 <body>
+    <nav>
+        <div class="wrapper">
+            <div class="logoIMG">
+                <a href="<?php echo ($_SESSION['usuario']['id_rol'] == '1') ? 'indexAdmin.html' : 'indexUsuario.html'; ?>">
+                    <img class="small-image" src="../images/logo-transparente.webp" alt="#" />
+                </a>
+            </div>
+
+            <input type="radio" name="slider" id="menu-btn">
+            <input type="radio" name="slider" id="close-btn">
+            <ul class="nav-links">
+                <label for="close-btn" class="btn close-btn"><i class="fas fa-times"></i></label>
+                <li><a href="<?php echo ($_SESSION['usuario']['id_rol'] == '1') ? 'indexAdmin.html' : 'indexUsuario.html'; ?>">INICIO</a></li>
+                <li>
+                    <a href="#" class="desktop-item">
+                        <span class="icon-right"> 
+                        <i class="fas fa-user"></i> 
+                        </span>
+                        <?php echo $_SESSION['usuario']['usuario']; ?>
+                    </a>
+                </li>
+                <li><a href="logout.php"> <i title="Cerrar Sesión" class="fas fa-sign-out-alt"></i></a><span class="sr-only">Cerrar Sesión&gt;</span></a></li>
+            </ul>
+        </div>
+    </nav>
+
     <div class="table-responsive">
         <div class="table-wrapper">
             <div class="table-title">
@@ -146,11 +179,11 @@ $varsesion = $_SESSION['usuario'];
                                 <!-- Estado del usuario mediante Javascript -->
                             </select>
                         </div>
-                        <div class="mb-3">
+                        <div class="mb-3" id="nuevaContrasena" style="display: none;">
                             <label for="EditContraseña" class="form-label">Nueva contraseña</label>
                             <input type="password" name="EditContraseña" id="EditContraseña" class="form-control valid ValidContra" onpaste="return false;" placeholder="Ingrese la nueva contraseña">
                         </div>
-                        <div class="mb-3">
+                        <div class="mb-3" id="confirmarContrasena" style="display: none;">
                             <label for="confirmEditContraseña" class="form-label">Confirmar contraseña</label>
                             <input type="password" id="confirmEditContraseña" name="confirmEditContraseña" class="form-control valid ValidContra" onpaste="return false;" placeholder="Ingrese la contraseña">
                         </div>
@@ -158,6 +191,7 @@ $varsesion = $_SESSION['usuario'];
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                    <button type="button" class="btn btn-primary" id="btnNuevaContrasena">Nueva Contraseña</button>
                     <button type="button" class="btn btn-primary" onclick="ActualizarUsuario()">Actualizar</button>
                 </div>
             </div>

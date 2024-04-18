@@ -61,19 +61,26 @@ session_start();
                 $usuario = $body['usuario'];
                 $nombre = $body['nombre'];
                 $estado = $body['estadoSelect'];
-                $contrasena = password_hash($body['contraseña'], PASSWORD_DEFAULT);
+                
+                // Verificar si se proporcionó una nueva contraseña
+                if (!empty($body['contraseña'])) {
+                    $contrasena = password_hash($body['contraseña'], PASSWORD_DEFAULT);
+                } else {
+                    // Si no se proporcionó una nueva contraseña, establecerla como null
+                    $contrasena = null;
+                }
             
                 // Llamada a la función para actualizar el usuario
                 $datos = $usuarios->update_usuario($rol, $usuario, $nombre, $estado, $contrasena, $modificadoPor['usuario'], $id_usuario);
             
-                if ($datos > 0) {
+                if ($datos !== false) {
                     $arrResponse = array("status" => true, "msg" => 'Usuario actualizado con éxito');
                 } else {
                     $arrResponse = array("status" => false, "msg" => 'Error al actualizar el usuario');
                 }
             
                 echo json_encode($arrResponse, JSON_UNESCAPED_UNICODE);
-            break;            
+                break;                        
             case "DeleteUsuario":
                 $id_usuario = $_POST['id_usuario'];
             
