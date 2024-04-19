@@ -99,7 +99,7 @@ $varsesion = $_SESSION['usuario'];
         </div>
     </div>
 
-    <!-- Modal para agregar usuario -->
+   <!-- Modal para agregar usuario -->
     <div class="modal fade" id="addEmployeeModal" tabindex="-1" aria-labelledby="addEmployeeModalLabel" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
@@ -110,24 +110,26 @@ $varsesion = $_SESSION['usuario'];
                 <div class="modal-body">
                     <form id="formAgregarUsuario">
                         <div class="mb-3">
-                            <label for="rolSelect" class="form-label">Rol</label>
-                            <select class="form-select" id="rolSelect" name="rolSelect">
-                                <!-- Roles mediante Javascript -->
-                            </select>
-                        </div>
-                        <div class="mb-3">
                             <label for="usuario" class="form-label">Usuario</label>
                             <input type="text" name="usuario" id="usuario" class="form-control valid ValidUsuario" onpaste="return false;" placeholder="Ingrese el usuario" autocomplete="off">
+                        </div>
+                        <div class="mb-3 d-flex">
+                            <div style="flex: 1;">
+                                <label for="rolSelect" class="form-label">Rol</label>
+                                <select class="form-select" id="rolSelect" name="rolSelect">
+                                    <!-- Roles mediante Javascript -->
+                                </select>
+                            </div>
+                            <div style="flex: 1;">
+                                <label for="selecEstado" class="form-label">Estado</label>
+                                <select class="form-select" id="selecEstado" name="selecEstado">
+                                    <!-- Estado del usuario mediante Javascript -->
+                                </select>
+                            </div>
                         </div>
                         <div class="mb-3">
                             <label for="nombre" class="form-label">Nombre</label>
                             <input type="text" name="nombre" id="nombre" class="form-control valid ValidNombre" onpaste="return false;" placeholder="Ingrese el nombre del usuario" autocomplete="off">
-                        </div>
-                        <div class="mb-3">
-                            <label for="selecEstado" class="form-label">Estado</label>
-                            <select class="form-select" id="selecEstado" name="selecEstado">
-                                <!-- Estado del usuario mediante Javascript -->
-                            </select>
                         </div>
                         <div class="mb-3">
                             <label for="contraseña" class="form-label">Contraseña</label>
@@ -157,27 +159,28 @@ $varsesion = $_SESSION['usuario'];
                 </div>
                 <div class="modal-body">
                     <form id="formEditarUsuario">
-                        <!-- Campos de edición con valores prellenados -->
                         <input type="hidden" id="editIdUsuario" name="editIdUsuario">
-                        <div class="mb-3">
-                            <label for="editRolSelect" class="form-label">Rol</label>
-                            <select class="form-select" id="editRolSelect" name="editRolSelect">
-                                <!-- Roles mediante Javascript -->
-                            </select>
-                        </div>
                         <div class="mb-3">
                             <label for="editUsuario" class="form-label">Usuario</label>
                             <input type="text" name="editUsuario" id="editUsuario" class="form-control valid ValidUsuario" onpaste="return false;" placeholder="Ingrese el usuario" autocomplete="off">
                         </div>
+                        <div class="mb-3 d-flex">
+                            <div style="flex: 1;">
+                                <label for="editRolSelect" class="form-label">Rol</label>
+                                <select class="form-select" id="editRolSelect" name="editRolSelect">
+                                    <!-- Roles mediante Javascript -->
+                                </select>
+                            </div>
+                            <div style="flex: 1;">
+                                <label for="editSelecEstado" class="form-label">Estado</label>
+                                <select class="form-select" id="editSelecEstado" name="editSelecEstado">
+                                    <!-- Estado del usuario mediante Javascript -->
+                                </select>
+                            </div>
+                        </div>
                         <div class="mb-3">
                             <label for="editNombre" class="form-label">Nombre</label>
                             <input type="text" name="editNombre" id="editNombre" class="form-control valid ValidNombre" onpaste="return false;" placeholder="Ingrese el nombre del usuario" autocomplete="off">
-                        </div>
-                        <div class="mb-3">
-                            <label for="editSelecEstado" class="form-label">Estado</label>
-                            <select class="form-select" id="editSelecEstado" name="editSelecEstado">
-                                <!-- Estado del usuario mediante Javascript -->
-                            </select>
                         </div>
                         <div class="mb-3" id="nuevaContrasena" style="display: none;">
                             <label for="EditContraseña" class="form-label">Nueva contraseña</label>

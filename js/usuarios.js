@@ -102,6 +102,14 @@ function fntValidContra() {
       ValidUsuario.addEventListener("input", function () {
         let inputValue = this.value.toUpperCase(); // Convertir el texto a mayúsculas
         this.value = inputValue; // Establecer el valor convertido en mayúsculas
+  
+        // Verificar si el campo está vacío después de borrar el texto ingresado
+        if (inputValue === '') {
+          this.classList.remove("is-invalid");
+          this.removeAttribute("title");
+          return; // Salir de la función si el campo está vacío
+        }
+  
         if (!testUsuario(inputValue)) {
           this.classList.add("is-invalid");
           this.setAttribute("title", "El usuario no puede contener caracteres especiales y debe tener máximo 11 caracteres");
@@ -112,6 +120,7 @@ function fntValidContra() {
       });
     });
   }
+  
 
   function testNombre(txtString) {
     // Expresión regular que verifica si el nombre es alfabético y tiene como máximo un espacio entre letras
@@ -125,6 +134,14 @@ function fntValidContra() {
       ValidNombre.addEventListener("input", function () {
         let inputValue = this.value.toUpperCase(); // Convertir el texto a mayúsculas
         this.value = inputValue; // Establecer el valor convertido en mayúsculas
+  
+        // Verificar si el campo está vacío después de borrar el texto ingresado
+        if (inputValue === '') {
+          this.classList.remove("is-invalid");
+          this.removeAttribute("title");
+          return; // Salir de la función si el campo está vacío
+        }
+  
         if (!testNombre(inputValue)) {
           this.classList.add("is-invalid");
           this.setAttribute("title", "El nombre debe ser alfabético, con máximo un espacio entre letras y sin números ni caracteres especiales");
@@ -144,7 +161,7 @@ function fntValidContra() {
         }
       });
     });
-  }
+  }  
   
 // Función para cargar usuarios
 function CargarUsuarios() {
@@ -233,7 +250,7 @@ function AgregarUsuario() {
     if (nombreValid.classList.contains("is-invalid")) {
         Swal.fire(
             "Advertencia",
-            "El nombre debe ser alfabético, con máximo un espacio y sin números ni caracteres especiales",
+            "El nombre debe contener como máximo un espacio, sin números ni caracteres especiales",
             "warning"
         );
         return false;
@@ -437,21 +454,29 @@ function ActualizarUsuario() {
 document.getElementById("btnNuevaContrasena").addEventListener("click", function() {
     var nuevaContrasena = document.getElementById("nuevaContrasena");
     var confirmarContrasena = document.getElementById("confirmarContrasena");
+    var btnNuevaContrasena = document.getElementById("btnNuevaContrasena");
+    
     if (nuevaContrasena.style.display === "none") {
         nuevaContrasena.style.display = "block";
         confirmarContrasena.style.display = "block";
+        btnNuevaContrasena.style.display = "none"; 
     } else {
         nuevaContrasena.style.display = "none";
         confirmarContrasena.style.display = "none";
+        btnNuevaContrasena.style.display = "block"; 
     }
 });
-// Función para ocultar campos de nueva contraseña al cerrar el modal
+
 document.getElementById("editEmployeeModal").addEventListener("hidden.bs.modal", function () {
     var nuevaContrasena = document.getElementById("nuevaContrasena");
     var confirmarContrasena = document.getElementById("confirmarContrasena");
+    var btnNuevaContrasena = document.getElementById("btnNuevaContrasena");
+    
     nuevaContrasena.style.display = "none";
     confirmarContrasena.style.display = "none";
+    btnNuevaContrasena.style.display = "block"; 
 });
+
 
 
 //Función para eliminar usuario
