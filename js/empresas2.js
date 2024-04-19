@@ -179,20 +179,6 @@
         validarRepresentante(this);
     });
 
-       // Agregar eventos de input para convertir a mayúsculas en tiempo real
-       document.getElementById('editEmpresaNombre').addEventListener('input', function() {
-        convertirAMayusculas(this);
-    });
-
-    document.getElementById('editEmpresaRepresentante').addEventListener('input', function() {
-        convertirAMayusculas(this);
-        validarRepresentante(this);
-    });
-
-
-
-
-
 
 
     // Función para cargar datos de empresa en el modal de edición
@@ -311,3 +297,12 @@
             }
         });
     }
+     // Agregar eventos de input para convertir a mayúsculas en tiempo real
+     document.getElementById('editEmpresaNombre').addEventListener('input', function() {
+        convertirAMayusculas(this);
+    });
+
+    document.getElementById('editEmpresaRepresentante').addEventListener('input', function() {
+        convertirAMayusculas(this);
+        validarRepresentante(this);
+    });
