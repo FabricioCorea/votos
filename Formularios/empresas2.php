@@ -86,6 +86,7 @@ if($varsesion == null || $varsesion ==''){
             font-size: 16px;
             padding-top: 6px
         }
+
         body {
             color: #202e42;
             background-repeat: no-repeat;
@@ -238,13 +239,13 @@ if($varsesion == null || $varsesion ==''){
                 <tbody id="listaEmpresas"></tbody>
                 </table>
 
-                <div class="pagination">
-                    <button onclick="previousPage()">Anterior</button>
-                    <span id="pageNumber">1</span>
-                    <button onclick="nextPage()">Siguiente</button>
-                </div>
-
+               
+                <div class="pagination"></div>
                 <span id="infoRegistros"></span>
+
+
+
+               
                 
 
         </div>  

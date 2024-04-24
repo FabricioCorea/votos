@@ -143,7 +143,7 @@ $varsesion = $_SESSION['usuario'];
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
-                    <button type="button" class="btn btn-primary" onclick="AgregarUsuario()">Guardar</button>
+                    <button type="button" class="btn btn-primary" onclick="AgregarUsuario()">Agregar</button>
                 </div>
             </div>
         </div>

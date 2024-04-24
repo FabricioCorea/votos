@@ -1,7 +1,7 @@
-    var empresas = []; // Almacenamiento de empresas obtenidas
+var empresas = []; // Almacenamiento de empresas obtenidas
 
-    // Función para mostrar información sobre los registros
-    function mostrarInfoRegistros(totalRegistros, pageNumber, pageSize) {
+// Función para mostrar información sobre los registros
+function mostrarInfoRegistros(totalRegistros, pageNumber, pageSize) {
     var startIndex = (pageNumber - 1) * pageSize + 1;
     var endIndex = Math.min(pageNumber * pageSize, totalRegistros);
     var total = totalRegistros;
@@ -11,24 +11,84 @@
     } else {
         return 'Mostrando registros del ' + startIndex + ' al ' + endIndex + ' de un total de ' + total + ' registros';
     }
+}
+
+// Función para mostrar las empresas según la página actual y el tamaño de página
+function showPage(pageNumber, pageSize) {
+    var totalPages = Math.ceil(empresas.length / pageSize);
+    var listaEmpresas = document.getElementById('listaEmpresas');
+    var pagination = document.querySelector('.pagination');
+    var currentPageData = [];
+
+    // Limpiar la tabla antes de agregar las filas
+    listaEmpresas.innerHTML = '';
+
+    // Agregar eventos a los botones de paginación
+    pagination.innerHTML = '';
+
+    // Agregar el botón "Anterior"
+    if (pageNumber > 1) {
+        pagination.insertAdjacentHTML('beforeend', '<button onclick="showPage(' + (pageNumber - 1) + ',' + pageSize + ')">Anterior</button>');
     }
 
-    // Función para mostrar las empresas según la página actual y el tamaño de página
-    function showPage(pageNumber, pageSize) {
-    var totalPages = Math.ceil(empresas.length / pageSize); // Calcular el número total de páginas
+    // Mostrar la primera numeración (página 1)
+    pagination.insertAdjacentHTML('beforeend', '<button onclick="showPage(1,' + pageSize + ')">1</button>');
+
+    // Calcular el rango de páginas a mostrar en el medio
+    var startPage = Math.max(2, pageNumber - 2);
+    var endPage = Math.min(totalPages - 1, pageNumber + 2);
+
+    // Mostrar puntos suspensivos si hay más de 6 páginas entre la primera y la última
+    if (pageNumber > 4) {
+        pagination.insertAdjacentHTML('beforeend', '<span>...</span>');
+    }
+
+    // Ajustar el rango si hay menos de 4 páginas a la derecha de la primera página
+    if (startPage === 2 && endPage < 5) {
+        endPage = Math.min(5, totalPages - 1);
+    }
+
+    // Ajustar el rango si hay menos de 4 páginas a la izquierda de la última página
+    if (endPage === totalPages - 1 && startPage > totalPages - 4) {
+        startPage = Math.max(totalPages - 4, 2);
+    }
+
+    // Mostrar las numeraciones dentro del rango calculado
+    for (var i = startPage; i <= endPage; i++) {
+        if (i === pageNumber) {
+            pagination.insertAdjacentHTML('beforeend', '<button class="active" onclick="showPage(' + i + ',' + pageSize + ')">' + i + '</button>');
+        } else {
+            pagination.insertAdjacentHTML('beforeend', '<button onclick="showPage(' + i + ',' + pageSize + ')">' + i + '</button>');
+        }
+    }
+
+    // Mostrar puntos suspensivos si hay más de 6 páginas entre la primera y la última
+    if (pageNumber < totalPages - 3) {
+        pagination.insertAdjacentHTML('beforeend', '<span>...</span>');
+    }
+
+    // Mostrar la última numeración (última página)
+    if (totalPages > 1) {
+        pagination.insertAdjacentHTML('beforeend', '<button onclick="showPage(' + totalPages + ',' + pageSize + ')">' + totalPages + '</button>');
+    }
+
+    // Agregar el botón "Siguiente"
+    if (pageNumber < totalPages) {
+        pagination.insertAdjacentHTML('beforeend', '<button onclick="showPage(' + (pageNumber + 1) + ',' + pageSize + ')">Siguiente</button>');
+    }
+
+    // Calcular los índices de las empresas a mostrar en la página actual
     var startIndex = (pageNumber - 1) * pageSize;
     var endIndex = startIndex + pageSize;
-    var currentPageData = empresas.slice(startIndex, endIndex);
+    currentPageData = empresas.slice(startIndex, endIndex);
 
-    var listaEmpresas = document.getElementById('listaEmpresas');
-    listaEmpresas.innerHTML = ''; // Limpiar la tabla antes de agregar las filas
-
-    currentPageData.forEach(function(empresa) {
+    // Mostrar las empresas en la tabla
+    currentPageData.forEach(function (empresa) {
         var row = document.createElement('tr');
         row.innerHTML = '<td>' + empresa.id + '</td>' +
             '<td>' + empresa.empresa + '</td>' +
             '<td>' + empresa.representante + '</td>' +
-            //Botones de editar y eliminar
+            // Botones de editar y eliminar
             '<td>' +
             '<button class="btn btn-icon btn-edit" data-toggle="tooltip" title="Editar" onclick="mostrarModalEditar(' + empresa.id + ', \'' + empresa.empresa + '\', \'' + empresa.representante + '\')">' +
             '<i class="material-icons">edit</i>' +
@@ -37,62 +97,38 @@
             '<i class="material-icons">delete</i>' +
             '</button>' +
             '</td>';
-            
+
         listaEmpresas.appendChild(row);
     });
 
-    // Actualizar el número de página visible
-    document.getElementById('pageNumber').innerText = pageNumber;
+    // Mostrar la información sobre los registros
+    var infoRegistros = mostrarInfoRegistros(empresas.length, pageNumber, pageSize);
+    var infoRegistrosElement = document.getElementById('infoRegistros');
+    infoRegistrosElement.innerHTML = infoRegistros;
+}
 
-    // Actualizar la información sobre los registros
-    document.getElementById('infoRegistros').innerText = mostrarInfoRegistros(empresas.length, pageNumber, pageSize);
 
-    // Habilitar o deshabilitar los botones de paginación según sea necesario
-    document.getElementById('previousPageButton').disabled = pageNumber === 1;
-    document.getElementById('nextPageButton').disabled = pageNumber === totalPages;
-    }
 
-    // Función para cambiar al página anterior
-    function previousPage() {
-    var pageNumber = parseInt(document.getElementById('pageNumber').innerText);
-    if (pageNumber > 1) {
-        showPage(pageNumber - 1, parseInt(document.getElementById('pageSize').value));
-    }
-    }
 
-    // Función para cambiar a la página siguiente
-    function nextPage() {
-    var pageNumber = parseInt(document.getElementById('pageNumber').innerText);
-    var pageSize = parseInt(document.getElementById('pageSize').value);
-    var totalPages = Math.ceil(empresas.length / pageSize);
-    if (pageNumber < totalPages) {
-        showPage(pageNumber + 1, pageSize);
-    }
-    }
 
-    // Función para cambiar el tamaño de página
-    function changePageSize() {
+// Función para cambiar el tamaño de página
+function changePageSize() {
     var pageSize = parseInt(document.getElementById('pageSize').value);
     showPage(1, pageSize);
+}
+
+// Obtener las empresas 
+var xhr = new XMLHttpRequest();
+xhr.open('GET', '../controller/empresas2.php', true);
+xhr.onload = function () {
+    if (xhr.status >= 200 && xhr.status < 300) {
+        empresas = JSON.parse(xhr.responseText);
+        showPage(1, parseInt(document.getElementById('pageSize').value));
+    } else {
+        console.error('Error al obtener las empresas');
     }
-
-//-----------------------------------------------------------------------------------------------------------------//
-
-
-    // Obtener las empresas 
-    var xhr = new XMLHttpRequest();
-    xhr.open('GET', '../controller/empresas2.php', true);
-    xhr.onload = function() {
-        if (xhr.status >= 200 && xhr.status < 300) {
-            empresas = JSON.parse(xhr.responseText);
-            showPage(1, parseInt(document.getElementById('pageSize').value));
-        } else {
-            console.error('Error al obtener las empresas');
-        }
-    };
-    xhr.send();
-
-
+};
+xhr.send();
 
     // Función para agregar una nueva empresa
     function AgregarEmpresa() {
