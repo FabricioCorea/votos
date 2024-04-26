@@ -44,6 +44,7 @@ if($varsesion == null || $varsesion ==''){
             margin: 0 0 5px;
             justify-content: right;
         }
+
         .pagination button {
             border: none;
             font-size: 13px;
@@ -54,37 +55,31 @@ if($varsesion == null || $varsesion ==''){
             line-height: 30px;
             border-radius: 2px !important;
             text-align: center;
-            padding: 0 6px;  
-            border-width: 1px;
-            border-color: #dee2e6;
-        }
-        .pagination li a {
-            border: none;
-            font-size: 13px;
-            min-width: 30px;
-            min-height: 30px;
-            color: #999;
-            margin: 0 2px;
-            line-height: 30px;
-            border-radius: 2px !important;
-            text-align: center;
             padding: 0 6px;
+            border-width: 1px;
+            border-color: transparent;
+            background-color: transparent;
+            transition: background-color 0.3s ease;
         }
-        .pagination li a:hover {
+
+        .pagination button:hover {
+            background-color: #dee2e6;
             color: #666;
-        }	
-        .pagination li.active a, .pagination li.active a.page-link {
+        }
+
+        .pagination li.active button {
+            background: #e99e00;
+            color: white;
+            border-color: #007bff;
+        }
+
+        .pagination li.active button:hover {
             background: #e99e00;
         }
-        .pagination li.active a:hover {        
-            background: #e99e00;
-        }
-        .pagination li.disabled i {
-            color: #ccc;
-        }
-        .pagination li i {
-            font-size: 16px;
-            padding-top: 6px
+
+        .pagination button:hover,
+        .pagination li.active button:hover {
+            border-color: #007bff;
         }
 
         body {

@@ -34,7 +34,7 @@ $(document).ready(function() {
         $("#subject_input").css("visibility", "visible");
         $(".contenedor").css("visibility", "visible");
         $("#registrar_voto_btn").css("visibility", "visible");
-    });
+    });   
 
     // Función para obtener los registros según el ID de empresa
     function obtener_registro(idEmpresa) {

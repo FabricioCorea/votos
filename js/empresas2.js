@@ -12,8 +12,7 @@ function mostrarInfoRegistros(totalRegistros, pageNumber, pageSize) {
         return 'Mostrando registros del ' + startIndex + ' al ' + endIndex + ' de un total de ' + total + ' registros';
     }
 }
-
-// Función para mostrar las empresas según la página actual y el tamaño de página
+ 
 function showPage(pageNumber, pageSize) {
     var totalPages = Math.ceil(empresas.length / pageSize);
     var listaEmpresas = document.getElementById('listaEmpresas');
@@ -32,7 +31,11 @@ function showPage(pageNumber, pageSize) {
     }
 
     // Mostrar la primera numeración (página 1)
-    pagination.insertAdjacentHTML('beforeend', '<button onclick="showPage(1,' + pageSize + ')">1</button>');
+    if (pageNumber === 1) {
+        pagination.insertAdjacentHTML('beforeend', '<button class="active" style="background-color: #e99e00; color: white;" onclick="showPage(1,' + pageSize + ')">1</button>');
+    } else {
+        pagination.insertAdjacentHTML('beforeend', '<button onclick="showPage(1,' + pageSize + ')">1</button>');
+    }
 
     // Calcular el rango de páginas a mostrar en el medio
     var startPage = Math.max(2, pageNumber - 2);
@@ -56,7 +59,7 @@ function showPage(pageNumber, pageSize) {
     // Mostrar las numeraciones dentro del rango calculado
     for (var i = startPage; i <= endPage; i++) {
         if (i === pageNumber) {
-            pagination.insertAdjacentHTML('beforeend', '<button class="active" onclick="showPage(' + i + ',' + pageSize + ')">' + i + '</button>');
+            pagination.insertAdjacentHTML('beforeend', '<button class="active" style="background-color: #e99e00; color: white;" onclick="showPage(' + i + ',' + pageSize + ')">' + i + '</button>');
         } else {
             pagination.insertAdjacentHTML('beforeend', '<button onclick="showPage(' + i + ',' + pageSize + ')">' + i + '</button>');
         }
@@ -69,7 +72,11 @@ function showPage(pageNumber, pageSize) {
 
     // Mostrar la última numeración (última página)
     if (totalPages > 1) {
-        pagination.insertAdjacentHTML('beforeend', '<button onclick="showPage(' + totalPages + ',' + pageSize + ')">' + totalPages + '</button>');
+        if (pageNumber === totalPages) {
+            pagination.insertAdjacentHTML('beforeend', '<button class="active" style="background-color: #e99e00; color: white;" onclick="showPage(' + totalPages + ',' + pageSize + ')">' + totalPages + '</button>');
+        } else {
+            pagination.insertAdjacentHTML('beforeend', '<button onclick="showPage(' + totalPages + ',' + pageSize + ')">' + totalPages + '</button>');
+        }
     }
 
     // Agregar el botón "Siguiente"
@@ -106,10 +113,6 @@ function showPage(pageNumber, pageSize) {
     var infoRegistrosElement = document.getElementById('infoRegistros');
     infoRegistrosElement.innerHTML = infoRegistros;
 }
-
-
-
-
 
 // Función para cambiar el tamaño de página
 function changePageSize() {
