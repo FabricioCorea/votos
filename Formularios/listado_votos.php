@@ -23,6 +23,8 @@ $varsesion = $_SESSION['usuario'];
       <meta name="description" content="">
       <meta name="author" content="">
       <!-- bootstrap css -->
+      <link href="https://cdn.jsdelivr.net/npm/sweetalert2@11.7.3/dist/sweetalert2.min.css" rel="stylesheet">
+      <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
       <link rel="stylesheet" href="../css/bootstrap.min.css">
       <!-- style css -->
       <link rel="stylesheet" href="../css/style.css">
@@ -36,7 +38,6 @@ $varsesion = $_SESSION['usuario'];
       <!-- Tweaks for older IEs-->
       <link rel="stylesheet" href="https://netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css">
       <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fancybox/2.1.5/jquery.fancybox.min.css" media="screen">
-
       <link href="https://fonts.googleapis.com/css?family=Montserrat:300,400,700" rel="stylesheet" type="text/css">
       <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Muli:300,400" rel="stylesheet" type="text/css">
       
@@ -50,6 +51,7 @@ $varsesion = $_SESSION['usuario'];
 
       <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" integrity="sha512-pPtNaT2zqPRGkCv3rZyfC+Xtctj/eF2gR2GXK0FIKeY5NhZ1V1v/UZA5qETBuTrVbo7uOujcGm3teHZVd/s6JQ==" crossorigin="anonymous" referrerpolicy="no-referrer" />
       <script src="https://kit.fontawesome.com/a5cebb58e6.js" crossorigin="anonymous"></script>
+      <link rel="stylesheet" type="text/css" href="../css/stilo.css">
 
    </head>
 
@@ -60,14 +62,19 @@ $varsesion = $_SESSION['usuario'];
         padding: 1px;
         color: #ffffff   
     }
+
     .boton {
     background: #34495E; 
     }
+
     .text-right.mb-5 {
     position: relative; 
     left: -100px; 
     top: 140px; 
-    }
+}
+    
+
+    
     </style>
 
 <!------------------------------------------------------------------------------------------------------------------->
@@ -113,6 +120,7 @@ $varsesion = $_SESSION['usuario'];
    </div>
 
           <!-- Javascript files-->
+      <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.7.3/dist/sweetalert2.all.min.js"></script>
       <script src="../js/jquery.min.js"></script>
       <script src="../js/popper.min.js"></script>
       <script src="../js/bootstrap.bundle.min.js"></script>
@@ -123,7 +131,9 @@ $varsesion = $_SESSION['usuario'];
       <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
       <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/helpers.min.js"></script>
       <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels"></script>
-      <script src="../js/about_copy.js"></script>
+  
+      <script src="../JS/resetear_votos.js"></script>
+
  
       
 
@@ -162,18 +172,21 @@ if ($result->num_rows > 0) {
     while ($row = $result->fetch_assoc()) {
         $fila_estilo = ($row["Tipo"] === "Votos") ? "style='background-color: #BABBBD;'" : "";
 
-        echo "<tr $fila_estilo>";
-        echo "<td>" . $row["Tipo"] . "</td>";
-        echo "<td>" . $row["Total"] . "</td>";
-        echo "</tr>";
+    echo "<tr $fila_estilo>";
+    echo "<td>" . $row["Tipo"] . "</td>";
+    echo "<td>" . $row["Total"] . "</td>";
+    echo "</tr>";
     }
 
     echo "</tbody></table>";
     echo "</div>"; 
 
     /// Columna para el botón
-    echo "<div class='col-md-6 offset-md-1 mt-3 text-right'>"; 
+    echo "<div class='col-md-4 offset-md-1 mt-3 text-right'>"; 
     echo "<button onclick='document.location.reload();' type='button' class='btn btn-primary boton'> Actualizar <i class='fas fa-sync-alt'></i></button>";
+    echo "</div>"; 
+    echo "<div class='col-md-3 offset-md-1 mt-3 text-right'>"; 
+    echo '<button onclick="resetVotos();" type="button" class="btn btn-danger boton"> Reiniciar Votos <i class="fas fa-redo-alt"></i></button>';
     echo "</div>"; 
 
     echo "</div>"; 
@@ -199,6 +212,7 @@ if ($result->num_rows > 0) {
 $conn->close();
 ?>
 
+
 <!------------------------------------------------------------------------------------------------------------------>
 <?php
 
@@ -222,9 +236,17 @@ while ($fila = mysqli_fetch_assoc($resultado)) {
 mysqli_data_seek($resultado, 0); 
 while ($fila = mysqli_fetch_assoc($resultado)) {
     $categorias[] = $fila['Tipo'];
-    $cantidades[] = ($fila['Total'] / $total) * 100;
+    if ($total != 0) {
+        $cantidades[] = ($fila['Total'] / $total) * 100;
+    } else {
+        $cantidades[] = 0;
+    }
 }
+
 ?>
+
+<!-------------------------------SCRIPT PARA GRÁFICO----------------------------------->
+
 
 <script>
 var ctx = document.getElementById('grafico').getContext('2d');
@@ -264,6 +286,9 @@ var grafico = new Chart(ctx, {
     }
 });
 </script>
+
+
+<!-------------------------------SCRIPT PARA REINICIAR EL CONTEO--------------------------->
 
 </body>
 </html>
