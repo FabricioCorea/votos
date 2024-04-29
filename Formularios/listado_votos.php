@@ -73,6 +73,10 @@ $varsesion = $_SESSION['usuario'];
     top: 140px; 
 }
     
+.canvas-container.oculto {
+    display: none;
+}
+
 
     
     </style>
@@ -183,23 +187,25 @@ if ($result->num_rows > 0) {
 
     /// Columna para el botón
     echo "<div class='col-md-4 offset-md-1 mt-3 text-right'>"; 
-    echo "<button onclick='document.location.reload();' type='button' class='btn btn-primary boton'> Actualizar <i class='fas fa-sync-alt'></i></button>";
+    echo "<button onclick='document.location.reload();' type='button' class='btn btn-primary boton'> Refrescar <i class='fas fa-sync-alt'></i></button>";
     echo "</div>"; 
     echo "<div class='col-md-3 offset-md-1 mt-3 text-right'>"; 
-    echo '<button onclick="resetVotos();" type="button" class="btn btn-danger boton"> Reiniciar Votos <i class="fas fa-redo-alt"></i></button>';
+    echo '<button onclick="resetVotos();"  type="button" class="btn btn-danger boton"> Reiniciar Conteo <i class="fas fa-redo-alt"></i></button>';
     echo "</div>"; 
 
     echo "</div>"; 
 
-    // Columna para el canvas
-    echo "<div class='col-md-6'>"; 
-    echo "<div class='col-md-8 offset-md-2'>"; 
-    echo '
-    <div style="position: relative; width: 350px; height: 350px;">
+   // Columna para el canvas
+echo "<div class='col-md-6'>";
+echo "<div class='col-md-8 offset-md-2'>"; 
+echo '
+<div style="position: relative; width: 350px; height: 350px;">
+    <div id="canvas-container" style="position: relative; width: 100%; height: 100%;">
         <canvas id="grafico"></canvas>
         <div id="etiquetas" style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);"></div>
     </div>
-    ';
+</div>';
+
     echo "</div>"; 
 
     echo "</div>"; 

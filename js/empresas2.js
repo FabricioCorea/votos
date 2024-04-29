@@ -1,4 +1,39 @@
 var empresas = []; // Almacenamiento de empresas obtenidas
+var ordenAscendente = true; // Variable para controlar la dirección del ordenamiento
+
+function sortTable(columnIndex) {
+    // Cambiar la dirección del ordenamiento
+    ordenAscendente = !ordenAscendente;
+
+    // Obtener el ícono de la flecha
+    var arrowIcon = document.getElementById('idArrow');
+
+    // Eliminar ambas clases
+    arrowIcon.classList.remove('asc', 'desc');
+
+    // Agregar la clase correspondiente según la dirección del ordenamiento
+    if (ordenAscendente) {
+        arrowIcon.classList.add('asc');
+    } else {
+        arrowIcon.classList.add('desc');
+    }
+
+    // Ordenar la tabla según el ID
+    empresas.sort(function(a, b) {
+        if (ordenAscendente) {
+            return a.id - b.id;
+        } else {
+            return b.id - a.id;
+        }
+    });
+
+    // Mostrar la página actual con los datos ordenados
+    var pageSize = parseInt(document.getElementById('pageSize').value);
+    showPage(1, pageSize);
+}
+
+
+
 
 // Función para mostrar información sobre los registros
 function mostrarInfoRegistros(totalRegistros, pageNumber, pageSize) {
@@ -13,6 +48,33 @@ function mostrarInfoRegistros(totalRegistros, pageNumber, pageSize) {
     }
 }
  
+
+function realizarBusqueda() {
+    var input, filter, table, tr, td, i, txtValue;
+    input = document.getElementById("busquedaInput");
+    filter = input.value.toUpperCase();
+    table = document.getElementById("tablaEmpresas");
+    tr = table.getElementsByTagName("tr");
+
+    // Iterar sobre todas las filas y ocultar aquellas que no coincidan con la búsqueda
+    for (i = 0; i < tr.length; i++) {
+        td = tr[i].getElementsByTagName("td");
+        for (var j = 0; j < td.length; j++) {
+            if (td[j]) {
+                txtValue = td[j].textContent || td[j].innerText;
+                if (txtValue.toUpperCase().indexOf(filter) > -1) {
+                    tr[i].style.display = "";
+                    break; // Mostrar la fila si se encuentra una coincidencia en cualquier columna
+                } else {
+                    tr[i].style.display = "none";
+                }
+            }
+        }
+    }
+}
+
+
+
 function showPage(pageNumber, pageSize) {
     var totalPages = Math.ceil(empresas.length / pageSize);
     var listaEmpresas = document.getElementById('listaEmpresas');

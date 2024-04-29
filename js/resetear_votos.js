@@ -1,7 +1,7 @@
 function resetVotos() {
     Swal.fire({
-        title: '¿Estás seguro?',
-        text: '¿Estás seguro de reiniciar los votos? Esta acción no se puede deshacer.',
+        title: '¿Está seguro?',
+        text: '¿Está seguro de reiniciar los votos? Esta acción no se puede deshacer.',
         icon: 'warning',
         showCancelButton: true,
         confirmButtonColor: '#3085d6',
@@ -29,10 +29,10 @@ function resetVotos() {
                         title: 'Éxito',
                         width: '40%', // ancho del cuadro de diálogo
                         padding: '5em', // margen interno para aumentar el tamaño del cuadro de diálogo
-                        text: response,
-                        onClose: () => {
-                            location.reload();
-                        }
+                        text: response
+                    }).then(() => {
+                        // Recargar la página después de cerrar el cuadro de diálogo
+                        location.reload();
                     });
                 },
                 error: function(xhr, status, error) {
@@ -48,5 +48,3 @@ function resetVotos() {
         }
     });
 }
-
-

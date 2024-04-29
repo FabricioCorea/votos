@@ -17,11 +17,19 @@ if($varsesion == null || $varsesion ==''){
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <title>Votos</title>
     <!-- CSS only -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/css/bootstrap.min.css" rel="stylesheet">
+        <!-- CSS only -->
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdn.datatables.net/1.11.5/css/dataTables.bootstrap5.min.css" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/sweetalert2@11.7.3/dist/sweetalert2.min.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-
+ 
+    <link rel="stylesheet" href="../CSS/headerEmpresas.css">
+     <!-- Scrollbar Custom CSS -->
+     <link rel="stylesheet" href="../css/jquery.mCustomScrollbar.min.css">
+    <link rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css'><link rel="stylesheet" href="./style.css">
+     <!-- Tweaks for older IEs -->
+     <link rel="stylesheet" href="https://netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fancybox/2.1.5/jquery.fancybox.min.css" media="screen">
 
     <!---------------------------------------- Estilo--------------------------------------------------------->
     
@@ -100,6 +108,7 @@ if($varsesion == null || $varsesion ==''){
             border-radius: 3px;
             min-width: 1280px;
             box-shadow: 0 1px 1px rgba(0,0,0,.05);
+            padding-top: 80px;
         }
         .table-title {        
             padding-bottom: 15px;
@@ -172,7 +181,7 @@ if($varsesion == null || $varsesion ==''){
         /* Ajustar el ancho de una columna específica */
         #tablaEmpresas th:nth-child(1), /* ancho de la primera columna */
         #tablaEmpresas td:nth-child(1) {
-            width: 40px; 
+            width:70px; 
         }
         
         #tablaEmpresas th:nth-child(3), 
@@ -184,11 +193,58 @@ if($varsesion == null || $varsesion ==''){
         #tablaEmpresas td:nth-child(2) {
             width: 700px; 
         }
+
+/* Estilo base de las flechas */
+.arrow {
+    display: inline-block;
+    width: 0;
+    height: 0;
+    margin-left: 5px; /* Ajusta el margen según sea necesario */
+}
+
+/* Estilo de la flecha ascendente */
+.arrow.asc:before {
+    content: '\2191'; /* Código de flecha ascendente */
+    font-size: 10px; /* Ajusta el tamaño de la fuente según sea necesario */
+}
+
+/* Estilo de la flecha descendente */
+.arrow.desc:before {
+    content: '\2193'; /* Código de flecha descendente */
+    font-size: 10px; /* Ajusta el tamaño de la fuente según sea necesario */
+}
+
+
     </style>
 
 </head>
 
 <body>
+<nav>
+        <div class="wrapper">
+            <div class="logoIMG">
+                <a href="<?php echo ($_SESSION['usuario']['id_rol'] == '1') ? 'indexAdmin.html' : 'indexUsuario.html'; ?>">
+                    <img class="small-image" src="../images/logo-transparente.webp" alt="#" />
+                </a>
+            </div>
+
+            <input type="radio" name="slider" id="menu-btn">
+            <input type="radio" name="slider" id="close-btn">
+            <ul class="nav-links">
+                <label for="close-btn" class="btn close-btn"><i class="fas fa-times"></i></label>
+                <li><a href="<?php echo ($_SESSION['usuario']['id_rol'] == '1') ? 'indexAdmin.html' : 'indexUsuario.html'; ?>">INICIO</a></li>
+                <li>
+                    <a href="#" class="desktop-item">
+                        <span class="icon-right"> 
+                        <i class="fas fa-user"></i> 
+                        </span>
+                        <?php echo $_SESSION['usuario']['usuario']; ?>
+                    </a>
+                </li>
+                <li><a href="logout.php"> <i title="Cerrar Sesión" class="fas fa-sign-out-alt"></i></a><span class="sr-only">Cerrar Sesión&gt;</span></a></li>
+            </ul>
+        </div>
+    </nav>
     <div class="table-responsive">
             <div class="table-wrapper">
                 <div class="table-title">
@@ -210,22 +266,25 @@ if($varsesion == null || $varsesion ==''){
                     </div>
                 </div>
 
-                <label for="pageSize" style="display: inline-block; margin-right: 5px;">Mostrar</label>
-                <select id="pageSize" onchange="changePageSize()" class="select-k select-c form-select-c" style="display: inline-block; margin-right: 5px;">
-                    <option value="10">10</option>
-                    <option value="25">25</option>
-                    <option value="50">50</option>
-                    <option value="100">100</option>
-                </select>
-                <span style="display: inline-block;">registros</span>
+                        <label for="pageSize" style="display: inline-block; margin-right: 5px;">Mostrar</label>
+        <select id="pageSize" onchange="changePageSize()" class="select-k select-c form-select-c" style="display: inline-block; margin-right: 5px;">
+            <option value="10">10</option>
+            <option value="25">25</option>
+            <option value="50">50</option>
+            <option value="100">100</option>
+        </select>
+        <span style="display: inline-block;">registros</span>
 
-                <br>
-                <br>
+        <div class="mb-3" style="float: right; text-align: right;">
+            <label for="busquedaInput" class="form-label">Buscar:</label>
+            <input type="text" id="busquedaInput" class="form-control" onkeyup="realizarBusqueda()" style="width: 200px; display: inline-block;">
+        </div>
+
 
                 <table id="tablaEmpresas" class="table table-striped">
                 <thead>
                     <tr>
-                        <th>ID</th>
+                    <th onclick="sortTable(0)">ID <span id="idArrow" class="arrow asc desc"></span></th>
                         <th>Empresa</th>
                         <th>Representante</th>
                         <th>Acciones</th>
@@ -237,6 +296,7 @@ if($varsesion == null || $varsesion ==''){
                
                 <div class="pagination"></div>
                 <span id="infoRegistros"></span>
+   
 
 
 
