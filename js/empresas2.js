@@ -50,28 +50,33 @@ function mostrarInfoRegistros(totalRegistros, pageNumber, pageSize) {
  
 
 function realizarBusqueda() {
-    var input, filter, table, tr, td, i, txtValue;
+    var input, filter, table, tr, td, i, j, txtValue;
     input = document.getElementById("busquedaInput");
     filter = input.value.toUpperCase();
     table = document.getElementById("tablaEmpresas");
     tr = table.getElementsByTagName("tr");
 
-    // Iterar sobre todas las filas y ocultar aquellas que no coincidan con la búsqueda
+    // Iterar sobre todas las filas y mostrar aquellas que coincidan con la búsqueda
     for (i = 0; i < tr.length; i++) {
         td = tr[i].getElementsByTagName("td");
-        for (var j = 0; j < td.length; j++) {
+        var encontrado = false;
+        for (j = 0; j < td.length; j++) {
             if (td[j]) {
                 txtValue = td[j].textContent || td[j].innerText;
                 if (txtValue.toUpperCase().indexOf(filter) > -1) {
-                    tr[i].style.display = "";
+                    encontrado = true;
                     break; // Mostrar la fila si se encuentra una coincidencia en cualquier columna
-                } else {
-                    tr[i].style.display = "none";
                 }
             }
         }
+        if(encontrado) {
+            tr[i].style.display = "";
+        } else {
+            tr[i].style.display = "none"; // Ocultar la fila si no se encontró ninguna coincidencia
+        }
     }
 }
+
 
 
 
