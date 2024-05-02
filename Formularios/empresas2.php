@@ -306,34 +306,36 @@ if($varsesion == null || $varsesion ==''){
         </div>  
     </div>
 
-    <!-- Modal para agregar empresa -->
-    <div class="modal fade" id="addEmpresaModal" tabindex="-1" aria-labelledby="addEmpresaModalLabel" aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="addEmpresaModalLabel">Agregar Empresa</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                    <form id="formAgregarEmpresa">
-                        <div class="mb-3">
-                            <label for="empresaModal" class="form-label">Empresa</label>
-                            <input type="text" name="empresa" id="empresaModal" class="form-control" onpaste="return false;" placeholder="Ingrese el nombre de la empresa" autocomplete="off" required>
+<!-- Modal para agregar empresa -->
+<div class="modal fade" id="addEmpresaModal" tabindex="-1" aria-labelledby="addEmpresaModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="addEmpresaModalLabel">Agregar Empresa</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form id="formAgregarEmpresa">
+                    <div class="mb-3">
+                        <label for="empresaModal" class="form-label">Empresa</label>
+                        <input type="text" name="empresa" id="empresaModal" class="form-control" onpaste="return false;" placeholder="Ingrese el nombre de la empresa" autocomplete="off" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="representanteModal" class="form-label">Representante</label>
+                        <input type="text" name="representante" id="representanteModal" class="form-control" onpaste="return false;" placeholder="Ingrese el nombre del representante" autocomplete="off" required>
+                        <div class="invalid-feedback">
+                            El nombre debe ser alfabético y no contener números
                         </div>
-                        <div class="mb-3">
-                            <label for="representanteModal" class="form-label">Representante</label>
-                            <input type="text" name="representante" id="representanteModal" class="form-control" onpaste="return false;" placeholder="Ingrese el nombre del representante" autocomplete="off" required>
-                        </div>
-                    </form>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
-                    <button type="button" class="btn btn-primary" id="guardarEmpresa" onclick="AgregarEmpresa()">Guardar</button>
-                </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                <button type="button" class="btn btn-primary" id="guardarEmpresa" onclick="AgregarEmpresa()">Guardar</button>
             </div>
         </div>
     </div>
-
+</div>
 
 <!-- Modal para editar empresa -->
 <div class="modal fade" id="editEmpresaModal" tabindex="-1" aria-labelledby="editEmpresaModalLabel" aria-hidden="true">
@@ -352,7 +354,10 @@ if($varsesion == null || $varsesion ==''){
                     </div>
                     <div class="mb-3">
                         <label for="editEmpresaRepresentante" class="form-label">Representante</label>
-                        <input type="text" name="representante" id="editEmpresaRepresentante" class="form-control" placeholder="Ingrese el nuevo representante de la empresa" autocomplete="off" required>
+                        <input type="text" name="representante" id="editEmpresaRepresentante" class="form-control ValidRepresentante" placeholder="Ingrese el nuevo representante de la empresa" autocomplete="off" required>
+                        <div class="invalid-feedback">
+                            El campo representante solo puede contener letras y espacios.
+                        </div>
                     </div>
                 </form>
             </div>

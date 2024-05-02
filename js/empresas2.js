@@ -211,8 +211,8 @@ xhr.send();
             return;
         }
         // Verificar que el representante no contenga números ni caracteres especiales
-        if (!/^[a-zA-Z\s]+$/.test(representante)) {
-            Swal.fire("Advertencia", "El campo representante no puede contener números", "warning");
+        if (!/^[a-zA-ZñÑ@!*$&#`´/%.,_\-\s]+$/.test(representante)) {
+            Swal.fire("Advertencia", "El nombre del representante no debe contener números ni caracteres especiales", "warning");
             return;
         }
         // Crear un objeto para los datos que se enviarán
@@ -268,7 +268,7 @@ xhr.send();
     // Función para que solo se permitan letras en el campo de representante 
     function validarRepresentante(input) {
         var representante = input.value.trim();
-        if (!/^[a-zA-Z\s]+$/.test(representante)) {
+        if (!/^[a-zA-ZñÑ@!*$&#`´/%.,_\-\s]+$/.test(representante)) {
             input.setCustomValidity("El campo representante solo puede contener letras y espacios");
         } else {
             input.setCustomValidity("");
@@ -285,6 +285,72 @@ xhr.send();
         validarRepresentante(this);
     });
 
+ // Función para validar el campo de representante
+function validarRepresentante(input) {
+    // Obtener el valor del campo y eliminar espacios en blanco al inicio y al final
+    var representante = input.value.trim();
+    
+    // Eliminar dos espacios consecutivos entre letras
+    representante = representante.replace(/ +(?= )/g,'');
+
+    // Expresión regular que verifica si el representante contiene solo letras y espacios
+    var regex = /^[a-zA-ZñÑ@!*$&#`´/%.,_\-\s]+$/;
+
+    // Verificar si el valor del campo coincide con la expresión regular
+    if (!regex.test(representante)) {
+        // Si no coincide, agregar clase de Bootstrap para mostrar mensaje de error
+        input.classList.add("is-invalid");
+    } else {
+        // Si coincide, eliminar clase de Bootstrap para eliminar mensaje de error
+        input.classList.remove("is-invalid");
+    }
+
+    // Actualizar el valor del campo con los espacios consecutivos eliminados
+    input.value = representante;
+}
+
+
+// Agregar evento de input al campo de representante para realizar validaciones en tiempo real
+document.getElementById('representanteModal').addEventListener('input', function() {
+    // Convertir el texto a mayúsculas
+    this.value = this.value.toUpperCase();
+    // Validar el campo de representante
+    validarRepresentante(this);
+});
+
+ // Función para validar el campo de representante
+ function validarRepresentante(input) {
+    // Obtener el valor del campo y eliminar espacios en blanco al inicio y al final
+    var representante = input.value.trim();
+    
+    // Expresión regular que verifica si el representante contiene solo letras y espacios
+    var regex = /^[a-zA-ZñÑ@!*$&#`´/%.,_\-\s]+$/;
+
+    // Verificar si el valor del campo coincide con la expresión regular
+    if (!regex.test(representante)) {
+        // Si no coincide, agregar clase de Bootstrap para mostrar mensaje de error
+        input.classList.add("is-invalid");
+    } else {
+        // Si coincide, eliminar clase de Bootstrap para eliminar mensaje de error
+        input.classList.remove("is-invalid");
+    }
+}
+
+// Agregar evento de input al campo de representante para realizar validaciones en tiempo real
+document.getElementById('representanteModal').addEventListener('input', function() {
+    // Convertir el texto a mayúsculas
+    this.value = this.value.toUpperCase();
+    // Validar el campo de representante
+    validarRepresentante(this);
+});
+
+// Agregar evento de input al campo de representante para realizar validaciones en tiempo real
+document.getElementById('representanteModal').addEventListener('input', function() {
+    // Convertir el texto a mayúsculas
+    convertirAMayusculas(this);
+    // Validar el campo de representante
+    validarRepresentante(this);
+});
 
 
     // Función para cargar datos de empresa en el modal de edición

@@ -290,7 +290,7 @@ if($varsesion == null || $varsesion ==''){
             });
         </script>
         <?php } ?>
-        <!-------------------------------SCRIPT PARA REINICIAR EL CONTEO--------------------------->
+
 </body>
 
 </html>
