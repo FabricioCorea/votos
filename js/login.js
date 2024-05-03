@@ -76,9 +76,9 @@ function validarAcceso(event) {
                     var rol = jsonResponse.rol;
                     // Redirigir según el rol del usuario
                     if (rol === "1") {
-                        window.location.href = "../formularios/indexAdmin.html";
+                        window.location.href = "../formularios/indexAdmin.php";
                     } else if (rol === "2") {
-                        window.location.href = "../formularios/indexUsuario.html";
+                        window.location.href = "../formularios/indexUsuario.php";
                     } else {
                         console.error('Rol de usuario desconocido.');
                     }

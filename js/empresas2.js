@@ -1,8 +1,9 @@
 var empresas = []; // Almacenamiento de empresas obtenidas
-var ordenAscendente = true; // Variable para controlar la dirección del ordenamiento
+var ordenAscendente = true; 
 
+//Función de Ordenamiento 
 function sortTable(columnIndex) {
-    // Cambiar la dirección del ordenamiento
+    
     ordenAscendente = !ordenAscendente;
 
     // Obtener el ícono de la flecha
@@ -34,7 +35,6 @@ function sortTable(columnIndex) {
 
 
 
-
 // Función para mostrar información sobre los registros
 function mostrarInfoRegistros(totalRegistros, pageNumber, pageSize) {
     var startIndex = (pageNumber - 1) * pageSize + 1;
@@ -48,7 +48,6 @@ function mostrarInfoRegistros(totalRegistros, pageNumber, pageSize) {
     }
 }
  
-
 function realizarBusqueda() {
     var input, filter, table, tr, td, i, j, txtValue;
     input = document.getElementById("busquedaInput");
@@ -56,8 +55,8 @@ function realizarBusqueda() {
     table = document.getElementById("tablaEmpresas");
     tr = table.getElementsByTagName("tr");
 
-    // Iterar sobre todas las filas y mostrar aquellas que coincidan con la búsqueda
-    for (i = 0; i < tr.length; i++) {
+    // Iterar sobre las filas de datos de la tabla, excluyendo el encabezado
+    for (i = 1; i < tr.length; i++) {
         td = tr[i].getElementsByTagName("td");
         var encontrado = false;
         for (j = 0; j < td.length; j++) {
@@ -69,15 +68,13 @@ function realizarBusqueda() {
                 }
             }
         }
-        if(encontrado) {
+        if (encontrado) {
             tr[i].style.display = "";
         } else {
             tr[i].style.display = "none"; // Ocultar la fila si no se encontró ninguna coincidencia
         }
     }
 }
-
-
 
 
 function showPage(pageNumber, pageSize) {
@@ -200,158 +197,93 @@ xhr.onload = function () {
 };
 xhr.send();
 
-    // Función para agregar una nueva empresa
-    function AgregarEmpresa() {
-        // Recoger los datos del formulario
-        var empresa = document.getElementById('empresaModal').value.trim();
-        var representante = document.getElementById('representanteModal').value.trim();
-        // Verificar que se hayan ingresado los datos
-        if (empresa === '' || representante === '') {
-            Swal.fire("Advertencia", "Debe llenar todos los campos", "warning");
-            return;
-        }
-        // Verificar que el representante no contenga números ni caracteres especiales
-        if (!/^[a-zA-ZñÑ@!*$&#`´/%.,_\-\s]+$/.test(representante)) {
-            Swal.fire("Advertencia", "El nombre del representante no debe contener números ni caracteres especiales", "warning");
-            return;
-        }
-        // Crear un objeto para los datos que se enviarán
-        var data = {
-            empresa: empresa,
-            representante: representante
-        };
-        // Realizar una solicitud POST al servidor
-        fetch('../controller/empresas2.php', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify(data)
-            })
-            .then(response => response.json())
-            .then(response => {
-                if (response.mensaje === 'Empresa agregada correctamente') {
-                    Swal.fire({
-                        icon: 'success',
-                        title: 'Listo',
-                        text: response.mensaje
-                    }).then((result) => {
-                        if (result.isConfirmed) {
-                            document.getElementById('formAgregarEmpresa').reset(); // Resetear el formulario
-                            $('#addEmpresaModal').modal('hide'); // Cerrar el modal
-                            location.reload(); // Recargar la página
-                        }
-                    });
-                } else {
-                    Swal.fire({
-                        icon: 'error',
-                        title: 'Error',
-                        text: 'Error: ' + response.mensaje
-                    });
-                }
-            })
-            .catch(error => {
+   // Función para agregar una nueva empresa
+function AgregarEmpresa() {
+    // Recoger los datos del formulario
+    var empresa = document.getElementById('empresaModal').value.trim();
+    var representante = document.getElementById('representanteModal').value.trim();
+    if (empresa === '' || representante === '') {
+        Swal.fire("Advertencia", "Debe llenar todos los campos", "warning");
+        return;
+    }
+    // Verificar que el representante no contenga números ni caracteres especiales
+if (!/^[a-zA-ZñÑ@!*$&#`´/%.,_\s\-]+$/.test(representante)) {
+        Swal.fire("Advertencia", "El nombre del representante no debe contener números", "warning");
+        return;
+    }
+    // Crear un objeto para los datos que se enviarán
+    var data = {
+        empresa: empresa,
+        representante: representante
+    };
+    // Realizar una solicitud POST al servidor
+    fetch('../controller/empresas2.php', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(data)
+        })
+        .then(response => response.json())
+        .then(response => {
+            if (response.mensaje === 'Empresa agregada correctamente') {
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Listo',
+                    text: response.mensaje
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        document.getElementById('formAgregarEmpresa').reset(); // Resetear el formulario
+                        $('#addEmpresaModal').modal('hide'); // Cerrar el modal
+                        location.reload(); // Recargar la página
+                    }
+                });
+            } else {
                 Swal.fire({
                     icon: 'error',
                     title: 'Error',
-                    text: 'Ocurrió un error en la solicitud'
+                    text: 'Error: ' + response.mensaje
                 });
-                console.error('Error en la solicitud:', error);
+            }
+        })
+        .catch(error => {
+            Swal.fire({
+                icon: 'error',
+                title: 'Error',
+                text: 'Ocurrió un error en la solicitud'
             });
-    }
+            console.error('Error en la solicitud:', error);
+        });
+}
 
-    // Función para convertir texto a mayúsculas 
-    function convertirAMayusculas(input) {
-        input.value = input.value.toUpperCase();
-    }
-
-    // Función para que solo se permitan letras en el campo de representante 
-    function validarRepresentante(input) {
-        var representante = input.value.trim();
-        if (!/^[a-zA-ZñÑ@!*$&#`´/%.,_\-\s]+$/.test(representante)) {
-            input.setCustomValidity("El campo representante solo puede contener letras y espacios");
-        } else {
-            input.setCustomValidity("");
-        }
-    }
-
-    // Agregar eventos de input para convertir a mayúsculas en tiempo real
-    document.getElementById('empresaModal').addEventListener('input', function() {
-        convertirAMayusculas(this);
-    });
-
-    document.getElementById('representanteModal').addEventListener('input', function() {
-        convertirAMayusculas(this);
-        validarRepresentante(this);
-    });
-
- // Función para validar el campo de representante
+// Función para validar el campo de representante
 function validarRepresentante(input) {
     // Obtener el valor del campo y eliminar espacios en blanco al inicio y al final
     var representante = input.value.trim();
-    
-    // Eliminar dos espacios consecutivos entre letras
-    representante = representante.replace(/ +(?= )/g,'');
-
-    // Expresión regular que verifica si el representante contiene solo letras y espacios
     var regex = /^[a-zA-ZñÑ@!*$&#`´/%.,_\-\s]+$/;
-
-    // Verificar si el valor del campo coincide con la expresión regular
-    if (!regex.test(representante)) {
-        // Si no coincide, agregar clase de Bootstrap para mostrar mensaje de error
-        input.classList.add("is-invalid");
-    } else {
-        // Si coincide, eliminar clase de Bootstrap para eliminar mensaje de error
+    if (representante === '') {
         input.classList.remove("is-invalid");
-    }
-
-    // Actualizar el valor del campo con los espacios consecutivos eliminados
-    input.value = representante;
-}
-
-
-// Agregar evento de input al campo de representante para realizar validaciones en tiempo real
-document.getElementById('representanteModal').addEventListener('input', function() {
-    // Convertir el texto a mayúsculas
-    this.value = this.value.toUpperCase();
-    // Validar el campo de representante
-    validarRepresentante(this);
-});
-
- // Función para validar el campo de representante
- function validarRepresentante(input) {
-    // Obtener el valor del campo y eliminar espacios en blanco al inicio y al final
-    var representante = input.value.trim();
-    
-    // Expresión regular que verifica si el representante contiene solo letras y espacios
-    var regex = /^[a-zA-ZñÑ@!*$&#`´/%.,_\-\s]+$/;
-
-    // Verificar si el valor del campo coincide con la expresión regular
-    if (!regex.test(representante)) {
-        // Si no coincide, agregar clase de Bootstrap para mostrar mensaje de error
-        input.classList.add("is-invalid");
     } else {
-        // Si coincide, eliminar clase de Bootstrap para eliminar mensaje de error
-        input.classList.remove("is-invalid");
+        // Verificar si el valor del campo coincide con la expresión regular
+        if (!regex.test(representante)) {
+            // Si no coincide, agregar clase de Bootstrap para mostrar mensaje de error
+            input.classList.add("is-invalid");
+        } else {
+            // Si coincide, eliminar clase de Bootstrap para eliminar mensaje de error
+            input.classList.remove("is-invalid");
+        }
     }
 }
 
-// Agregar evento de input al campo de representante para realizar validaciones en tiempo real
-document.getElementById('representanteModal').addEventListener('input', function() {
-    // Convertir el texto a mayúsculas
+// Agregar eventos de input para convertir a mayúsculas en tiempo real y validar el campo de representante
+document.getElementById('empresaModal').addEventListener('input', function() {
     this.value = this.value.toUpperCase();
-    // Validar el campo de representante
-    validarRepresentante(this);
 });
 
-// Agregar evento de input al campo de representante para realizar validaciones en tiempo real
 document.getElementById('representanteModal').addEventListener('input', function() {
-    // Convertir el texto a mayúsculas
-    convertirAMayusculas(this);
-    // Validar el campo de representante
+    this.value = this.value.toUpperCase();
     validarRepresentante(this);
 });
-
 
     // Función para cargar datos de empresa en el modal de edición
     function cargarDatosEmpresa(idEmpresa, nombreEmpresa, representante) {
@@ -361,17 +293,36 @@ document.getElementById('representanteModal').addEventListener('input', function
     }
 
     // Función para editar una empresa
-    function editarEmpresa(idEmpresa) {
-        var empresa = document.getElementById('editEmpresaNombre').value;
-        var representante = document.getElementById('editEmpresaRepresentante').value;
-        var id = document.getElementById('editEmpresaId').value;
 
+    function editarEmpresa() {
+        var empresa = document.getElementById('editEmpresaNombre').value.trim();
+        var representanteInput = document.getElementById('editEmpresaRepresentante');
+        var representante = representanteInput.value.trim().toUpperCase();
+    
+        // Verificar que se hayan ingresado ambos campos
+        if (empresa === '' || representante === '') {
+            Swal.fire("Advertencia", "Debe llenar todos los campos", "warning");
+            return;
+        }
+    
+        // Expresión regular que verifica si el representante contiene solo letras y espacios
+        var regex = /^[a-zA-ZñÑ@!*$&#`´/%.,_\-\s]+$/;
+    
+        // Verificar si el valor del campo coincide con la expresión regular
+        if (!regex.test(representante)) {
+            // Si no coincide, mostrar alerta de SweetAlert
+            Swal.fire("Advertencia", "El nombre del representante no debe contener números", "warning");
+            return;
+        }
+    
+        var id = document.getElementById('editEmpresaId').value;
+    
         var data = {
             id: id,
             empresa: empresa,
             representante: representante
         };
-
+    
         fetch('../controller/empresas2.php', {
             method: 'PUT',
             headers: {
@@ -409,13 +360,51 @@ document.getElementById('representanteModal').addEventListener('input', function
             console.error('Error en la solicitud:', error);
         });
     }
-
+    
 
     // Función para mostrar modal de edición al hacer clic en el botón Editar
     function mostrarModalEditar(idEmpresa, nombreEmpresa, representante) {
         cargarDatosEmpresa(idEmpresa, nombreEmpresa, representante);
         $('#editEmpresaModal').modal('show');
     }
+
+
+
+    // Función para validar el campo de representante en el modal de edición
+    function validarRepresentanteEdit(input) {
+        // Obtener el valor del campo y eliminar espacios en blanco al inicio y al final
+        var representante = input.value.trim();
+        
+        // Expresión regular que permite letras, espacios y otros caracteres específicos
+        var regex = /^[a-zA-ZñÑ@!*$&#`´/%.,_\-\s]+$/;
+        
+        // Verificar si el campo está vacío
+        if (representante === '') {
+            // Si está vacío, eliminar la clase de Bootstrap para eliminar mensaje de error
+            input.classList.remove("is-invalid");
+        } else {
+            // Verificar si el valor del campo coincide con la expresión regular
+            if (!regex.test(representante)) {
+                // Si no coincide, agregar clase de Bootstrap para mostrar mensaje de error
+                input.classList.add("is-invalid");
+            } else {
+                // Si coincide, eliminar clase de Bootstrap para eliminar mensaje de error
+                input.classList.remove("is-invalid");
+            }
+        }
+    }
+    
+    
+// Agregar eventos de input para validar el campo de representante en el modal de edición
+document.getElementById('editEmpresaNombre').addEventListener('input', function() {
+    this.value = this.value.toUpperCase();
+});
+
+document.getElementById('editEmpresaRepresentante').addEventListener('input', function() {
+    validarRepresentanteEdit(this);
+});
+
+
 
     // Función para eliminar una empresa
     function eliminarEmpresa(idEmpresa) {

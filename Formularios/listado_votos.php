@@ -40,12 +40,9 @@ if($varsesion == null || $varsesion ==''){
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fancybox/2.1.5/jquery.fancybox.min.css" media="screen">
     <link href="https://fonts.googleapis.com/css?family=Montserrat:300,400,700" rel="stylesheet" type="text/css">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Muli:300,400" rel="stylesheet" type="text/css">
-
     <!--   CSS for 147 Colors   -->
     <link href="http://www.colorname.xyz/style.css" rel="stylesheet" type="text/css">
-
     <link rel="stylesheet" href="https://netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css">
-
     <!--   Librería para gráficos    -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
@@ -83,7 +80,7 @@ if($varsesion == null || $varsesion ==''){
     <nav class="nav1">
         <div class="wrapper">
             <div class="logoIMG">
-                <a href="<?php echo ($_SESSION['usuario']['id_rol'] == '1') ? 'indexAdmin.html' : 'indexUsuario.html'; ?>">
+                <a href="<?php echo ($_SESSION['usuario']['id_rol'] == '1') ? 'indexAdmin.php' : 'indexUsuario.php'; ?>">
                     <img class="small-image" src="../images/logo-transparente.webp" alt="#" />
                 </a>
             </div>
@@ -92,7 +89,7 @@ if($varsesion == null || $varsesion ==''){
             <input type="radio" name="slider" id="close-btn">
             <ul class="nav-links1">
                 <label for="close-btn" class="btn close-btn"><i class="fas fa-times"></i></label>
-                <li><a href="<?php echo ($_SESSION['usuario']['id_rol'] == '1') ? 'indexAdmin.html' : 'indexUsuario.html'; ?>">INICIO</a></li>
+                <li><a href="<?php echo ($_SESSION['usuario']['id_rol'] == '1') ? 'indexAdmin.php' : 'indexUsuario.php'; ?>">INICIO</a></li>
                 <li><a href="registrarVoto.php">REGISTRAR VOTO</a></li>
                 <li>
                     <a href="#" class="desktop-item">
@@ -224,10 +221,10 @@ if($varsesion == null || $varsesion ==''){
 
 
         $sql = "
-    SELECT 'Representante' AS Tipo, COUNT(*) AS Total FROM votos WHERE presente = 0
-    UNION ALL
-    SELECT 'Representado' AS Tipo, COUNT(*) AS Total FROM votos WHERE representado = 0
-";
+        SELECT 'Representante' AS Tipo, COUNT(*) AS Total FROM votos WHERE presente = 0
+        UNION ALL
+        SELECT 'Representado' AS Tipo, COUNT(*) AS Total FROM votos WHERE representado = 0
+        ";
         $resultado = mysqli_query($conexion, $sql);
 
         $categorias = array();

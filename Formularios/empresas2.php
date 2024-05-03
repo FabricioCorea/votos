@@ -194,27 +194,25 @@ if($varsesion == null || $varsesion ==''){
             width: 700px; 
         }
 
-/* Estilo base de las flechas */
-.arrow {
-    display: inline-block;
-    width: 0;
-    height: 0;
-    margin-left: 5px; /* Ajusta el margen según sea necesario */
-}
+        /* Estilo base de las flechas */
+        .arrow {
+            display: inline-block;
+            width: 0;
+            height: 0;
+            margin-left: 5px; 
+        }
 
-/* Estilo de la flecha ascendente */
-.arrow.asc:before {
-    content: '\2191'; /* Código de flecha ascendente */
-    font-size: 10px; /* Ajusta el tamaño de la fuente según sea necesario */
-}
+        /* Estilo de la flecha ascendente */
+        .arrow.asc:before {
+            content: '\2191'; 
+            font-size: 10px; 
+        }
 
-/* Estilo de la flecha descendente */
-.arrow.desc:before {
-    content: '\2193'; /* Código de flecha descendente */
-    font-size: 10px; /* Ajusta el tamaño de la fuente según sea necesario */
-}
-
-
+        /* Estilo de la flecha descendente */
+        .arrow.desc:before {
+            content: '\2193';
+            font-size: 10px; 
+        }
     </style>
 
 </head>
@@ -223,7 +221,7 @@ if($varsesion == null || $varsesion ==''){
 <nav>
         <div class="wrapper">
             <div class="logoIMG">
-                <a href="<?php echo ($_SESSION['usuario']['id_rol'] == '1') ? 'indexAdmin.html' : 'indexUsuario.html'; ?>">
+                <a href="<?php echo ($_SESSION['usuario']['id_rol'] == '1') ? 'indexAdmin.php' : 'indexUsuario.php'; ?>">
                     <img class="small-image" src="../images/logo-transparente.webp" alt="#" />
                 </a>
             </div>
@@ -232,7 +230,7 @@ if($varsesion == null || $varsesion ==''){
             <input type="radio" name="slider" id="close-btn">
             <ul class="nav-links">
                 <label for="close-btn" class="btn close-btn"><i class="fas fa-times"></i></label>
-                <li><a href="<?php echo ($_SESSION['usuario']['id_rol'] == '1') ? 'indexAdmin.html' : 'indexUsuario.html'; ?>">INICIO</a></li>
+                <li><a href="<?php echo ($_SESSION['usuario']['id_rol'] == '1') ? 'indexAdmin.php' : 'indexUsuario.php'; ?>">INICIO</a></li>
                 <li>
                     <a href="#" class="desktop-item">
                         <span class="icon-right"> 
@@ -280,7 +278,6 @@ if($varsesion == null || $varsesion ==''){
             <input type="text" id="busquedaInput" class="form-control" onkeyup="realizarBusqueda()" style="width: 200px; display: inline-block;">
         </div>
 
-
                 <table id="tablaEmpresas" class="table table-striped">
                 <thead>
                     <tr>
@@ -293,16 +290,8 @@ if($varsesion == null || $varsesion ==''){
                 <tbody id="listaEmpresas"></tbody>
                 </table>
 
-               
                 <div class="pagination"></div>
                 <span id="infoRegistros"></span>
-   
-
-
-
-               
-                
-
         </div>  
     </div>
 
@@ -354,9 +343,9 @@ if($varsesion == null || $varsesion ==''){
                     </div>
                     <div class="mb-3">
                         <label for="editEmpresaRepresentante" class="form-label">Representante</label>
-                        <input type="text" name="representante" id="editEmpresaRepresentante" class="form-control ValidRepresentante" placeholder="Ingrese el nuevo representante de la empresa" autocomplete="off" required>
+                        <input type="text" name="representante" id="editEmpresaRepresentante" class="form-control" placeholder="Ingrese el nuevo representante de la empresa" autocomplete="off" required>
                         <div class="invalid-feedback">
-                            El campo representante solo puede contener letras y espacios.
+                        El nombre debe ser alfabético y no contener números
                         </div>
                     </div>
                 </form>
@@ -368,10 +357,6 @@ if($varsesion == null || $varsesion ==''){
         </div>
     </div>
 </div>
-
-
-
-
 
     <!-- JavaScript -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>

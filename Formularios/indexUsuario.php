@@ -1,3 +1,13 @@
+<?php
+session_start(); // Iniciar la sesión
+
+$varsesion = $_SESSION['usuario'];
+    if($varsesion == null || $varsesion ==''){
+        header("location: ../Formularios/login.php");
+        die();
+    }
+?>
+
 <!DOCTYPE html>
 <html lang="en">
    <head>
@@ -22,6 +32,8 @@
       <link rel="icon" href="images/fevicon.png" type="image/gif" />
       <!-- Scrollbar Custom CSS -->
       <link rel="stylesheet" href="../css/jquery.mCustomScrollbar.min.css">
+      <link rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css'><link rel="stylesheet" href="./style.css">
+      <link rel="stylesheet" href="../css/header.css">
       <!-- Tweaks for older IEs-->
       <link rel="stylesheet" href="https://netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css">
       <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fancybox/2.1.5/jquery.fancybox.min.css" media="screen">
@@ -29,11 +41,34 @@
 
    <!-- body -->
     <body class="main-layout inner_header service_page">
+       <nav class="nav1">
+         <div class="wrapper">
+             <div class="logoIMG">
+                         <img class="small-image" src="../images/logo-transparente.webp" alt="#" />
+             </div>
+ 
+             <input type="radio" name="slider" id="menu-btn">
+             <input type="radio" name="slider" id="close-btn">
+             <ul class="nav-links1">
+                 <label for="close-btn" class="btn close-btn"><i class="fas fa-times"></i></label>
+
+                 <li>
+                         <a href="#" class="desktop-item">
+                             <span class="icon-right"> 
+                             <i class="fas fa-user"></i> 
+                             </span>
+                             <?php echo $_SESSION['usuario']['usuario']; ?>
+                         </a>
+                 </li>
+                 <li><a href="logout.php"> <i title="Cerrar Sesión" class="fas fa-sign-out-alt"></i></a><span class="sr-only">Cerrar Sesión&gt;</span></a></li>
+             </ul>
+         </div>
+     </nav>
         <!-- services -->
         <div  class="services">
             <div class="container">
                <div class="row mt-5">
-                  <div class="col-md-10 offset-md-1">
+               <div class="col-md-10 offset-md-30 mt-9">
                      
                      <div class="titlepage_menu ">
                         <h2>Seleccione una opción...</h2>
@@ -42,7 +77,7 @@
                   </div>
                </div>
                <br>
-                <div class="row justify-content-center mt-4" >
+                <div class="row justify-content-center mt-10" >
                               <div id="servicio_voto_usuarios" class="col-md-3 mr-5">
                                  <div id="serv_hover"  class="services_box">
                                     <i><img src="../images/votacion (3) (4).png" alt="#"/></i>

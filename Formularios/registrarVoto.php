@@ -32,10 +32,8 @@ $varsesion = $_SESSION['usuario'];
     <!-- Scrollbar Custom CSS -->
     <link rel="stylesheet" href="../css/jquery.mCustomScrollbar.min.css">
     <link rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css'><link rel="stylesheet" href="./style.css">
-
     <link rel="stylesheet" href="../css/registrarVoto-style.css">
     <link rel="stylesheet" href="../css/header.css">
-
     <!-- Tweaks for older IEs -->
     <link rel="stylesheet" href="https://netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fancybox/2.1.5/jquery.fancybox.min.css" media="screen">
@@ -45,7 +43,7 @@ $varsesion = $_SESSION['usuario'];
     <nav class="nav1">
         <div class="wrapper">
             <div class="logoIMG">
-                    <a href="<?php echo ($_SESSION['usuario']['id_rol'] == '1') ? 'indexAdmin.html' : 'indexUsuario.html'; ?>">
+                    <a href="<?php echo ($_SESSION['usuario']['id_rol'] == '1') ? 'indexAdmin.php' : 'indexUsuario.php'; ?>">
                         <img class="small-image" src="../images/logo-transparente.webp" alt="#" />
                     </a>
             </div>
@@ -54,7 +52,7 @@ $varsesion = $_SESSION['usuario'];
             <input type="radio" name="slider" id="close-btn">
             <ul class="nav-links1">
                 <label for="close-btn" class="btn close-btn"><i class="fas fa-times"></i></label>
-                <li><a href="<?php echo ($_SESSION['usuario']['id_rol'] == '1') ? 'indexAdmin.html' : 'indexUsuario.html'; ?>">INICIO</a></li>
+                <li><a href="<?php echo ($_SESSION['usuario']['id_rol'] == '1') ? 'indexAdmin.php' : 'indexUsuario.php'; ?>">INICIO</a></li>
                 <li><a href="listado_votos.php">VER VOTOS</a></li>
                 <li>
                         <a href="#" class="desktop-item">
