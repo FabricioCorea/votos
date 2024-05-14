@@ -6,6 +6,7 @@ $varsesion = $_SESSION['usuario'];
         header("location: ../Formularios/login.php");
         die();
     }
+    $rolUsuarioSesion = $_SESSION['usuario']['id_rol'];
 ?>
 <!DOCTYPE html>
 <html lang="es">
@@ -34,7 +35,7 @@ $varsesion = $_SESSION['usuario'];
     <nav>
         <div class="wrapper">
             <div class="logoIMG">
-                <a href="<?php echo ($_SESSION['usuario']['id_rol'] == '1') ? 'indexAdmin.php' : 'indexUsuario.php'; ?>">
+                <a href="<?php echo ($_SESSION['usuario']['id_rol'] == '1' || $_SESSION['usuario']['id_rol'] == '0') ? 'indexAdmin.php' : 'indexUsuario.php'; ?>">
                     <img class="small-image" src="../images/logo-transparente.webp" alt="#" />
                 </a>
             </div>
@@ -43,7 +44,7 @@ $varsesion = $_SESSION['usuario'];
             <input type="radio" name="slider" id="close-btn">
             <ul class="nav-links">
                 <label for="close-btn" class="btn close-btn"><i class="fas fa-times"></i></label>
-                <li><a href="<?php echo ($_SESSION['usuario']['id_rol'] == '1') ? 'indexAdmin.php' : 'indexUsuario.php'; ?>">INICIO</a></li>
+                <li><a href="<?php echo ($_SESSION['usuario']['id_rol'] == '1' || $_SESSION['usuario']['id_rol'] == '0') ? 'indexAdmin.php' : 'indexUsuario.php'; ?>">INICIO</a></li>
                 <li>
                     <a href="#" class="desktop-item">
                         <span class="icon-right"> 
@@ -214,6 +215,10 @@ $varsesion = $_SESSION['usuario'];
 
     <!-- Inactividad JavaScript -->
     <script src="../JS/inactividad.js"></script>
+    <script type="text/javascript">
+    // Asignar el rol del usuario en sesión a una variable JavaScript
+    var rolUsuarioSesion = <?php echo $rolUsuarioSesion; ?>;
+</script>
 </body>
 
 </html>

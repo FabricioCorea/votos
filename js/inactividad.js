@@ -1,5 +1,5 @@
 // Función para redirigir a la página de cierre de sesión después de 1 minuto de inactividad
-var tiempoInactividad = 60; // 1 minuto en segundos
+var tiempoInactividad = 1800; // segundos
 var tiempoInicio;
 
 function resetTiempo() {

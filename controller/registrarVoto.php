@@ -31,7 +31,7 @@ if ($buscarEmpresas->num_rows > 0) {
 
     if ($resultVoto->num_rows > 0) {
         // Verificar si el usuario en sesión tiene rol de administrador (id_rol = 1)
-        if ($_SESSION['usuario']['id_rol'] == '1') {
+        if ($_SESSION['usuario']['id_rol'] == '1' || $_SESSION['usuario']['id_rol'] == '0') {
             $selectOptions = "<li>La empresa con el ID proporcionado ya registró su voto. 
             <button class='btn btn-delete eliminar_voto_btn' style='background-color: #de4756; color: white; margin-left: 15px;' data-id='$idEmpresa'>
                 <span>Eliminar voto</span>

@@ -44,16 +44,16 @@ $varsesion = $_SESSION['usuario'];
     <nav class="nav1">
         <div class="wrapper">
             <div class="logoIMG">
-                    <a href="<?php echo ($_SESSION['usuario']['id_rol'] == '1') ? 'indexAdmin.php' : 'indexUsuario.php'; ?>">
-                        <img class="small-image" src="../images/logo-transparente.webp" alt="#" />
-                    </a>
+                <a href="<?php echo ($_SESSION['usuario']['id_rol'] == '1' || $_SESSION['usuario']['id_rol'] == '0') ? 'indexAdmin.php' : 'indexUsuario.php'; ?>">
+                <img class="small-image" src="../images/logo-transparente.webp" alt="#" />
+                </a>
             </div>
 
             <input type="radio" name="slider" id="menu-btn">
             <input type="radio" name="slider" id="close-btn">
             <ul class="nav-links1">
                 <label for="close-btn" class="btn close-btn"><i class="fas fa-times"></i></label>
-                <li><a href="<?php echo ($_SESSION['usuario']['id_rol'] == '1') ? 'indexAdmin.php' : 'indexUsuario.php'; ?>">INICIO</a></li>
+                <li><a href="<?php echo ($_SESSION['usuario']['id_rol'] == '1' || $_SESSION['usuario']['id_rol'] == '0') ? 'indexAdmin.php' : 'indexUsuario.php'; ?>">INICIO</a></li>
                 <li><a href="listado_votos.php">VER VOTOS</a></li>
                 <li>
                         <a href="#" class="desktop-item">

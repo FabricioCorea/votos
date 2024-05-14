@@ -75,7 +75,7 @@ function validarAcceso(event) {
                 if (jsonResponse.status === "success") {
                     var rol = jsonResponse.rol;
                     // Redirigir según el rol del usuario
-                    if (rol === "1") {
+                    if (rol === "1" || rol === "0") {
                         window.location.href = "../formularios/indexAdmin.php";
                     } else if (rol === "2") {
                         window.location.href = "../formularios/indexUsuario.php";

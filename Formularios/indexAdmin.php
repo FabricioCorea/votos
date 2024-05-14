@@ -46,9 +46,9 @@ $varsesion = $_SESSION['usuario'];
       <nav class="nav1">
          <div class="wrapper">
              <div class="logoIMG">
-                     <a href="<?php echo ($_SESSION['usuario']['id_rol'] == '1') ? 'indexAdmin.php' : 'indexUsuario.php'; ?>">
-                         <img class="small-image" src="../images/logo-transparente.webp" alt="#" />
-                     </a>
+             <a href="<?php echo ($_SESSION['usuario']['id_rol'] == '1' || $_SESSION['usuario']['id_rol'] == '0') ? 'indexAdmin.php' : 'indexUsuario.php'; ?>">
+               <img class="small-image" src="../images/logo-transparente.webp" alt="#" />
+            </a>
              </div>
  
              <input type="radio" name="slider" id="menu-btn">

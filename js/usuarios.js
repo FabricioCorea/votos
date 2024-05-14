@@ -164,48 +164,68 @@ function fntValidContra() {
   }  
   
 // Función para cargar usuarios
+// Función para cargar usuarios
 function CargarUsuarios() {
-  $.ajax({
-      url: urlUsuarios,
-      type: 'GET',
-      dataType: 'json',
-      success: function(response) {
-          var usuarios = response;
+    $.ajax({
+        url: urlUsuarios,
+        type: 'GET',
+        dataType: 'json',
+        success: function(response) {
+            var usuarios = response;
 
-          // Limpiar la tabla antes de agregar nuevos datos
-          tablaUsuarios.clear();
+            // Limpiar la tabla antes de agregar nuevos datos
+            tablaUsuarios.clear();
 
-          // Recorrer los datos y agregar las filas a DataTables
-          usuarios.forEach(function(usuario) {
-              // Agrega la fila a DataTables, reemplazando la celda de contraseña con la nueva celda que tiene desplazamiento horizontal
-              var row = tablaUsuarios.row.add([
-                  usuario.id_usuario,
-                  usuario.rol, 
-                  usuario.usuario,
-                  usuario.nombre,
-                  usuario.estado,
-                  usuario.fecha_ultima_conexion,
-                  usuario.creado_por,
-                  usuario.fecha_creacion,
-                  usuario.modificado_por,
-                  usuario.fecha_modificacion,
-                  // Botones de acciones (editar y eliminar)
-                  '<button class="btn btn-icon btn-edit" data-toggle="tooltip" data-bs-toggle="modal" data-bs-target="#editEmployeeModal" onclick="CargarUsuario(\'' + usuario.id_usuario + '\')" title="Editar"><i class="material-icons">edit</i></button>' +
-                  '<button class="btn btn-icon btn-delete" data-toggle="tooltip" title="Eliminar" onclick="EliminarUsuario(' + usuario.id_usuario + ')"><i class="material-icons">delete</i></button>'
-              ]).draw(false);
+            // Recorrer los datos y agregar las filas a DataTables
+            usuarios.forEach(function(usuario) {
+                var botonesAcciones = ''; // Inicializar el string de botones como vacío
 
-              // Agregar un atributo al botón de eliminar con el id_usuario
-              $('td', row.node()).eq(11).find('.btn-delete').attr('data-id-usuario', usuario.id_usuario);
-          });                
-      },
-      error: function(xhr, status, error) {
-          // Manejar errores de la solicitud AJAX
-          console.error(error);
-          Swal.fire('Error', 'Hubo un error al cargar los datos de los usuarios', 'error');
-      }
-  });
+                // Verificar si el rol del usuario en sesión es SUPER USUARIO (0)
+                if (rolUsuarioSesion == 0) {
+                    // Permitir clicar en los botones solo para usuarios que no son SUPER USUARIO
+                    if (usuario.id_rol != 0) {
+                        botonesAcciones = '<button class="btn btn-icon btn-edit" data-toggle="tooltip" data-bs-toggle="modal" data-bs-target="#editEmployeeModal" onclick="CargarUsuario(\'' + usuario.id_usuario + '\')" title="Editar"><i class="material-icons">edit</i></button>' +
+                            '<button class="btn btn-icon btn-delete" data-toggle="tooltip" title="Eliminar" onclick="EliminarUsuario(' + usuario.id_usuario + ')"><i class="material-icons">delete</i></button>';
+                    } else {
+                        // Solo mostrar el botón de editar para usuarios con rol SUPER USUARIO
+                        botonesAcciones = '<button class="btn btn-icon btn-edit" data-toggle="tooltip" data-bs-toggle="modal" data-bs-target="#editEmployeeModal" onclick="CargarUsuario(\'' + usuario.id_usuario + '\')" title="Editar"><i class="material-icons">edit</i></button>';
+                    }
+                } else if (rolUsuarioSesion == 1) {
+                    // Permitir clicar en los botones solo para usuarios que no son SUPER USUARIO ni ADMINISTRADOR
+                    if (usuario.id_rol != 0 && usuario.id_rol != 1) {
+                        botonesAcciones = '<button class="btn btn-icon btn-edit" data-toggle="tooltip" data-bs-toggle="modal" data-bs-target="#editEmployeeModal" onclick="CargarUsuario(\'' + usuario.id_usuario + '\')" title="Editar"><i class="material-icons">edit</i></button>' +
+                            '<button class="btn btn-icon btn-delete" data-toggle="tooltip" title="Eliminar" onclick="EliminarUsuario(' + usuario.id_usuario + ')"><i class="material-icons">delete</i></button>';
+                    } else {
+                        botonesAcciones = '';
+                    }
+                }
+
+                // Agrega la fila a DataTables, reemplazando la celda de contraseña con la nueva celda que tiene desplazamiento horizontal
+                var row = tablaUsuarios.row.add([
+                    usuario.id_usuario,
+                    usuario.rol,
+                    usuario.usuario,
+                    usuario.nombre,
+                    usuario.estado,
+                    usuario.fecha_ultima_conexion,
+                    usuario.creado_por,
+                    usuario.fecha_creacion,
+                    usuario.modificado_por,
+                    usuario.fecha_modificacion,
+                    botonesAcciones // Botones de acciones (editar y eliminar)
+                ]).draw(false);
+
+                // Agregar un atributo al botón de eliminar con el id_usuario
+                $('td', row.node()).eq(11).find('.btn-delete').attr('data-id-usuario', usuario.id_usuario);
+            });
+        },
+        error: function(xhr, status, error) {
+            // Manejar errores de la solicitud AJAX
+            console.error(error);
+            Swal.fire('Error', 'Hubo un error al cargar los datos de los usuarios', 'error');
+        }
+    });
 }
-
 //Función para agregar usuario
 function AgregarUsuario() {
     var rolSelect = document.getElementById("rolSelect").value;
@@ -312,35 +332,48 @@ function AgregarUsuario() {
   });
 }
 
-//Función que trae los datos del usuario que se eligió editar
+// Función que trae los datos del usuario que se eligió editar
 function CargarUsuario(idUsuario) {
-  var datosUsuario = {
-      idUsuario: idUsuario,
-  };
-  var datosUsuarioJson = JSON.stringify(datosUsuario);
+    var datosUsuario = {
+        idUsuario: idUsuario,
+    };
+    var datosUsuarioJson = JSON.stringify(datosUsuario);
 
-  $.ajax({
-      url: UrlUsuarioAEditar,
-      type: "POST",
-      data: datosUsuarioJson,
-      datatype: "JSON",
-      contentType: "application/json",
-      success: function (response) {
-          var usuario = response;
+    $.ajax({
+        url: UrlUsuarioAEditar,
+        type: "POST",
+        data: datosUsuarioJson,
+        datatype: "JSON",
+        contentType: "application/json",
+        success: function (response) {
+            var usuario = response;
 
-          console.log(usuario.nombre);
-          // Llenar los campos del formulario de edición con los datos del usuario
-          $('#editIdUsuario').val(usuario.id_usuario);
-          $('#editUsuario').val(usuario.usuario);
-          $('#editNombre').val(usuario.nombre);
-          $('#editSelecEstado').val(usuario.estado);
+            console.log(usuario.nombre);
+            // Llenar los campos del formulario de edición con los datos del usuario
+            $('#editIdUsuario').val(usuario.id_usuario);
+            $('#editUsuario').val(usuario.usuario);
+            $('#editNombre').val(usuario.nombre);
 
-          // Seleccionar la opción correcta en el select de roles
-          $('#editRolSelect option').filter(function() {
-              return $(this).val() == usuario.id_rol; // Comparar el valor del option con el id_rol del usuario
-          }).prop('selected', true);
-      },
-  });
+            // Establecer el valor del campo de selección de rol
+            $('#editRolSelect').val(usuario.id_rol);
+
+            // Verificar si el usuario es SUPER USUARIO (rol 0)
+            if (usuario.id_rol == 0) {
+                // Si es SUPER USUARIO, deshabilitar el campo de selección de rol y estado
+                $('#editRolSelect').prop('disabled', true);
+                $('#editSelecEstado').prop('disabled', true);
+            } else {
+                // Si no es SUPER USUARIO, habilitar el campo de selección de rol
+                $('#editRolSelect').prop('disabled', false);
+
+                // Seleccionar la opción correcta en el select de estado
+                $('#editSelecEstado').val(usuario.estado);
+
+                // Habilitar el campo de selección de estado
+                $('#editSelecEstado').prop('disabled', false);
+            }
+        },
+    });
 }
 
 //función para actualizar usuario
