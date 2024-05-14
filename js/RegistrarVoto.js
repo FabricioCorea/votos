@@ -48,25 +48,25 @@ $(document).ready(function() {
         })
         .done(function(resultado) {
             if (resultado.trim() === '') {
-                $("#resultado_empresa").empty().css("visibility", "hidden"); // Si no hay resultados, ocultar el campo de resultados
-                // Mostrar los elementos relevantes
-                $("#subject_input").css("visibility", "visible");
-                $(".contenedor").css("visibility", "visible");
-                $("#registrar_voto_btn").css("visibility", "visible");
+                // Si no hay resultados, ocultar el campo de resultados y mostrar los elementos relevantes
+                $("#resultado_empresa").empty().css("visibility", "hidden");
+                $("#subject_input, .contenedor, #registrar_voto_btn").css("visibility", "visible");
             } else {
-                if (resultado.trim() === '<li>No se encontró la empresa con el ID proporcionado.</li>' || resultado.trim() === '<li>La empresa con el ID proporcionado ya registró su voto.</li>') {
+                if (
+                    resultado.includes("<li>No se encontró la empresa con el ID proporcionado.</li>") || 
+                    resultado.includes("<li>La empresa con el ID proporcionado ya registró su voto.")
+                ) {
                     // Si no se encuentra la empresa o ya registró su voto, ocultar los elementos relevantes
                     $("#resultado_empresa").html(resultado).css("visibility", "visible");
-                    $("#subject_input").css("visibility", "hidden");
-                    $(".contenedor").css("visibility", "hidden");
-                    $("#registrar_voto_btn").css("visibility", "hidden");
+                    $("#subject_input, .contenedor, #registrar_voto_btn").css("visibility", "hidden");
+                    $("#resultado_empresa li.not-selectable").css("user-select", "none"); // Aplicar estilo a texto
+                    $("#resultado_empresa li").removeClass("selectable"); // Quitar la clase "selectable" de los elementos de la lista
                 } else {
-                    // Mostrar los resultados normales
+                    // Mostrar los resultados normales y los elementos relevantes
                     $("#resultado_empresa").html(resultado).css("visibility", "visible");
-                    // Mostrar los elementos relevantes
-                    $("#subject_input").css("visibility", "visible");
-                    $(".contenedor").css("visibility", "visible");
-                    $("#registrar_voto_btn").css("visibility", "visible");
+                    $("#subject_input, .contenedor, #registrar_voto_btn").css("visibility", "visible");
+                    $("#resultado_empresa li.not-selectable").css("user-select", "text"); // Restaurar estilo
+                    $("#resultado_empresa li").addClass("selectable"); // Agregar la clase "selectable" a los elementos de la lista
                 }
             }
         })
@@ -76,36 +76,30 @@ $(document).ready(function() {
     }
 
     // Evento al hacer clic en un resultado de la lista
-    $(document).on('click', '#resultado_empresa li', function() {
-        if ($(this).text() !== "No se encontró la empresa con el ID proporcionado." && $(this).text() !== "La empresa con el ID proporcionado ya registró su voto.") {
-            var selectedText = $(this).text(); // Obtener el texto del elemento clicado
-            $('#id_empresa').val(selectedText); // Colocar el texto en el campo de búsqueda
-            $("#resultado_empresa").empty().css("visibility", "hidden"); // Limpiar los resultados y ocultar el campo de resultados
-            $('#id_empresa').prop('readonly', true); // Hacer que el campo de búsqueda sea de solo lectura
-            $("#clear_search").show(); // Mostrar el botón de eliminación
+    $(document).on('click', '#resultado_empresa li.selectable', function() {
+        var selectedText = $(this).text(); // Obtener el texto del elemento clicado
+        $('#id_empresa').val(selectedText); // Colocar el texto en el campo de búsqueda
+        $("#resultado_empresa").empty().css("visibility", "hidden"); // Limpiar los resultados y ocultar el campo de resultados
+        $('#id_empresa').prop('readonly', true); // Hacer que el campo de búsqueda sea de solo lectura
+        $("#clear_search").show(); // Mostrar el botón de eliminación
 
-            // Cambiar color de fondo y letras
-            $(this).addClass('selected');
+        // Cambiar color de fondo y letras
+        $(this).addClass('selected');
 
-            // Mostrar los elementos relevantes
-            $("#subject_input").css("visibility", "visible");
-            $(".contenedor").css("visibility", "visible");
-            $("#registrar_voto_btn").css("visibility", "visible");
-        }
+        // Mostrar los elementos relevantes
+        $("#subject_input").css("visibility", "visible");
+        $(".contenedor").css("visibility", "visible");
+        $("#registrar_voto_btn").css("visibility", "visible");
     });
 
     // Evento al pasar el cursor sobre un resultado de la lista
-    $(document).on('mouseenter', '#resultado_empresa li', function() {
-        if ($(this).text() !== "No se encontró la empresa con el ID proporcionado." && $(this).text() !== "La empresa con el ID proporcionado ya registró su voto.") {
-            $(this).addClass('selected');
-        }
+    $(document).on('mouseenter', '#resultado_empresa li.selectable', function() {
+        $(this).addClass('selected');
     });
 
     // Evento al retirar el cursor del resultado de la lista
-    $(document).on('mouseleave', '#resultado_empresa li', function() {
-        if ($(this).text() !== "No se encontró la empresa con el ID proporcionado.") {
-            $(this).removeClass('selected');
-        }
+    $(document).on('mouseleave', '#resultado_empresa li.selectable', function() {
+        $(this).removeClass('selected');
     });
 
     // Evento al hacer clic en el botón "Registrar voto"
@@ -159,6 +153,54 @@ $(document).ready(function() {
                         text: responseData.message
                     });
                 }
+            }
+        });
+    });
+
+    // Evento al hacer clic en el botón "Eliminar voto"
+    $(document).on('click', '.eliminar_voto_btn', function() {
+        var idEmpresa = $(this).data('id');
+
+        // Confirmar antes de eliminar el voto
+        Swal.fire({
+            title: '¿Está seguro?',
+            text: 'Está a punto de eliminar el voto de esta empresa. Esta acción no se puede deshacer.',
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#d33', 
+            cancelButtonColor: '#3085d6', 
+            confirmButtonText: 'Sí, eliminar voto',
+            cancelButtonText: 'Cancelar',
+            customClass: {
+                title: 'swal-title' 
+            }
+        }).then((result) => {
+            if (result.isConfirmed) {
+                // Enviar la solicitud para eliminar el voto
+                $.ajax({
+                    type: "POST",
+                    url: "../controller/eliminarVoto.php", // Debes crear este archivo para procesar la eliminación del voto
+                    data: { id_empresa: idEmpresa },
+                    success: function(response) {
+                        var responseData = JSON.parse(response);
+                        if (responseData.status === "success") {
+                            Swal.fire({
+                                icon: 'success',
+                                title: '¡Voto eliminado!',
+                                text: responseData.message,
+                                didClose: () => {
+                                    location.reload(); // Recargar la página después de cerrar el Sweet Alert
+                                }
+                            });
+                        } else {
+                            Swal.fire({
+                                icon: 'error',
+                                title: '¡Error!',
+                                text: responseData.message
+                            });
+                        }
+                    }
+                });
             }
         });
     });

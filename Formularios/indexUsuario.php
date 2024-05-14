@@ -105,5 +105,7 @@ $varsesion = $_SESSION['usuario'];
       <!-- sidebar -->
       <script src="js/jquery.mCustomScrollbar.concat.min.js"></script>
       <script src="js/custom.js"></script>
+       <!-- Inactividad JavaScript -->
+    <script src="../JS/inactividad.js"></script>
    </body>
 </html>

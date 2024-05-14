@@ -1,4 +1,12 @@
 <?php
+session_start(); // Iniciar la sesión
+
+$varsesion = $_SESSION['usuario'];
+if($varsesion == null || $varsesion ==''){
+    header("location: ../Formularios/login.php");
+    die();
+}
+
 require_once '../config/conexion.php'; 
 
 $selectOptions = ""; // Declarar la variable para almacenar las opciones
@@ -22,7 +30,17 @@ if ($buscarEmpresas->num_rows > 0) {
     $resultVoto = $conn->query($queryVoto);
 
     if ($resultVoto->num_rows > 0) {
-        $selectOptions = "<li>La empresa con el ID proporcionado ya registró su voto.</li>";
+        // Verificar si el usuario en sesión tiene rol de administrador (id_rol = 1)
+        if ($_SESSION['usuario']['id_rol'] == '1') {
+            $selectOptions = "<li>La empresa con el ID proporcionado ya registró su voto. 
+            <button class='btn btn-delete eliminar_voto_btn' style='background-color: #de4756; color: white; margin-left: 15px;' data-id='$idEmpresa'>
+                <span>Eliminar voto</span>
+            </button>
+            </li>";
+        } else {
+            // Si el usuario no es administrador, simplemente mostramos el mensaje sin el botón
+            $selectOptions = "<li>La empresa con el ID proporcionado ya registró su voto.</li>";
+        }
     }
 } else {
     $selectOptions = "<li>No se encontró la empresa con el ID proporcionado.</li>";

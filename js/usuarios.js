@@ -481,54 +481,54 @@ document.getElementById("editEmployeeModal").addEventListener("hidden.bs.modal",
 
 //Función para eliminar usuario
 function EliminarUsuario(id_usuario) {
-  Swal.fire({
-      title: '¿Está seguro?',
-      text: "Esta acción eliminará al usuario. ¿Desea continuar?",
-      icon: 'warning',
-      showCancelButton: true,
-      confirmButtonColor: '#3085d6',
-      cancelButtonColor: '#d33',
-      confirmButtonText: 'Sí, eliminar',
-      cancelButtonText: 'Cancelar'
-  }).then((result) => {
-      if (result.isConfirmed) {
-          // Si el usuario confirma la eliminación, se envía la solicitud de eliminación
-          $.ajax({
-              url: UrlEliminarUsuario,
-              type: 'POST',
-              data: { id_usuario: id_usuario },
-              dataType: 'json',
-              success: function(response) {
-                  if (response.status) {
-                      Swal.fire({
-                          icon: 'success',
-                          title: 'Listo',
-                          text: response.msg
-                      }).then((result) => {
-                          if (result.isConfirmed) {
-                              CargarUsuarios(); // Recargar la lista de usuarios después de eliminar uno
-                          }
-                      });
-                  } else {
-                      Swal.fire({
-                          icon: 'error',
-                          title: 'Error',
-                          text: response.msg
-                      });
-                  }
-              },
-              error: function(xhr, status, error) {
-                  Swal.fire({
-                      icon: 'error',
-                      title: 'Error',
-                      text: 'Ocurrió un error al procesar la solicitud'
-                  });
-                  console.error(xhr.responseText);
-              }
-          });
-      }
-  });
-}
+    Swal.fire({
+        title: '¿Está seguro?',
+        text: "Esta acción eliminará al usuario. ¿Desea continuar?",
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#d33', // Color rojo para el botón "Sí, eliminar"
+        cancelButtonColor: '#3085d6', // Color azul para el botón "Cancelar"
+        confirmButtonText: 'Sí, eliminar',
+        cancelButtonText: 'Cancelar'
+    }).then((result) => {
+        if (result.isConfirmed) {
+            // Si el usuario confirma la eliminación, se envía la solicitud de eliminación
+            $.ajax({
+                url: UrlEliminarUsuario,
+                type: 'POST',
+                data: { id_usuario: id_usuario },
+                dataType: 'json',
+                success: function(response) {
+                    if (response.status) {
+                        Swal.fire({
+                            icon: 'success',
+                            title: 'Listo',
+                            text: response.msg
+                        }).then((result) => {
+                            if (result.isConfirmed) {
+                                CargarUsuarios(); // Recargar la lista de usuarios después de eliminar uno
+                            }
+                        });
+                    } else {
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Error',
+                            text: response.msg
+                        });
+                    }
+                },
+                error: function(xhr, status, error) {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Error',
+                        text: 'Ocurrió un error al procesar la solicitud'
+                    });
+                    console.error(xhr.responseText);
+                }
+            });
+        }
+    });
+  }  
 
 function CargarRoles(){
     $.ajax({

@@ -37,6 +37,7 @@ $varsesion = $_SESSION['usuario'];
     <!-- Tweaks for older IEs -->
     <link rel="stylesheet" href="https://netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fancybox/2.1.5/jquery.fancybox.min.css" media="screen">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11.7.3/dist/sweetalert2.min.css">
 </head>
 <body>
     <!-- partial:index.partial.html -->
@@ -82,7 +83,7 @@ $varsesion = $_SESSION['usuario'];
                                             <button type="button" id="clear_search" style="display: none;">X</button>
                                         </div>
                                     <div class="input-group">
-                                        <div class="form-control border-light" style="padding: 3px 3px; height: 60px; overflow-y: auto;" id="resultado_empresa">
+                                        <div class="form-control border-light" style="padding: 3px 3px; height: 80px; overflow-y: auto;" id="resultado_empresa">
                                             <ul id="lista_resultados" class="lista-resultados"></ul>
                                         </div>
                                     </div>
@@ -122,8 +123,7 @@ $varsesion = $_SESSION['usuario'];
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.7.3/dist/sweetalert2.all.min.js"></script>
     <script src="../JS/RegistrarVoto.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.7.3/dist/sweetalert2.all.min.js"></script>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11.7.3/dist/sweetalert2.min.css">
-  
+     <!-- Inactividad JavaScript -->
+     <script src="../JS/inactividad.js"></script>
 </body>
 </html>
