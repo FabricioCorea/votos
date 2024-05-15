@@ -126,7 +126,7 @@ if($varsesion == null || $varsesion ==''){
         <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/helpers.min.js"></script>
         <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels"></script>
-
+        
         <script src="../JS/resetear_votos.js"></script>
 
         <!---------------------------------------------------------------------------------------------------------------->
@@ -174,14 +174,21 @@ if($varsesion == null || $varsesion ==''){
             echo "</tbody></table>";
             echo "</div>";
 
-            /// Columna para el botón
-            echo "<div class='col-md-4 offset-md-1 mt-3 text-right'>";
-            echo "<button onclick='document.location.reload();' type='button' class='btn btn-primary boton'> Refrescar <i class='fas fa-sync-alt'></i></button>";
-            echo "</div>";
-            echo "<div class='col-md-3 offset-md-1 mt-3 text-right'>";
-            echo '<button onclick="resetVotos();" type="button" class="btn btn-danger boton"> Reiniciar conteo <i class="fas fa-redo-alt"></i></button>';
-            echo "</div>";
-
+                    /// Columna para el botón
+  
+            // Aquí añadimos la lógica para mostrar u ocultar el botón según el rol del usuario
+            if ($_SESSION['usuario']['id_rol'] == '1') {
+                echo "<div class='col-md-4 offset-md-1 mt-3 text-right'>";
+                echo "<button onclick='document.location.reload();' type='button' class='btn btn-primary boton'> Refrescar <i class='fas fa-sync-alt'></i></button>";
+                echo "</div>";
+                echo "<div class='col-md-3 offset-md-1 mt-3 text-right'>";
+                echo '<button onclick="resetVotos();" type="button" class="btn btn-danger boton"> Reiniciar conteo <i class="fas fa-redo-alt"></i></button>';
+                echo "</div>";
+            } else if ($_SESSION['usuario']['id_rol'] == '2') {
+                echo "<div class='col-md-4 offset-md-3 mt-3 text-right'>";
+                echo "<button onclick='document.location.reload();' type='button' class='btn btn-primary boton'> Refrescar <i class='fas fa-sync-alt'></i></button>";
+                echo "</div>";
+            }
             echo "</div>";
 
             // Columna para el canvas

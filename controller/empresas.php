@@ -14,67 +14,87 @@ if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
 header('Access-Control-Allow-Origin: *');
 header('Content-Type: application/json');
 
-require_once '../config/conexionPDO.php'; 
-require_once '../models/Empresas.php'; 
+require_once '../config/conexionPDO.php';
+require_once '../models/Empresas.php'; // Ajusta el nombre del modelo si es necesario
 
-if (isset($_SESSION['usuario'])) {
-    // El usuario está en sesión
-    $creadoPor = $_SESSION['usuario'];
+$votoModelo = new Voto(); // Instancia del modelo
+
+// Obtener los votos (empresas)
+if ($_SERVER['REQUEST_METHOD'] === 'GET') {
+    $resultado = $votoModelo->obtenerVotos(); // Llama al método adecuado del modelo
+
+    if ($resultado) {
+        echo json_encode($resultado);
+    } else {
+        echo json_encode(['mensaje' => 'No se pudieron obtener los votos']); // Mensaje de error
+    }
 }
 
-$votos = new Voto();
+// Agregar una nueva empresa
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    // Verifica si los datos del formulario fueron enviados
+    $data = json_decode(file_get_contents('php://input'), true);
+    if (isset($data['id']) && isset($data['empresa']) && isset($data['representante'])) {
+        $id = $data['id'];
+        $empresa = $data['empresa'];
+        $representante = $data['representante'];
 
-$body = json_decode(file_get_contents("php://input"), true);
 
-switch ($_GET["opc"]) {
-    case "GetVotos":
-        $datos = $votos->get_votos();
-        // Filtrar los campos para mostrar solo id, empresa y representante
-        $datos_filtrados = array_map(function($voto) {
-            return array(
-                'id' => $voto['id'],
-                'empresa' => $voto['empresa'],
-                'representante' => $voto['representante']
-            );
-        }, $datos);
-        echo json_encode($datos_filtrados);
-        break;
-        case "InsertVoto":
-            $empresa = $body['empresa'];
-            $representante = $body['representante'];
-            // No es necesario recoger los otros campos ya que no se utilizan para agregar el voto
-        
-            $datos = $votos->insert_voto($empresa, $representante); // Solo se pasan los campos necesarios
-        
-            if ($datos > 0) {
-                $arrResponse = array("status" => true, "msg" => 'Voto agregado con éxito');
-            } else {
-                $arrResponse = array("status" => false, "msg" => 'Error al agregar el voto');
-            }
-        
-            echo json_encode($arrResponse, JSON_UNESCAPED_UNICODE);
-            break;
-        
-    case "DeleteVoto":
-        $id_voto = $_POST['id_voto'];
-        
-        // Verificar si el voto existe antes de eliminarlo
-        $voto_existente = $votos->verificar_voto_por_id($id_voto);
-        
-        if ($voto_existente) {
-            // Si el voto existe, intentar eliminarlo
-            $eliminado = $votos->delete_voto($id_voto);
-            
-            if ($eliminado) {
-                $arrResponse = array("status" => true, "msg" => 'Voto eliminado con éxito');
-            } else {
-                $arrResponse = array("status" => false, "msg" => 'No se pudo eliminar el voto');
-            }
+        // Llama al método para agregar empresa del modelo
+        $exito = $votoModelo->agregarEmpresa($id, $empresa, $representante);
+
+        if ($exito) {
+            echo json_encode(['mensaje' => 'Empresa agregada correctamente']);
         } else {
-            $arrResponse = array("status" => false, "msg" => 'El voto no existe');
+            echo json_encode(['mensaje' => 'Error al agregar la empresa']);
         }
-        
-        echo json_encode($arrResponse, JSON_UNESCAPED_UNICODE);
-        break;                       
+    } else {
+        echo json_encode(['mensaje' => 'Faltan datos para agregar la empresa']);
+    }
 }
+
+// Eliminar una empresa
+if ($_SERVER['REQUEST_METHOD'] === 'DELETE') {
+    // Verifica si se proporcionó el ID de la empresa a eliminar
+    $data = json_decode(file_get_contents('php://input'), true);
+    if (isset($data['id'])) {
+        $idEmpresa = $data['id'];
+
+        // Llama al método para eliminar empresa del modelo
+        $exito = $votoModelo->eliminarEmpresa($idEmpresa);
+
+        if ($exito) {
+            echo json_encode(['mensaje' => 'Empresa eliminada correctamente']);
+        } else {
+            echo json_encode(['mensaje' => 'Error al eliminar la empresa']);
+        }
+    } else {
+        echo json_encode(['mensaje' => 'Falta el ID de la empresa a eliminar']);
+    }
+}
+
+// Actualizar una empresa
+if ($_SERVER['REQUEST_METHOD'] === 'PUT') {
+    // Verifica si se proporcionaron los datos de la empresa a actualizar
+    $data = json_decode(file_get_contents('php://input'), true);
+    if (isset($data['id']) && isset($data['empresa']) && isset($data['representante'])) {
+        $idEmpresa = $data['id'];
+        $empresa = $data['empresa'];
+        $representante = $data['representante'];
+
+        // Llama al método para actualizar empresa del modelo
+        $exito = $votoModelo->actualizarEmpresa($idEmpresa, $empresa, $representante);
+
+        if ($exito) {
+            echo json_encode(['mensaje' => 'Empresa actualizada correctamente']);
+        } else {
+            echo json_encode(['mensaje' => 'Error al actualizar la empresa']);
+        }
+    } else {
+        echo json_encode(['mensaje' => 'Faltan datos para actualizar la empresa']);
+    }
+}
+
+
+
 ?>

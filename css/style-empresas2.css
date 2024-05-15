@@ -1,0 +1,184 @@
+table {
+	border-collapse: collapse;
+	width: 100%;
+}
+th, td {
+	border: 1px solid #ddd;
+	padding: 8px;
+	text-align: left;
+}
+th {
+	background-color: #f2f2f2;
+}
+.pagination {
+	margin-top: 10px;
+	float: right;
+	margin: 0 0 5px;
+	justify-content: right;
+}
+
+.pagination button {
+	border: none;
+	font-size: 13px;
+	min-width: 30px;
+	min-height: 30px;
+	color: #999;
+	margin: 0 2px;
+	line-height: 30px;
+	border-radius: 2px !important;
+	text-align: center;
+	padding: 0 6px;
+	border-width: 1px;
+	border-color: transparent;
+	background-color: transparent;
+	transition: background-color 0.3s ease;
+}
+
+.pagination button:hover {
+	background-color: #dee2e6;
+	color: #666;
+}
+
+.pagination li.active button {
+	background: #e99e00;
+	color: white;
+	border-color: #007bff;
+}
+
+.pagination li.active button:hover {
+	background: #e99e00;
+}
+
+.pagination button:hover,
+.pagination li.active button:hover {
+	border-color: #007bff;
+}
+
+body {
+	color: #202e42;
+	background-repeat: no-repeat;
+	background-size: cover;
+	display: flex;
+	justify-content: center;
+	font-family: 'Varela Round', sans-serif;
+	font-size: 13px;
+}
+.table-responsive {
+	margin: 10px 0;
+}
+.table-wrapper {
+	background: #FFFFFF;
+	padding: 20px 15px;
+	border-radius: 3px;
+	min-width: 1280px;
+	box-shadow: 0 1px 1px rgba(0,0,0,.05);
+	padding-top: 80px;
+}
+.table-title {        
+	padding-bottom: 15px;
+	background: #34495E;
+	color: #FFFFFF;
+	padding: 16px 30px;
+	min-width: 100%;
+	margin: -2px -2px 30px;
+	border-radius: 3px 3px 0 0;
+}
+.table-title h2 {
+	margin: 5px 0 0;
+	font-size: 24px;
+}
+/*Botones editar y eliminar */
+.btn-icon {
+	background: none;
+	border: none;
+	padding: 0;
+}
+.btn-edit {
+	color: #007bff; 
+}
+.btn-delete {
+	color: #dc3545; 
+}
+.btn-edit:hover,
+.btn-delete:hover {
+	background-color:  #ffc107;
+}
+.table-striped thead {
+	background: #34495E;
+	color: #FFFFFF; 
+}
+.scrollable-cell {
+	max-width: 45px; 
+	overflow-x: auto; 
+}
+.busqueda_input{
+	margin-bottom: 20px;
+}
+
+
+
+
+
+.select-c{
+	padding-top: .25rem;
+	padding-bottom: .25rem;
+	padding-left: .5rem;
+	font-size: .875rem;
+	border-radius: .25rem;
+}
+.form-select-c {
+	display: block;
+	width: 6%;
+	padding: .1.5rem 0.25rem .1.5rem .75rem;
+	-moz-padding-start: calc(0.75rem - 3px);
+	font-size: -5rem;
+	font-weight: 400;
+	line-height: 1.5;
+	color: #212529;
+	background-color: #fff;
+	background-image: url('../images/flecha.jpg');
+	background-repeat: no-repeat;
+	background-position: right .75rem center;
+	background-size: 14px 10px;
+	border: 1px solid #ced4da;
+	border-radius: .375rem;
+	transition: border-color .15s ease-in-out, box-shadow .15s ease-in-out;
+	-webkit-appearance: none;
+	-moz-appearance: none;
+	appearance: none;
+}
+/* Ajustar el ancho de una columna específica */
+#tablaEmpresas th:nth-child(1), /* ancho de la primera columna */
+#tablaEmpresas td:nth-child(1) {
+	width:70px; 
+}
+
+#tablaEmpresas th:nth-child(3), 
+#tablaEmpresas td:nth-child(3) {
+	width: 400px; 
+}
+
+#tablaEmpresas th:nth-child(2), 
+#tablaEmpresas td:nth-child(2) {
+	width: 700px; 
+}
+
+/* Estilo base de las flechas */
+.arrow {
+	display: inline-block;
+	width: 0;
+	height: 0;
+	margin-left: 5px; 
+}
+
+/* Estilo de la flecha ascendente */
+.arrow.asc:before {
+	content: '\2191'; 
+	font-size: 10px; 
+}
+
+/* Estilo de la flecha descendente */
+.arrow.desc:before {
+	content: '\2193';
+	font-size: 10px; 
+}

@@ -1,6 +1,46 @@
 var empresas = []; // Almacenamiento de empresas obtenidas
 var ordenAscendente = true; 
 
+//--------------------------------------------------------------------------------------------------------------------------------------------//
+
+// Función para cambiar el tamaño de página
+function changePageSize() {
+    var pageSize = parseInt(document.getElementById('pageSize').value);
+    showPage(1, pageSize);
+}
+
+//--------------------------------------------------------------------------------------------------------------------------------------------//
+
+function realizarBusqueda() {
+    var input, filter, table, tr, td, i, j, txtValue;
+    input = document.getElementById("busquedaInput");
+    filter = input.value.toUpperCase();
+    table = document.getElementById("tablaEmpresas");
+    tr = table.getElementsByTagName("tr");
+
+    // Iterar sobre las filas de datos de la tabla, excluyendo el encabezado
+    for (i = 1; i < tr.length; i++) {
+        td = tr[i].getElementsByTagName("td");
+        var encontrado = false;
+        for (j = 0; j < td.length; j++) {
+            if (td[j]) {
+                txtValue = td[j].textContent || td[j].innerText;
+                if (txtValue.toUpperCase().indexOf(filter) > -1) {
+                    encontrado = true;
+                    break; // Mostrar la fila si se encuentra una coincidencia en cualquier columna
+                }
+            }
+        }
+        if (encontrado) {
+            tr[i].style.display = "";
+        } else {
+            tr[i].style.display = "none"; // Ocultar la fila si no se encontró ninguna coincidencia
+        }
+    }
+}
+
+//--------------------------------------------------------------------------------------------------------------------------------------------//
+
 //Función de Ordenamiento 
 function sortTable(columnIndex) {
     
@@ -33,7 +73,7 @@ function sortTable(columnIndex) {
     showPage(1, pageSize);
 }
 
-
+//--------------------------------------------------------------------------------------------------------------------------------------------//
 
 // Función para mostrar información sobre los registros
 function mostrarInfoRegistros(totalRegistros, pageNumber, pageSize) {
@@ -48,34 +88,7 @@ function mostrarInfoRegistros(totalRegistros, pageNumber, pageSize) {
     }
 }
  
-function realizarBusqueda() {
-    var input, filter, table, tr, td, i, j, txtValue;
-    input = document.getElementById("busquedaInput");
-    filter = input.value.toUpperCase();
-    table = document.getElementById("tablaEmpresas");
-    tr = table.getElementsByTagName("tr");
-
-    // Iterar sobre las filas de datos de la tabla, excluyendo el encabezado
-    for (i = 1; i < tr.length; i++) {
-        td = tr[i].getElementsByTagName("td");
-        var encontrado = false;
-        for (j = 0; j < td.length; j++) {
-            if (td[j]) {
-                txtValue = td[j].textContent || td[j].innerText;
-                if (txtValue.toUpperCase().indexOf(filter) > -1) {
-                    encontrado = true;
-                    break; // Mostrar la fila si se encuentra una coincidencia en cualquier columna
-                }
-            }
-        }
-        if (encontrado) {
-            tr[i].style.display = "";
-        } else {
-            tr[i].style.display = "none"; // Ocultar la fila si no se encontró ninguna coincidencia
-        }
-    }
-}
-
+//--------------------------------------------------------------------------------------------------------------------------------------------//
 
 function showPage(pageNumber, pageSize) {
     var totalPages = Math.ceil(empresas.length / pageSize);
@@ -178,11 +191,7 @@ function showPage(pageNumber, pageSize) {
     infoRegistrosElement.innerHTML = infoRegistros;
 }
 
-// Función para cambiar el tamaño de página
-function changePageSize() {
-    var pageSize = parseInt(document.getElementById('pageSize').value);
-    showPage(1, pageSize);
-}
+//--------------------------------------------------------------------------------------------------------------------------------------------//
 
 // Obtener las empresas 
 var xhr = new XMLHttpRequest();
@@ -197,13 +206,21 @@ xhr.onload = function () {
 };
 xhr.send();
 
-   // Función para agregar una nueva empresa
+//---------------------------------------------------------------------------------------------------------------------------------------------//
+
+// Función para agregar una nueva empresa
 function AgregarEmpresa() {
     // Recoger los datos del formulario
+    var id = document.getElementById('idModal').value.trim();
     var empresa = document.getElementById('empresaModal').value.trim();
     var representante = document.getElementById('representanteModal').value.trim();
-    if (empresa === '' || representante === '') {
+    if (id === '' || empresa === '' || representante === '') {
         Swal.fire("Advertencia", "Debe llenar todos los campos", "warning");
+        return;
+    }
+     // Validar que el ID contenga solo números
+     if (!/^\d+$/.test(id)) {
+        Swal.fire("Advertencia", "El ID debe contener solo números", "warning");
         return;
     }
     // Verificar que el representante no contenga números ni caracteres especiales
@@ -213,6 +230,7 @@ if (!/^[a-zA-ZñÑ@!*$&#`´/%.,_\s\-]+$/.test(representante)) {
     }
     // Crear un objeto para los datos que se enviarán
     var data = {
+        id: id,
         empresa: empresa,
         representante: representante
     };
@@ -256,6 +274,33 @@ if (!/^[a-zA-ZñÑ@!*$&#`´/%.,_\s\-]+$/.test(representante)) {
         });
 }
 
+
+// Función para validar el campo de ID
+function validarId(input) {
+    // Obtener el valor del campo y eliminar espacios en blanco al inicio y al final
+    var id = input.value.trim();
+    var regex = /^\d+$/;
+    if (id === '') {
+        input.classList.remove("is-invalid");
+    } else {
+        // Verificar si el valor del campo coincide con la expresión regular
+        if (!regex.test(id)) {
+            // Si no coincide, agregar clase de Bootstrap para mostrar mensaje de error
+            input.classList.add("is-invalid");
+        } else {
+            // Si coincide, eliminar clase de Bootstrap para eliminar mensaje de error
+            input.classList.remove("is-invalid");
+        }
+    }
+}
+
+// Agregar evento de input para validar el campo de ID
+document.getElementById('idModal').addEventListener('input', function() {
+    validarId(this);
+});
+
+
+
 // Función para validar el campo de representante
 function validarRepresentante(input) {
     // Obtener el valor del campo y eliminar espacios en blanco al inicio y al final
@@ -285,6 +330,8 @@ document.getElementById('representanteModal').addEventListener('input', function
     validarRepresentante(this);
 });
 
+//--------------------------------------------------------------------------------------------------------------------------------------//
+
     // Función para cargar datos de empresa en el modal de edición
     function cargarDatosEmpresa(idEmpresa, nombreEmpresa, representante) {
         document.getElementById('editEmpresaId').value = idEmpresa;
@@ -293,7 +340,6 @@ document.getElementById('representanteModal').addEventListener('input', function
     }
 
     // Función para editar una empresa
-
     function editarEmpresa() {
         var empresa = document.getElementById('editEmpresaNombre').value.trim();
         var representanteInput = document.getElementById('editEmpresaRepresentante');
@@ -368,8 +414,6 @@ document.getElementById('representanteModal').addEventListener('input', function
         $('#editEmpresaModal').modal('show');
     }
 
-
-
     // Función para validar el campo de representante en el modal de edición
     function validarRepresentanteEdit(input) {
         // Obtener el valor del campo y eliminar espacios en blanco al inicio y al final
@@ -404,7 +448,19 @@ document.getElementById('editEmpresaRepresentante').addEventListener('input', fu
     validarRepresentanteEdit(this);
 });
 
+  // Agregar eventos de input para convertir a mayúsculas en tiempo real
+  document.getElementById('editEmpresaNombre').addEventListener('input', function() {
+    convertirAMayusculas(this);
+});
 
+document.getElementById('editEmpresaRepresentante').addEventListener('input', function() {
+    convertirAMayusculas(this);
+    validarRepresentante(this);
+});
+
+
+
+//--------------------------------------------------------------------------------------------------------------------------------------//
 
     // Función para eliminar una empresa
     function eliminarEmpresa(idEmpresa) {
@@ -458,12 +514,4 @@ document.getElementById('editEmpresaRepresentante').addEventListener('input', fu
             }
         });
     }
-     // Agregar eventos de input para convertir a mayúsculas en tiempo real
-     document.getElementById('editEmpresaNombre').addEventListener('input', function() {
-        convertirAMayusculas(this);
-    });
-
-    document.getElementById('editEmpresaRepresentante').addEventListener('input', function() {
-        convertirAMayusculas(this);
-        validarRepresentante(this);
-    });
+   

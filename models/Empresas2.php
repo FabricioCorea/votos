@@ -19,11 +19,12 @@ class Empresas2 extends Conectar {
     }
 
     // Método para agregar una nueva empresa
-    public function agregarEmpresa($empresa, $representante) {
+    public function agregarEmpresa($id, $empresa, $representante) {
         try {
             $conexion = $this->conexion();
-            $query = "INSERT INTO votos (empresa, representante) VALUES (:nombreEmpresa, :representante)";
+            $query = "INSERT INTO votos (id, empresa, representante) VALUES (:idEmpresa, :nombreEmpresa, :representante)";
             $stmt = $conexion->prepare($query);
+            $stmt->bindParam(':idEmpresa', $id);
             $stmt->bindParam(':nombreEmpresa', $empresa);
             $stmt->bindParam(':representante', $representante);
             $exito = $stmt->execute();

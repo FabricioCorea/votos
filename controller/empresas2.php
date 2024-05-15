@@ -34,11 +34,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     // Verifica si los datos del formulario fueron enviados
     $data = json_decode(file_get_contents('php://input'), true);
-    if (isset($data['empresa']) && isset($data['representante'])) {
+    if (isset($data['id']) && isset($data['empresa']) && isset($data['representante'])) {
+        $id = $data['id'];
         $empresa = $data['empresa'];
         $representante = $data['representante'];
 
-        $exito = $empresas->agregarEmpresa($empresa, $representante);
+        $exito = $empresas->agregarEmpresa($id, $empresa, $representante);
 
         if ($exito) {
             echo json_encode(['mensaje' => 'Empresa agregada correctamente']);
