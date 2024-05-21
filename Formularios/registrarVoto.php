@@ -95,13 +95,17 @@ $varsesion = $_SESSION['usuario'];
                                             <option value="REPRESENTADO">REPRESENTADO</option>
                                         </select>
                                     </div>
+                                    <div class="input-group" id="campo_representado" style="visibility: hidden;">
+                                        <input class="form-control border-light" style="padding: 10px 10px;" type="text" id="representado_por" placeholder="Nombre de la persona en representación (opcional)" autocomplete="off">
+                                    </div>
                                     <div class="contenedor"></div>
                                         <br> 
                                         <a href="#" id="registrar_voto_btn" name="registrar_voto">Registrar voto</a>
                                     </div>
                                 </div>
                             <div class="col-md-6">
-                                <div class="text_img">
+                                <div class="text_img"> 
+                                    
                                     <figure>
                                         <img src="../images/4005929_14930-removebg-preview.png" alt="#">
                                     </figure>

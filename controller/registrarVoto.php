@@ -33,8 +33,8 @@ if ($buscarEmpresas->num_rows > 0) {
         // Verificar si el usuario en sesión tiene rol de administrador (id_rol = 1)
         if ($_SESSION['usuario']['id_rol'] == '1' || $_SESSION['usuario']['id_rol'] == '0') {
             $selectOptions = "<li>La empresa con el ID proporcionado ya registró su voto. 
-            <button class='btn btn-delete eliminar_voto_btn' style='background-color: #de4756; color: white; margin-left: 15px;' data-id='$idEmpresa'>
-                <span>Eliminar voto</span>
+            <button class='btn btn-delete ver_voto_btn' style='background-color: #3085d6; color: white; margin-left: 15px;' data-id='$idEmpresa'>
+                <span>Ver voto</span>
             </button>
             </li>";
         } else {
@@ -50,6 +50,9 @@ if ($buscarEmpresas->num_rows > 0) {
 if (isset($_POST['id_empresa']) && isset($_POST['subject'])) {
     $id = strip_tags($_POST["id_empresa"]);
     $presente = strip_tags($_POST["subject"]);
+    
+    // Capturar el valor del campo representado_por, si está presente
+    $representado_por = isset($_POST['representado_por']) ? $_POST['representado_por'] : null;
 
     // Consulta para actualizar la base de datos con el nuevo voto
     $query2 = "SELECT * FROM votos WHERE id = '$id'";
@@ -68,7 +71,14 @@ if (isset($_POST['id_empresa']) && isset($_POST['subject'])) {
         $meter = "UPDATE votos SET voto = 1, $campoActualizar = '$presente' WHERE id = '$id'";
 
         if ($conn->query($meter) && $row_cnt2 > 0) {
-            echo json_encode(array("status" => "success", "message" => 'El voto para la empresa con ID ' . $id . ' se ha registrado correctamente.'));
+            // Inserción de datos en la tabla tbl_registro_votos
+            $usuario_id = $_SESSION['usuario']['id_usuario']; // Obtener el ID de usuario de la sesión
+            $insert_query = "INSERT INTO tbl_registro_votos (id_empresa, id_usuario, fecha_registro, representado_por) VALUES ('$id', '$usuario_id', NOW(), '$representado_por')";
+            if ($conn->query($insert_query)) {
+                echo json_encode(array("status" => "success", "message" => 'El voto para la empresa con ID ' . $id . ' se ha registrado correctamente.'));
+            } else {
+                echo json_encode(array("status" => "error", "message" => "Hubo un error al registrar el voto para la empresa con ID $id: " . $conn->error));
+            }
         } else {
             echo json_encode(array("status" => "error", "message" => "Hubo un error al registrar el voto para la empresa con ID $id: " . $conn->error));
         }
@@ -76,6 +86,7 @@ if (isset($_POST['id_empresa']) && isset($_POST['subject'])) {
 } else {
     echo $selectOptions; // Mostrar la lista de opciones si no se envió el formulario de registro de voto
 }
+
 
 // Cerrar la conexión a la base de datos
 $conn->close();
