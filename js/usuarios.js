@@ -44,14 +44,37 @@ $(document).ready(function() {
     fntValidUsuario();
     fntValidNombre();
 });
+// Función para restablecer los mensajes de validación al cerrar el modal
+function resetValidationFeedback() {
+    document.querySelector("#EditContraseña + .invalid-feedback").innerHTML = '';
+    document.querySelector("#editUsuario + .invalid-feedback").innerHTML = '';
+    document.querySelector("#editNombre + .invalid-feedback").innerHTML = '';
+    document.querySelector("#confirmEditContraseña + .invalid-feedback").innerHTML = '';
 
-function testContraseña(txtString) {
-  var stringText = new RegExp(
-    /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)([A-Za-z\d]|[^ ]){8,15}$/
-  );
-  return stringText.test(txtString);
+    // Remover la clase 'is-invalid' de los elementos relevantes
+    document.querySelector("#EditContraseña").classList.remove("is-invalid");
+    document.querySelector("#editUsuario").classList.remove("is-invalid");
+    document.querySelector("#editNombre").classList.remove("is-invalid");
+    document.querySelector("#confirmEditContraseña").classList.remove("is-invalid");
+
+    //Remover el valor de los campos de contraseña
+    document.getElementById("EditContraseña").value = '';
+    document.getElementById("confirmEditContraseña").value = '';
 }
 
+// Adjuntar evento al modal de edición para restablecer los mensajes de validación
+$('#editEmployeeModal').on('hidden.bs.modal', function () {
+    resetValidationFeedback();
+});
+
+
+// Expresión regular para validar la contraseña
+function testContraseña(txtString) {
+    var stringText = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)([A-Za-z\d]|[^ ]){8,15}$/;
+    return stringText.test(txtString);
+}
+
+// Función para validar la contraseña
 function fntValidContra() {
     let ValidContra = document.querySelectorAll(".ValidContra");
     ValidContra.forEach(function (ValidContra) {
@@ -67,103 +90,101 @@ function fntValidContra() {
             // Verificar si el campo está vacío después de borrar el texto ingresado
             if (inputValue === '') {
                 this.classList.remove("is-invalid");
-                this.removeAttribute("title");
+                // Ocultar el mensaje de validación si el campo está vacío
+                this.nextElementSibling.innerHTML = ''; // Limpiar el contenido del div
                 return; // Salir de la función si el campo está vacío
             }
 
             // Realizar las validaciones solo si el campo no está vacío
             if (!testContraseña(inputValue)) {
                 this.classList.add("is-invalid");
-                this.setAttribute("title", "La contraseña debe contener al menos 8 caracteres, una letra mayúscula, una letra minúscula y un número");
+                // Mostrar el mensaje de validación en el div correspondiente
+                this.nextElementSibling.innerHTML = 'La contraseña debe contener al menos 8 caracteres, una letra mayúscula, una letra minúscula y un número';
             } else {
                 this.classList.remove("is-invalid");
-                this.removeAttribute("title");
+                // Ocultar el mensaje de validación si la contraseña es válida
+                this.nextElementSibling.innerHTML = ''; // Limpiar el contenido del div
             }
         });
     });
 }
 
-  function testUsuario(txtString) {
-    // Expresión regular que verifica si el usuario contiene solo letras y números y no excede los 11 caracteres
+// Expresión regular para validar el usuario
+function testUsuario(txtString) {
     var regex = /^[a-zA-Z0-9]{1,11}$/;
     return regex.test(txtString);
-  }
-  
-  function fntValidUsuario() {
+}
+
+// Función para validar el usuario
+function fntValidUsuario() {
     let ValidUsuario = document.querySelectorAll(".ValidUsuario");
     ValidUsuario.forEach(function (ValidUsuario) {
-      ValidUsuario.addEventListener("keydown", function (event) {
-        // Bloquear el ingreso del espacio
-        if (event.key === " ") {
-          event.preventDefault();
-        }
-      });
-  
-      ValidUsuario.addEventListener("input", function () {
-        let inputValue = this.value.toUpperCase(); // Convertir el texto a mayúsculas
-        this.value = inputValue; // Establecer el valor convertido en mayúsculas
-  
-        // Verificar si el campo está vacío después de borrar el texto ingresado
-        if (inputValue === '') {
-          this.classList.remove("is-invalid");
-          this.removeAttribute("title");
-          return; // Salir de la función si el campo está vacío
-        }
-  
-        if (!testUsuario(inputValue)) {
-          this.classList.add("is-invalid");
-          this.setAttribute("title", "El usuario no puede contener caracteres especiales y debe tener máximo 11 caracteres");
-        } else {
-          this.classList.remove("is-invalid");
-          this.removeAttribute("title");
-        }
-      });
-    });
-  }
-  
+        ValidUsuario.addEventListener("keydown", function (event) {
+            // Bloquear el ingreso del espacio
+            if (event.key === " ") {
+                event.preventDefault();
+            }
+        });
 
-  function testNombre(txtString) {
-    // Expresión regular que verifica si el nombre es alfabético y tiene como máximo un espacio entre letras
+        ValidUsuario.addEventListener("input", function () {
+            let inputValue = this.value.toUpperCase(); // Convertir el texto a mayúsculas
+            this.value = inputValue; // Establecer el valor convertido en mayúsculas
+
+            // Verificar si el campo está vacío después de borrar el texto ingresado
+            if (inputValue === '') {
+                this.classList.remove("is-invalid");
+                // Ocultar el mensaje de validación si el campo está vacío
+                this.nextElementSibling.innerHTML = ''; // Limpiar el contenido del div
+                return; // Salir de la función si el campo está vacío
+            }
+
+            if (!testUsuario(inputValue)) {
+                this.classList.add("is-invalid");
+                // Mostrar el mensaje de validación en el div correspondiente
+                this.nextElementSibling.innerHTML = 'El usuario no puede contener caracteres especiales y debe tener máximo 11 caracteres';
+            } else {
+                this.classList.remove("is-invalid");
+                // Ocultar el mensaje de validación si el usuario es válido
+                this.nextElementSibling.innerHTML = ''; // Limpiar el contenido del div
+            }
+        });
+    });
+}
+
+// Expresión regular para validar el nombre
+function testNombre(txtString) {
     var regex = /^[a-zA-Z]+(?:\s[a-zA-Z]+)*\s?$/;
     return regex.test(txtString);
-  }
-  
-  function fntValidNombre() {
+}
+
+// Función para validar el nombre
+function fntValidNombre() {
     let ValidNombre = document.querySelectorAll(".ValidNombre");
     ValidNombre.forEach(function (ValidNombre) {
-      ValidNombre.addEventListener("input", function () {
-        let inputValue = this.value.toUpperCase(); // Convertir el texto a mayúsculas
-        this.value = inputValue; // Establecer el valor convertido en mayúsculas
-  
-        // Verificar si el campo está vacío después de borrar el texto ingresado
-        if (inputValue === '') {
-          this.classList.remove("is-invalid");
-          this.removeAttribute("title");
-          return; // Salir de la función si el campo está vacío
-        }
-  
-        if (!testNombre(inputValue)) {
-          this.classList.add("is-invalid");
-          this.setAttribute("title", "El nombre debe ser alfabético, con máximo un espacio entre letras y sin números ni caracteres especiales");
-        } else {
-          this.classList.remove("is-invalid");
-          this.removeAttribute("title");
-        }
-      });
-  
-      ValidNombre.addEventListener("keydown", function(event) {
-        // Captura la tecla presionada
-        var keyPressed = event.key;
-        // Si la tecla presionada es un espacio y el cursor está en la primera posición del campo
-        if (keyPressed === ' ' && this.selectionStart === 0) {
-          // Cancela el evento de teclado para evitar que se ingrese el espacio
-          event.preventDefault();
-        }
-      });
+        ValidNombre.addEventListener("input", function () {
+            let inputValue = this.value.toUpperCase(); // Convertir el texto a mayúsculas
+            this.value = inputValue; // Establecer el valor convertido en mayúsculas
+
+            // Verificar si el campo está vacío después de borrar el texto ingresado
+            if (inputValue === '') {
+                this.classList.remove("is-invalid");
+                // Ocultar el mensaje de validación si el campo está vacío
+                this.nextElementSibling.innerHTML = ''; // Limpiar el contenido del div
+                return; // Salir de la función si el campo está vacío
+            }
+
+            if (!testNombre(inputValue)) {
+                this.classList.add("is-invalid");
+                // Mostrar el mensaje de validación en el div correspondiente
+                this.nextElementSibling.innerHTML = 'El nombre debe ser alfabético, con máximo un espacio entre letras y sin números ni caracteres especiales';
+            } else {
+                this.classList.remove("is-invalid");
+                // Ocultar el mensaje de validación si el nombre es válido
+                this.nextElementSibling.innerHTML = ''; // Limpiar el contenido del div
+            }
+        });
     });
-  }  
-  
-// Función para cargar usuarios
+}
 // Función para cargar usuarios
 function CargarUsuarios() {
     $.ajax({
@@ -239,6 +260,10 @@ function AgregarUsuario() {
     let contraseñaValid = document.querySelector("#contraseña");
     let usuarioValid = document.querySelector("#usuario");
     let nombreValid = document.querySelector("#nombre");
+    let contraseñaFeedback = document.querySelector("#contraseña + .invalid-feedback");
+    let usuarioFeedback = document.querySelector("#usuario + .invalid-feedback");
+    let nombreFeedback = document.querySelector("#nombre + .invalid-feedback");
+
     // Validación general de campos vacíos
     if (
         usuario == "" ||
@@ -249,16 +274,9 @@ function AgregarUsuario() {
         return false;
     }
 
-    if (contraseñaValid.classList.contains("is-invalid")) {
-        Swal.fire(
-            "Advertencia",
-            "La contraseña debe contener al menos 8 caracteres, una letra mayúscula, una letra minúscula y un número",
-            "warning"
-        );
-        return false;
-    }
-
     if (usuarioValid.classList.contains("is-invalid")) {
+        // Mostrar el mensaje de validación en el div correspondiente
+        usuarioFeedback.innerHTML = 'El usuario no puede contener caracteres especiales y debe tener máximo 11 caracteres';
         Swal.fire(
             "Advertencia",
             "El usuario no puede contener caracteres especiales y debe tener máximo 11 caracteres",
@@ -266,11 +284,24 @@ function AgregarUsuario() {
         );
         return false;
     }
-
+    
     if (nombreValid.classList.contains("is-invalid")) {
+        // Mostrar el mensaje de validación en el div correspondiente
+        nombreFeedback.innerHTML = 'El nombre debe contener como máximo un espacio, sin números ni caracteres especiales';
         Swal.fire(
             "Advertencia",
             "El nombre debe contener como máximo un espacio, sin números ni caracteres especiales",
+            "warning"
+        );
+        return false;
+    }
+
+    if (contraseñaValid.classList.contains("is-invalid")) {
+        // Mostrar el mensaje de validación en el div correspondiente
+        contraseñaFeedback.innerHTML = 'La contraseña debe contener al menos 8 caracteres, una letra mayúscula, una letra minúscula y un número';
+        Swal.fire(
+            "Advertencia",
+            "La contraseña debe contener al menos 8 caracteres, una letra mayúscula, una letra minúscula y un número",
             "warning"
         );
         return false;
@@ -285,6 +316,11 @@ function AgregarUsuario() {
         });
         return;
     }
+
+    // Restablecer los mensajes de validación si todos los campos son válidos
+    contraseñaFeedback.innerHTML = '';
+    usuarioFeedback.innerHTML = '';
+    nombreFeedback.innerHTML = '';
 
   // Crear objeto con los datos del usuario
   var userData = {
@@ -376,113 +412,122 @@ function CargarUsuario(idUsuario) {
     });
 }
 
-//función para actualizar usuario
 function ActualizarUsuario() {
-  var idUsuario = document.getElementById("editIdUsuario").value;
-  var rolSelect = document.getElementById("editRolSelect").value;
-  var usuario = document.getElementById("editUsuario").value;
-  var nombre = document.getElementById("editNombre").value;
-  var selecEstado = document.getElementById("editSelecEstado").value;
-  var contraseña = document.getElementById("EditContraseña").value;
-  var confirmContraseña = document.getElementById("confirmEditContraseña").value;
+    var idUsuario = document.getElementById("editIdUsuario").value;
+    var rolSelect = document.getElementById("editRolSelect").value;
+    var usuario = document.getElementById("editUsuario").value;
+    var nombre = document.getElementById("editNombre").value;
+    var selecEstado = document.getElementById("editSelecEstado").value;
+    var contraseña = document.getElementById("EditContraseña").value;
+    var confirmContraseña = document.getElementById("confirmEditContraseña").value;
 
-  // Validaciones de campos específicos
-  let contraseñaValid = document.querySelector("#EditContraseña");
-  let usuarioValid = document.querySelector("#editUsuario");
-  let nombreValid = document.querySelector("#editNombre");
-  
-  // Validación general de campos vacíos
-  if (
-      usuario == "" ||
-      nombre == ""
-  ) {
-      Swal.fire("Advertencia", "Debe llenar todos los campos", "warning");
-      return false;
-  }
+    // Validaciones de campos específicos
+    let contraseñaValid = document.querySelector("#EditContraseña");
+    let usuarioValid = document.querySelector("#editUsuario");
+    let nombreValid = document.querySelector("#editNombre");
+    let contraseñaFeedback = document.querySelector("#EditContraseña + .invalid-feedback");
+    let usuarioFeedback = document.querySelector("#editUsuario + .invalid-feedback");
+    let nombreFeedback = document.querySelector("#editNombre + .invalid-feedback");
 
-  if (contraseñaValid.classList.contains("is-invalid")) {
-      Swal.fire(
-          "Advertencia",
-          "La contraseña debe contener al menos 8 caracteres, una letra mayúscula, una letra minúscula y un número",
-          "warning"
-      );
-      return false;
-  }
+    // Validación general de campos vacíos
+    if (usuario == "" || nombre == "") {
+        Swal.fire("Advertencia", "Debe llenar todos los campos obligatorios", "warning");
+        return false;
+    }
+    if (usuarioValid.classList.contains("is-invalid")) {
+        // Mostrar el mensaje de validación en el div correspondiente
+        usuarioFeedback.innerHTML = 'El usuario no puede contener caracteres especiales y debe tener máximo 11 caracteres';
+        Swal.fire(
+            "Advertencia",
+            "El usuario no puede contener caracteres especiales y debe tener máximo 11 caracteres",
+            "warning"
+        );
+        return false;
+    }
 
-  if (usuarioValid.classList.contains("is-invalid")) {
-      Swal.fire(
-          "Advertencia",
-          "El usuario no puede contener caracteres especiales y debe tener máximo 11 caracteres",
-          "warning"
-      );
-      return false;
-  }
-  
-  if (nombreValid.classList.contains("is-invalid")) {
-      Swal.fire(
-          "Advertencia",
-          "El nombre debe ser alfabético, con máximo un espacio y sin números ni caracteres especiales",
-          "warning"
-      );
-      return false;
-  }
+    if (nombreValid.classList.contains("is-invalid")) {
+        // Mostrar el mensaje de validación en el div correspondiente
+        nombreFeedback.innerHTML = 'El nombre debe contener como máximo un espacio, sin números ni caracteres especiales';
+        Swal.fire(
+            "Advertencia",
+            "El nombre debe contener como máximo un espacio, sin números ni caracteres especiales",
+            "warning"
+        );
+        return false;
+    }
 
-  // Validar contraseñas
-  if (contraseña !== confirmContraseña) {
-      Swal.fire({
-          icon: 'warning',
-          title: 'Advertencia',
-          text: 'Las contraseñas no coinciden'
-      });
-      return;
-  }
+    if (contraseña !== confirmContraseña) {
+        Swal.fire({
+            icon: 'warning',
+            title: 'Advertencia',
+            text: 'Las contraseñas no coinciden'
+        });
+        return false;
+    }
 
-  // Crear objeto con los datos del usuario a actualizar
-  var userData = {
-      idUsuario: idUsuario,
-      rolSelect: rolSelect,
-      usuario: usuario,
-      nombre: nombre,
-      estadoSelect: selecEstado,
-      contraseña: contraseña,
-      confirmContraseña: confirmContraseña
-  };
+    if (contraseñaValid.classList.contains("is-invalid")) {
+        // Mostrar el mensaje de validación en el div correspondiente
+        contraseñaFeedback.innerHTML = 'La contraseña debe contener al menos 8 caracteres, una letra mayúscula, una letra minúscula y un número';
+        Swal.fire(
+            "Advertencia",
+            "La contraseña debe contener al menos 8 caracteres, una letra mayúscula, una letra minúscula y un número",
+            "warning"
+        );
+        return false;
+    }
 
-  // Enviar solicitud POST al controlador para actualizar el usuario
-  $.ajax({
-      type: "POST",
-      url: UrlActualizarUsuario, // URL para actualizar el usuario
-      data: JSON.stringify(userData),
-      dataType: "json",
-      success: function(response) {
-          if (response.status) {
-              Swal.fire({
-                  icon: 'success',
-                  title: 'Listo',
-                  text: response.msg
-              }).then((result) => {
-                  if (result.isConfirmed) {
-                      location.reload(); // Recargar la página después de actualizar el usuario
-                  }
-              });
-          } else {
-              Swal.fire({
-                  icon: 'error',
-                  title: 'Error',
-                  text: response.msg
-              });
-          }
-      },
-      error: function(xhr, status, error) {
-          Swal.fire({
-              icon: 'error',
-              title: 'Error',
-              text: 'Ocurrió un error al procesar la solicitud'
-          });
-          console.error(xhr.responseText);
-      }
-  });
+    // Restablecer los mensajes de validación si todos los campos son válidos
+    contraseñaFeedback.innerHTML = '';
+    usuarioFeedback.innerHTML = '';
+    nombreFeedback.innerHTML = '';
+
+    // Crear objeto con los datos del usuario a actualizar
+    var userData = {
+        idUsuario: idUsuario,
+        rolSelect: rolSelect,
+        usuario: usuario,
+        nombre: nombre,
+        estadoSelect: selecEstado,
+        contraseña: contraseña,
+        confirmContraseña: confirmContraseña
+    };
+
+    // Enviar solicitud POST al controlador para actualizar el usuario
+    $.ajax({
+        type: "POST",
+        url: UrlActualizarUsuario, // URL para actualizar el usuario
+        data: JSON.stringify(userData),
+        dataType: "json",
+        success: function(response) {
+            if (response.status) {
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Listo',
+                    text: response.msg
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        location.reload(); // Recargar la página después de actualizar el usuario
+                    }
+                });
+            } else {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Error',
+                    text: response.msg
+                });
+            }
+        },
+        error: function(xhr, status, error) {
+            Swal.fire({
+                icon: 'error',
+                title: 'Error',
+                text: 'Ocurrió un error al procesar la solicitud'
+            });
+            console.error(xhr.responseText);
+        }
+    });
 }
+
 // Función para mostrar/ocultar campos de nueva contraseña
 document.getElementById("btnNuevaContrasena").addEventListener("click", function() {
     var nuevaContrasena = document.getElementById("nuevaContrasena");

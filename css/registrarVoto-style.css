@@ -3,16 +3,49 @@
     width: 300px;
     max-height: 200px;
     overflow-y: auto;
+    background-color: transparent; /* Fondo transparente para el contenedor */
 }
+
+#lista_resultados {
+    padding: 0; /* Eliminar el relleno para evitar espacios en blanco */
+}
+.custom-border-transparent {
+    border-color: transparent !important;
+}
+
 #resultado_empresa li {
     cursor: pointer;
     padding: 5px;
- }
+    background-color: rgb(255, 255, 255); /* Color de fondo más claro */
+    transition: background-color 0.3s ease; /* Transición suave */
+    color: black; /* Color de texto por defecto */
+}
 
- #resultado_empresa li.selected {
+#resultado_empresa li.selected {
     background-color: 	rgb(87, 100, 125);
-    color: white;
- }
- #clear_search {
+    color: white; /* Color de texto cuando se selecciona */
+}
+
+#clear_search {
     width: 30px; 
+}
+
+.input-group1 .input-container {
+    position: relative;
+}
+
+.input-group1 input.form-control:focus, .input-group1 button.clear-btn:focus {
+    border-color: #17a2b8 !important; 
+    box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25) !important; 
+}
+
+.input-group1 .clear-btn {
+    position: absolute;
+    top: 50%;
+    right: 10px;
+    transform: translateY(-50%);
+    background-color: transparent;
+    border: none;
+    cursor: pointer;
+    background-color: white;
 }

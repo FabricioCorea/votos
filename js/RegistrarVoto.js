@@ -1,15 +1,16 @@
 $(document).ready(function() {
     // Hacer invisible el campo de resultados al inicio
     $("#resultado_empresa").css("visibility", "hidden");
+    $("#clear_search").hide();
 
     // Evento al cambiar el valor del input de ID de empresa
     $('#id_empresa').on('input', function() {
         var idEmpresa = $(this).val();
         if (idEmpresa.trim() === '') {
-            // Si el campo de búsqueda está vacío, mostrar los elementos del select y el botón
+            // Si el campo de búsqueda está vacío, ocultar el botón de limpieza
+            $("#clear_search").hide();
             $("#resultado_empresa").empty().css("visibility", "hidden");
             $("#subject_input, .contenedor, #registrar_voto_btn").css("visibility", "visible");
-            $("#clear_search").hide();
         } else {
             // Validar que solo se ingresen números
             if (!/^\d+$/.test(idEmpresa)) {
@@ -17,7 +18,7 @@ $(document).ready(function() {
                 return;
             }
             obtener_registro(idEmpresa);
-            // Mostrar el botón de eliminación
+            // Mostrar el botón de limpieza
             $("#clear_search").show();
         }
     });
@@ -52,24 +53,22 @@ $(document).ready(function() {
                 $("#resultado_empresa").empty().css("visibility", "hidden");
                 $("#subject_input, .contenedor, #registrar_voto_btn").css("visibility", "visible");
             } else {
-                if (
-                    resultado.includes("<li>No se encontró la empresa con el ID proporcionado.</li>") || 
-                    resultado.includes("<li>La empresa con el ID proporcionado ya registró su voto.")
-                ) {
+                if (resultado.includes("<li>No se encontró la empresa con el ID proporcionado.</li>") || resultado.includes("<li>La empresa con el ID " + idEmpresa + " ya registró su voto.")) {
                     // Si no se encuentra la empresa o ya registró su voto, ocultar los elementos relevantes
-                    $("#resultado_empresa").html(resultado).css("visibility", "visible");
+                    $("#resultado_empresa").html(resultado).css("visibility", "visible").css("border", "1px solid red"); // Aquí agregamos el estilo de borde rojo
                     $("#subject_input, .contenedor, #registrar_voto_btn").css("visibility", "hidden");
                     $("#resultado_empresa li.not-selectable").css("user-select", "none"); // Aplicar estilo a texto
                     $("#resultado_empresa li").removeClass("selectable"); // Quitar la clase "selectable" de los elementos de la lista
                 } else {
                     // Mostrar los resultados normales y los elementos relevantes
-                    $("#resultado_empresa").html(resultado).css("visibility", "visible");
+                    $("#resultado_empresa").html(resultado).css("visibility", "visible").css("border", "none"); // Aquí quitamos el borde si no se cumple la condición
                     $("#subject_input, .contenedor, #registrar_voto_btn").css("visibility", "visible");
                     $("#resultado_empresa li.not-selectable").css("user-select", "text"); // Restaurar estilo
                     $("#resultado_empresa li").addClass("selectable"); // Agregar la clase "selectable" a los elementos de la lista
                 }
             }
         })
+               
         .fail(function() {
             $("#resultado_empresa").empty().css("visibility", "hidden"); // Manejo de errores: ocultar el campo de resultados en caso de fallo
         });
@@ -243,5 +242,15 @@ $(document).ready(function() {
                 }
             }
         });
-    });    
+    });
+    $(document).ready(function() {
+        // Agrega un listener al evento de entrada en el campo
+        $('#representado_por').on('input', function() {
+            // Convierte el valor del campo a mayúsculas y lo establece nuevamente
+            $(this).val($(this).val().toUpperCase());
+        });
+    });
+
+    // Enfocar el campo de búsqueda al cargar la página
+    $('#id_empresa').focus();
 });

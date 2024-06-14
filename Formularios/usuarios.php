@@ -113,6 +113,7 @@ $varsesion = $_SESSION['usuario'];
                         <div class="mb-3">
                             <label for="usuario" class="form-label">Usuario</label>
                             <input type="text" name="usuario" id="usuario" class="form-control valid ValidUsuario" onpaste="return false;" placeholder="Ingrese el usuario" autocomplete="off">
+                            <div class="invalid-feedback"></div>
                         </div>
                         <div class="mb-3 d-flex">
                             <div style="flex: 1;">
@@ -131,14 +132,17 @@ $varsesion = $_SESSION['usuario'];
                         <div class="mb-3">
                             <label for="nombre" class="form-label">Nombre</label>
                             <input type="text" name="nombre" id="nombre" class="form-control valid ValidNombre" onpaste="return false;" placeholder="Ingrese el nombre del usuario" autocomplete="off">
+                            <div class="invalid-feedback"></div>
                         </div>
                         <div class="mb-3">
                             <label for="contraseña" class="form-label">Contraseña</label>
                             <input type="password" name="contraseña" id="contraseña" class="form-control valid ValidContra" onpaste="return false;" placeholder="Ingrese la contraseña">
+                            <div class="invalid-feedback"></div>
                         </div>
                         <div class="mb-3">
                             <label for="confirmContraseña" class="form-label">Confirmar contraseña</label>
                             <input type="password" id="confirmContraseña" name="confirmContraseña" class="form-control valid ValidContra" onpaste="return false;" placeholder="Ingrese la contraseña">
+                            <div class="invalid-feedback"></div>
                         </div>
                     </form>
                 </div>
@@ -164,6 +168,7 @@ $varsesion = $_SESSION['usuario'];
                         <div class="mb-3">
                             <label for="editUsuario" class="form-label">Usuario</label>
                             <input type="text" name="editUsuario" id="editUsuario" class="form-control valid ValidUsuario" onpaste="return false;" placeholder="Ingrese el usuario" autocomplete="off">
+                            <div class="invalid-feedback"></div>
                         </div>
                         <div class="mb-3 d-flex">
                             <div style="flex: 1;">
@@ -182,14 +187,17 @@ $varsesion = $_SESSION['usuario'];
                         <div class="mb-3">
                             <label for="editNombre" class="form-label">Nombre</label>
                             <input type="text" name="editNombre" id="editNombre" class="form-control valid ValidNombre" onpaste="return false;" placeholder="Ingrese el nombre del usuario" autocomplete="off">
+                            <div class="invalid-feedback"></div>
                         </div>
                         <div class="mb-3" id="nuevaContrasena" style="display: none;">
                             <label for="EditContraseña" class="form-label">Nueva contraseña</label>
                             <input type="password" name="EditContraseña" id="EditContraseña" class="form-control valid ValidContra" onpaste="return false;" placeholder="Ingrese la nueva contraseña">
+                            <div class="invalid-feedback"></div>
                         </div>
                         <div class="mb-3" id="confirmarContrasena" style="display: none;">
                             <label for="confirmEditContraseña" class="form-label">Confirmar contraseña</label>
                             <input type="password" id="confirmEditContraseña" name="confirmEditContraseña" class="form-control valid ValidContra" onpaste="return false;" placeholder="Ingrese la contraseña">
+                            <div class="invalid-feedback"></div>
                         </div>
                     </form>
                 </div>

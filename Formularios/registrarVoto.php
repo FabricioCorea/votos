@@ -68,7 +68,7 @@ $varsesion = $_SESSION['usuario'];
         </div>
     </nav>
 
-    <br><br><br><br><br><br>
+    <br><br><br><br><br>
     <div id="banner1" class="carousel slide" data-ride="carousel">
         <div class="carousel-inner">
             <div class="carousel-item active">
@@ -78,15 +78,17 @@ $varsesion = $_SESSION['usuario'];
                             <div class="col-md-6">
                                 <div class="text-bg">
                                     <h1>Asamblea General</h1>
-                                        <div class="input-group">
+                                    <div class="input-group1">
+                                        <div class="input-container">
                                             <input class="form-control border-light" style="padding: 10px 10px;" type="text" id="id_empresa" placeholder="Ingrese el ID de la empresa y selecciónela" autocomplete="off">
-                                            <button type="button" id="clear_search" style="display: none;">X</button>
-                                        </div>
-                                    <div class="input-group">
-                                        <div class="form-control border-light" style="padding: 3px 3px; height: 80px; overflow-y: auto;" id="resultado_empresa">
-                                            <ul id="lista_resultados" class="lista-resultados"></ul>
+                                            <button type="button" id="clear_search" class="clear-btn">X</button>
                                         </div>
                                     </div>
+                                        <div class="input-group">
+                                            <div class="form-control border-light custom-border-transparent" style="padding: 3px; height: 100px; overflow-y: auto;" id="resultado_empresa">
+                                                <ul id="lista_resultados" class="lista-resultados"></ul>
+                                            </div>
+                                        </div>
                                     <br>
                                     <div class="subject">
                                         <select class="form-control border-light" style="padding: 3px 3px; height: 50px; overflow-y: auto;" placeholder="Subject line" name="subject" id="subject_input" required>
@@ -95,7 +97,7 @@ $varsesion = $_SESSION['usuario'];
                                             <option value="REPRESENTADO">REPRESENTADO</option>
                                         </select>
                                     </div>
-                                    <div class="input-group" id="campo_representado" style="visibility: hidden;">
+                                    <div class="input-group1" id="campo_representado" style="visibility: hidden;">
                                         <input class="form-control border-light" style="padding: 10px 10px;" type="text" id="representado_por" placeholder="Nombre de la persona en representación (opcional)" autocomplete="off">
                                     </div>
                                     <div class="contenedor"></div>
