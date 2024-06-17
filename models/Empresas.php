@@ -24,21 +24,36 @@ class Voto extends Conectar {
 
     // Método para agregar una nueva empresa
     public function agregarEmpresa($id, $empresa, $representante) {
-        try {
-            $conexion = $this->conectar();
-            $query = "INSERT INTO votos (id, empresa, representante) VALUES (:idEmpresa, :nombreEmpresa, :representante)";
-            $stmt = $conexion->prepare($query);
-            $stmt->bindParam(':idEmpresa', $id);
-            $stmt->bindParam(':nombreEmpresa', $empresa);
-            $stmt->bindParam(':representante', $representante);
-            $exito = $stmt->execute();
-            return $exito;
-        } catch (PDOException $e) {
-            // Manejar errores de la base de datos
-            error_log("Error al agregar empresa: " . $e->getMessage());
+    try {
+        $conexion = $this->conectar();
+
+        // Verificar si el ID de la empresa ya existe
+        $query_check = "SELECT COUNT(*) AS count FROM votos WHERE id = :idEmpresa";
+        $stmt_check = $conexion->prepare($query_check);
+        $stmt_check->bindParam(':idEmpresa', $id);
+        $stmt_check->execute();
+        $result_check = $stmt_check->fetch(PDO::FETCH_ASSOC);
+
+        if ($result_check['count'] > 0) {
+            // El ID de la empresa ya existe, retornar false
             return false;
         }
+
+        // Insertar la nueva empresa si el ID no existe
+        $query = "INSERT INTO votos (id, empresa, representante) VALUES (:idEmpresa, :nombreEmpresa, :representante)";
+        $stmt = $conexion->prepare($query);
+        $stmt->bindParam(':idEmpresa', $id);
+        $stmt->bindParam(':nombreEmpresa', $empresa);
+        $stmt->bindParam(':representante', $representante);
+        $exito = $stmt->execute();
+        return $exito;
+    } catch (PDOException $e) {
+        // Manejar errores de la base de datos
+        error_log("Error al agregar empresa: " . $e->getMessage());
+        return false;
     }
+}
+
 
     // Método para actualizar una empresa
     public function actualizarEmpresa($idEmpresa, $empresa, $representante) {

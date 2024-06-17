@@ -31,6 +31,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
 }
 
 // Agregar una nueva empresa
+// Agregar una nueva empresa
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     // Verifica si los datos del formulario fueron enviados
     $data = json_decode(file_get_contents('php://input'), true);
@@ -39,19 +40,19 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $empresa = $data['empresa'];
         $representante = $data['representante'];
 
-
         // Llama al método para agregar empresa del modelo
         $exito = $votoModelo->agregarEmpresa($id, $empresa, $representante);
 
         if ($exito) {
             echo json_encode(['mensaje' => 'Empresa agregada correctamente']);
         } else {
-            echo json_encode(['mensaje' => 'Error al agregar la empresa']);
+            echo json_encode(['mensaje' => 'La empresa ya ha sido agregada']);
         }
     } else {
         echo json_encode(['mensaje' => 'Faltan datos para agregar la empresa']);
     }
 }
+
 
 // Eliminar una empresa
 if ($_SERVER['REQUEST_METHOD'] === 'DELETE') {

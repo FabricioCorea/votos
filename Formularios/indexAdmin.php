@@ -106,7 +106,7 @@ $varsesion = $_SESSION['usuario'];
                      <div id="serv_hover" class="services_box">
                         <i><img src="../images/empresa.png" alt="#"/></i>
                         <h3>Registrar Empresa</h3>
-                        <a class="right_irro" href="../Formularios/empresas2.php"><i class="fa fa-long-arrow-right" aria-hidden="true"></i></a>
+                        <a class="right_irro" href="../Formularios/empresas.php"><i class="fa fa-long-arrow-right" aria-hidden="true"></i></a>
                      </div>
                   </div>
                   <div id="servicio_usuarios" class="col-md-3">

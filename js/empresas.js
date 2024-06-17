@@ -27,9 +27,6 @@ var idioma_espanol = {
     
 };
 
-
-
-
 // Mostrar icono de carga
 $('#cargando').removeClass('oculto');
 
