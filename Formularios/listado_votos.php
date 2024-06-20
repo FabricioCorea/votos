@@ -105,7 +105,7 @@ if($varsesion == null || $varsesion ==''){
 
         <div class="text-right mb-5">
             <a href="../fpdf/PruebaV.php" target="_blank" class="btn btn-light text-dark"><i class="fas fa-file-pdf"></i> PDF</a>
-            <a href="../excel/excel2.php" target="_blank" class="btn btn-light text-dark"><i class="fa-solid fa-file-excel"></i> EXCEL</a>
+            <a href="../excel/excel.php" target="_blank" class="btn btn-light text-dark"><i class="fa-solid fa-file-excel"></i> EXCEL</a>
         </div>
 
         <br>
