@@ -37,14 +37,15 @@ $('#tablaVotos').addClass('oculto');
 CargarVotos(idioma_espanol);
 });
 
+
+//----------------------------------------------------------------------------------------------------------------------------------//
 // Función para cargar votos (empresas)
 function CargarVotos(idioma_espanol) {
     // Mostrar indicador de carga
     $('#loadingIndicator').show();
 
     $.ajax({
-        url: '../controller/empresas.php', // Ruta al controlador
-        type: 'GET',
+        url: '../controller/empresas.php',
         dataType: 'json',
         success: function(response) {
             var votos = response;
@@ -80,7 +81,7 @@ function CargarVotos(idioma_espanol) {
             });
 
             // Mostrar la tabla después de cargar los datos
-            $('#tablaVotos').show(); // Asegurarse de que la tabla esté visible
+            $('#tablaVotos').show(); 
         },
         error: function(xhr, status, error) {
             // Ocultar indicador de carga en caso de error
@@ -92,6 +93,7 @@ function CargarVotos(idioma_espanol) {
     });
 }
 
+//----------------------------------------------------------------------------------------------------------------------------------//
 
 // Función para agregar una nueva empresa
 function AgregarEmpresa() {
@@ -139,9 +141,9 @@ if (!/^[a-zA-ZñÑ@!*$&#`´/%.,_\s\-]+$/.test(representante)) {
                     text: response.mensaje
                 }).then((result) => {
                     if (result.isConfirmed) {
-                        document.getElementById('formAgregarEmpresa').reset(); // Resetear el formulario
-                        $('#addEmpresaModal').modal('hide'); // Cerrar el modal
-                        location.reload(); // Recargar la página
+                        document.getElementById('formAgregarEmpresa').reset(); 
+                        $('#addEmpresaModal').modal('hide');
+                        location.reload(); 
                     }
                 });
             } else {
@@ -188,7 +190,6 @@ document.getElementById('idModal').addEventListener('input', function() {
 
 
 // Función para validar el campo de representante
-// Función para validar el campo de representante
 function validarRepresentante(input) {
     // Obtener el valor del campo y eliminar espacios en blanco al inicio y al final
     var representante = input.value.trim();
@@ -229,6 +230,7 @@ document.getElementById('representanteModal').addEventListener('input', function
         document.getElementById('editEmpresaRepresentante').value = representante;
     }
 
+//----------------------------------------------------------------------------------------------------------------------------------//
 
     // Función para editar una empresa
 
@@ -261,7 +263,7 @@ document.getElementById('representanteModal').addEventListener('input', function
             representante: representante
         };
     
-        fetch('../controller/empresas2.php', {
+        fetch('../controller/empresas.php', {
             method: 'PUT',
             headers: {
                 'Content-Type': 'application/json'
@@ -342,6 +344,9 @@ document.getElementById('editEmpresaRepresentante').addEventListener('input', fu
     validarRepresentanteEdit(this);
 });
 
+
+//----------------------------------------------------------------------------------------------------------------------------------//
+
  // Función para eliminar una empresa
  function eliminarEmpresa(idEmpresa) {
     Swal.fire({
@@ -356,7 +361,7 @@ document.getElementById('editEmpresaRepresentante').addEventListener('input', fu
     }).then((result) => {
         if (result.isConfirmed) {
             // solicitud de eliminación
-            fetch('../controller/empresas2.php', {
+            fetch('../controller/empresas.php', {
                     method: 'DELETE',
                     headers: {
                         'Content-Type': 'application/json'
@@ -372,7 +377,7 @@ document.getElementById('editEmpresaRepresentante').addEventListener('input', fu
                             text: response.mensaje
                         }).then((result) => {
                             if (result.isConfirmed) {
-                                location.reload(); // Recargar la página después de eliminar la empresa
+                                location.reload();
                             }
                         });
                     } else {

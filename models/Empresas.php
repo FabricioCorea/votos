@@ -54,7 +54,6 @@ class Voto extends Conectar {
     }
 }
 
-
     // Método para actualizar una empresa
     public function actualizarEmpresa($idEmpresa, $empresa, $representante) {
         try {

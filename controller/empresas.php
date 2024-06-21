@@ -15,22 +15,21 @@ header('Access-Control-Allow-Origin: *');
 header('Content-Type: application/json');
 
 require_once '../config/conexionPDO.php';
-require_once '../models/Empresas.php'; // Ajusta el nombre del modelo si es necesario
+require_once '../models/Empresas.php'; 
 
 $votoModelo = new Voto(); // Instancia del modelo
 
 // Obtener los votos (empresas)
 if ($_SERVER['REQUEST_METHOD'] === 'GET') {
-    $resultado = $votoModelo->obtenerVotos(); // Llama al método adecuado del modelo
+    $resultado = $votoModelo->obtenerVotos(); 
 
     if ($resultado) {
         echo json_encode($resultado);
     } else {
-        echo json_encode(['mensaje' => 'No se pudieron obtener los votos']); // Mensaje de error
+        echo json_encode(['mensaje' => 'No se pudieron obtener los votos']); 
     }
 }
 
-// Agregar una nueva empresa
 // Agregar una nueva empresa
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     // Verifica si los datos del formulario fueron enviados
@@ -76,7 +75,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'DELETE') {
 
 // Actualizar una empresa
 if ($_SERVER['REQUEST_METHOD'] === 'PUT') {
-    // Verifica si se proporcionaron los datos de la empresa a actualizar
     $data = json_decode(file_get_contents('php://input'), true);
     if (isset($data['id']) && isset($data['empresa']) && isset($data['representante'])) {
         $idEmpresa = $data['id'];
