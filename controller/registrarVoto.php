@@ -22,36 +22,26 @@ $buscarEmpresas = $conn->query($query);
 
 if ($buscarEmpresas->num_rows > 0) {
     while ($filaEmpresa = $buscarEmpresas->fetch_assoc()) {
-        $selectOptions .= '<li data-id="' . htmlspecialchars($filaEmpresa['id']) . '">' . htmlspecialchars($filaEmpresa['id']) . ' - ' . htmlspecialchars($filaEmpresa['empresa']) . ' - ' . htmlspecialchars($filaEmpresa['representante']) . '</li>';
+        $idEmpresa = $filaEmpresa['id'];
+        $empresaNombre = htmlspecialchars($filaEmpresa['empresa']);
+        $representante = htmlspecialchars($filaEmpresa['representante']);
+        
+        // Verificar si la empresa ya ha registrado su voto
+        $queryVoto = "SELECT * FROM votos WHERE id = '$idEmpresa' AND voto > 0";
+        $resultVoto = $conn->query($queryVoto);
+
+        if ($resultVoto->num_rows > 0) {
+            // Si ya hay registro de voto, mostrar mensaje de empresa que ya votó
+            $selectOptions .= "<li>La empresa con el ID $idEmpresa ya registró su voto. <br>
+            <button class='btn btn-delete ver_voto_btn' style='background-color: #3085d6; color: white; margin-left: 15px;' data-id='$idEmpresa'>
+                <span>Ver voto</span>
+            </button>
+            </li>";
+        } else {
+            // Si no hay registro de voto, mostrar opción para votar
+            $selectOptions .= "<li data-id='$idEmpresa'>$idEmpresa - $empresaNombre - $representante</li>";
+        }
     }
-
-    // Verificar si la empresa ya ha registrado su voto
-    $queryVoto = "SELECT * FROM votos WHERE id = '$idEmpresa' AND voto > 0";
-    $resultVoto = $conn->query($queryVoto);
-
-    if ($resultVoto->num_rows > 0) {
-        // Obtenemos el nombre de la empresa correspondiente al ID proporcionado
-        $queryEmpresa = "SELECT empresa FROM votos WHERE id = '$idEmpresa'";
-        $resultEmpresa = $conn->query($queryEmpresa);
-        if ($resultEmpresa->num_rows > 0) {
-            $nombreEmpresa = $resultEmpresa->fetch_assoc()['empresa'];
-            // Limitar la longitud del nombre de la empresa a 55 caracteres
-            $nombreEmpresa = strlen($nombreEmpresa) > 52 ? substr($nombreEmpresa, 0, 52) . "..." : $nombreEmpresa;
-            // Verificar si el usuario en sesión tiene rol de administrador (id_rol = 1)
-            if ($_SESSION['usuario']['id_rol'] == '1' || $_SESSION['usuario']['id_rol'] == '0') {
-                $selectOptions = "<li>La empresa con el ID $idEmpresa ya registró su voto. <br>
-                ($nombreEmpresa) <br>
-                <button class='btn btn-delete ver_voto_btn' style='background-color: #3085d6; color: white; margin-left: 15px;' data-id='$idEmpresa'>
-                    <span>Ver voto</span>
-                </button>
-                </li>";
-            } else {
-                // Si el usuario no es administrador, simplemente mostramos el mensaje sin el botón
-                $selectOptions = "<li>La empresa con el ID $idEmpresa ya registró su voto.<br>
-                ($nombreEmpresa)</li>";
-            }
-        }        
-    }    
 } else {
     $selectOptions = "<li>No se encontró la empresa con el ID proporcionado.</li>";
 }

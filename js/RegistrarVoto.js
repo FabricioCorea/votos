@@ -180,59 +180,75 @@ $(document).ready(function() {
             success: function(response) {
                 var responseData = JSON.parse(response);
                 if (responseData.status === "success") {
+                    // Verificar el id_rol del usuario en sesión
+                    var idRolUsuario = responseData.id_rol;
+    
                     // Mostrar los detalles del voto en una alerta
-                    Swal.fire({
-                        title: 'Detalles del voto',
-                        html: responseData.message,
-                        icon: 'info',
-                        showCancelButton: true,
-                        confirmButtonColor: '#d33', 
-                        cancelButtonColor: '#3085d6', 
-                        confirmButtonText: 'Eliminar voto',
-                        cancelButtonText: 'Cerrar'
-                    }).then((result) => {
-                        if (result.dismiss === Swal.DismissReason.confirm) {
-                            // Mostrar mensaje de confirmación antes de eliminar el voto
-                            Swal.fire({
-                                title: '¿Está seguro?',
-                                text: "Esta acción eliminará el voto. ¿Desea continuar?",
-                                icon: 'warning',
-                                showCancelButton: true,
-                                confirmButtonColor: '#d33', 
-                                cancelButtonColor: '#3085d6', 
-                                confirmButtonText: 'Sí, eliminar voto',
-                                cancelButtonText: 'Cancelar'
-                            }).then((result) => {
-                                if (result.isConfirmed) {
-                                    // Enviar la solicitud para eliminar el voto
-                                    $.ajax({
-                                        type: "POST",
-                                        url: "../controller/eliminarVoto.php", // Ruta correcta para eliminar el voto
-                                        data: { id_empresa: idEmpresa },
-                                        success: function(response) {
-                                            var responseData = JSON.parse(response);
-                                            if (responseData.status === "success") {
-                                                Swal.fire({
-                                                    icon: 'success',
-                                                    title: '¡Voto eliminado!',
-                                                    text: responseData.message,
-                                                    didClose: () => {
-                                                        location.reload(); // Recargar la página después de cerrar el Sweet Alert
-                                                    }
-                                                });
-                                            } else {
-                                                Swal.fire({
-                                                    icon: 'error',
-                                                    title: '¡Error!',
-                                                    text: responseData.message
-                                                });
+                    if (idRolUsuario == 0 || idRolUsuario == 1) {
+                        // Mostrar botón "Eliminar voto" para roles 0 y 1
+                        Swal.fire({
+                            title: 'Detalles del voto',
+                            html: responseData.message,
+                            icon: 'info',
+                            showCancelButton: true,
+                            confirmButtonColor: '#d33',
+                            confirmButtonText: 'Eliminar voto',
+                            cancelButtonColor: '#3085d6',
+                            cancelButtonText: 'Cerrar'
+                        }).then((result) => {
+                            if (result.dismiss === Swal.DismissReason.confirm) {
+                                // Mostrar mensaje de confirmación antes de eliminar el voto
+                                Swal.fire({
+                                    title: '¿Está seguro?',
+                                    text: "Esta acción eliminará el voto. ¿Desea continuar?",
+                                    icon: 'warning',
+                                    showCancelButton: true,
+                                    confirmButtonColor: '#d33',
+                                    cancelButtonColor: '#3085d6',
+                                    confirmButtonText: 'Sí, eliminar voto',
+                                    cancelButtonText: 'Cancelar'
+                                }).then((result) => {
+                                    if (result.isConfirmed) {
+                                        // Enviar la solicitud para eliminar el voto
+                                        $.ajax({
+                                            type: "POST",
+                                            url: "../controller/eliminarVoto.php",
+                                            data: { id_empresa: idEmpresa },
+                                            success: function(response) {
+                                                var responseData = JSON.parse(response);
+                                                if (responseData.status === "success") {
+                                                    Swal.fire({
+                                                        icon: 'success',
+                                                        title: '¡Voto eliminado!',
+                                                        text: responseData.message,
+                                                        didClose: () => {
+                                                            location.reload(); // Recargar la página después de cerrar el Sweet Alert
+                                                        }
+                                                    });
+                                                } else {
+                                                    Swal.fire({
+                                                        icon: 'error',
+                                                        title: '¡Error!',
+                                                        text: responseData.message
+                                                    });
+                                                }
                                             }
-                                        }
-                                    });
-                                }
-                            });
-                        }
-                    });
+                                        });
+                                    }
+                                });
+                            }
+                        });
+                    } else {
+                        // Mostrar diseño sin opción de eliminar para otros roles
+                        Swal.fire({
+                            title: 'Detalles del voto',
+                            html: responseData.message,
+                            icon: 'info',
+                            confirmButtonColor: '#3085d6',
+                            confirmButtonText: 'Cerrar',
+                            showCancelButton: false // No mostrar el botón de cancelar
+                        });
+                    }
                 } else {
                     Swal.fire({
                         icon: 'error',
@@ -243,6 +259,7 @@ $(document).ready(function() {
             }
         });
     });
+    
     $(document).ready(function() {
         // Agrega un listener al evento de entrada en el campo
         $('#representado_por').on('input', function() {

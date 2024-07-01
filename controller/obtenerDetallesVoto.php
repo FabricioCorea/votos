@@ -48,7 +48,14 @@ if(isset($_POST['id_empresa'])) {
         $message .= "<b>Fecha y hora de registro:</b> " . $filaDetallesVoto['fecha_registro'] . "<br>";
         $message .= "</div>"; 
 
-        echo json_encode(array("status" => "success", "message" => $message));
+        // Obtener el id_rol del usuario en sesión
+        $idRolUsuario = $_SESSION['usuario']['id_rol'];
+
+        echo json_encode(array(
+            "status" => "success",
+            "message" => $message,
+            "id_rol" => $idRolUsuario // Agregar el id_rol a la respuesta JSON
+        ));
     } else {
         echo json_encode(array("status" => "error", "message" => "No se encontraron detalles del voto para la empresa con el ID proporcionado."));
     }

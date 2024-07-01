@@ -49,31 +49,9 @@ if($varsesion == null || $varsesion ==''){
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" integrity="sha512-pPtNaT2zqPRGkCv3rZyfC+Xtctj/eF2gR2GXK0FIKeY5NhZ1V1v/UZA5qETBuTrVbo7uOujcGm3teHZVd/s6JQ==" crossorigin="anonymous" referrerpolicy="no-referrer" />
     <script src="https://kit.fontawesome.com/a5cebb58e6.js" crossorigin="anonymous"></script>
     <link rel="stylesheet" type="text/css" href="../css/stilo.css">
+    <link rel="stylesheet" type="text/css" href="../css/listado_votos.css">
 
 </head>
-
-<!--------------------------------------------------- Estilos --------------------------------------------------->
-<style>
-    .tablegra {
-        background: #34495E;
-        padding: 1px;
-        color: #ffffff
-    }
-
-    .boton {
-        background: #34495E;
-    }
-
-    .text-right.mb-5 {
-        position: relative;
-        left: -100px;
-        top: 140px;
-    }
-
-</style>
-
-<!------------------------------------------------------------------------------------------------------------------->
-
 <!-- body -->
 <body class="main-layout inner_header about_page">
 
@@ -102,15 +80,18 @@ if($varsesion == null || $varsesion ==''){
                 <li><a href="logout.php"> <i title="Cerrar Sesión" class="fas fa-sign-out-alt"></i></a><span class="sr-only">Cerrar Sesión&gt;</span></a></li>
         </div>
         </nav>
-
-        <div class="text-right mb-5">
-            <a href="../fpdf/PruebaV.php" target="_blank" class="btn btn-light text-dark"><i class="fas fa-file-pdf"></i> PDF</a>
-            <a href="../excel/excel.php" target="_blank" class="btn btn-light text-dark"><i class="fa-solid fa-file-excel"></i> EXCEL</a>
+        <br><br><br><br><br><br><br>
+        <div class="contenedor-grid">
+            <div class="izquierda">
+                <div class="text-bg">
+                    <h1>Votos Registrados</h1>
+                </div>
+            </div>
+            <div class="derecha">
+                <a href="../fpdf/PruebaV.php" target="_blank" class="btn btn-light text-dark"><i class="fas fa-file-pdf"></i> PDF</a>
+                <a href="../excel/excel.php" target="_blank" class="btn btn-light text-dark"><i class="fa-solid fa-file-excel"></i> EXCEL</a>
+            </div>
         </div>
-
-        <br>
-        <br>
-        <br>
         </div>
         </div>
 
@@ -147,10 +128,6 @@ if($varsesion == null || $varsesion ==''){
         $total = 0;
 
         if ($result->num_rows > 0) {
-            echo "</br>";
-            echo "</br>";
-            echo "</br>";
-            echo "</br>";
             echo "<div class='container-sm mt-5'>";
             echo "<div class='row'>";
 
@@ -202,8 +179,6 @@ if($varsesion == null || $varsesion ==''){
                 </div>
                 ';
             } else {
-                echo ' <br>';
-                echo ' <br>';
                 echo ' <br>';
                 echo ' <br>';
                 echo '<p>Cuando haya votos registrados, en este apartado se mostrará un gráfico reflejando el porcentaje de votos según el tipo (Representante o Representado).</p>';

@@ -1,0 +1,57 @@
+.tablegra {
+    background: #34495E;
+    padding: 1px;
+    color: #ffffff
+}
+
+.boton {
+    background: #34495E;
+}
+.contenedor-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr; 
+    gap: 10px; 
+    align-items: center; 
+    margin-bottom: -70px;
+}
+
+.izquierda {
+    grid-column: 1; 
+}
+
+.derecha {
+    grid-column: 2; 
+    display: flex; 
+    align-items: center; 
+    justify-content: flex-end; 
+
+    margin-right: 100px; 
+    margin-top: -100px; 
+    padding: 10px; 
+    
+    
+    gap: 3px; 
+}
+
+.derecha a {
+    margin-right: 10px; 
+}
+
+
+.text-bg {
+    margin-bottom: 40px; 
+    padding-left: 100px;
+}
+
+.text-bg h1 {
+    color: rgb(81, 101, 128);
+    font-size: 40px;
+    line-height: 73px;
+}
+
+h1 {
+    font-size: 24px;
+    font-family: 'Roboto', cursive;
+    font-weight: bold;
+    margin: 0; 
+}
