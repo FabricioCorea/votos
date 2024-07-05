@@ -26,7 +26,7 @@ function resetVotos() {
         if (result.isConfirmed) {
             // Hacer una solicitud AJAX para reiniciar los votos en el servidor
             $.ajax({
-                url: '../Formularios/resetear_votos.php', // Ruta al archivo PHP que maneja el reinicio de votos
+                url: '../controller/resetear_votos.php', // Ruta al archivo PHP que maneja el reinicio de votos
                 type: 'POST',
                 success: function(response) {
                     Swal.fire({
